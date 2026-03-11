@@ -244,6 +244,18 @@
   color: #0d94a1; 
 }
 
+/* Horizontal Shake Animation for Invalid Empty Fields */
+@keyframes shake-horizontal {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  25% { transform: translateY(-50%) translateX(-4px); }
+  50% { transform: translateY(-50%) translateX(4px); }
+  75% { transform: translateY(-50%) translateX(-4px); }
+}
+
+.signup-form .form-input.input-error:not(:focus):placeholder-shown ~ .floating-label {
+  animation: shake-horizontal 0.3s ease-in-out;
+}
+
 /* Validation Styles */
 .signup-form .form-input.input-error {
   border-color: #EF4444; /* red-500 */
