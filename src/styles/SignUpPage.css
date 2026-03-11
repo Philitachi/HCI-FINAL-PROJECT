@@ -187,6 +187,63 @@
   box-shadow: 0 0 0 1px #0d94a1;
 }
 
+/* Input Container for Floating Labels */
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Floating Labels */
+.floating-label {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6B7280;
+  pointer-events: none;
+  transition: 0.2s ease all;
+  background-color: transparent;
+  padding: 0 0.25rem;
+  font-size: 0.9375rem;
+  z-index: 5;
+}
+
+/* Active floating label state */
+.signup-form .form-input:focus ~ .floating-label,
+.signup-form .form-input:not(:placeholder-shown) ~ .floating-label {
+  top: 0;
+  transform: translateY(-50%);
+  left: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: #161B22; /* Matches base background to cover border */
+}
+
+/* Phone specific floating label offset */
+.floating-label.phone-label {
+  left: 3.75rem;
+}
+
+.signup-form .form-input:focus ~ .floating-label.phone-label,
+.signup-form .form-input:not(:placeholder-shown) ~ .floating-label.phone-label {
+  left: 0.75rem;
+}
+
+/* Label colors based on input states */
+.signup-form .form-input:focus ~ .floating-label {
+  color: #0d94a1;
+}
+
+.signup-form .form-input.input-error ~ .floating-label,
+.signup-form .form-input.input-error:focus ~ .floating-label {
+  color: #EF4444; 
+}
+
+.signup-form .form-input.input-success ~ .floating-label,
+.signup-form .form-input.input-success:focus ~ .floating-label {
+  color: #0d94a1; 
+}
+
 /* Validation Styles */
 .signup-form .form-input.input-error {
   border-color: #EF4444; /* red-500 */

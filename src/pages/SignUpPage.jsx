@@ -234,31 +234,37 @@ const SignUpPage = () => {
             <div className="form-grid">
               {/* Row 1 */}
               <div className="input-group-vertical">
-                <input 
-                  type="text" 
-                  placeholder="First Name" 
-                  className={getFieldClass('firstName')}
-                  title="Please fill out this field."
-                  value={formData.firstName}
-                  onChange={(e) => handleInputChange(e, 'firstName')}
-                  ref={refs.firstName}
-                  required
-                />
+                <div className="input-container">
+                  <input 
+                    type="text" 
+                    placeholder=" " 
+                    className={getFieldClass('firstName')}
+                    title="Please fill out this field."
+                    value={formData.firstName}
+                    onChange={(e) => handleInputChange(e, 'firstName')}
+                    ref={refs.firstName}
+                    required
+                  />
+                  <label className="floating-label">First Name</label>
+                </div>
                 {isFieldInvalid('firstName') && (
                   <p className="field-error-text">This field is required</p>
                 )}
               </div>
               <div className="input-group-vertical">
-                <input 
-                  type="text" 
-                  placeholder="Last Name" 
-                  className={getFieldClass('lastName')}
-                  title="Please fill out this field."
-                  value={formData.lastName}
-                  onChange={(e) => handleInputChange(e, 'lastName')}
-                  ref={refs.lastName}
-                  required
-                />
+                <div className="input-container">
+                  <input 
+                    type="text" 
+                    placeholder=" " 
+                    className={getFieldClass('lastName')}
+                    title="Please fill out this field."
+                    value={formData.lastName}
+                    onChange={(e) => handleInputChange(e, 'lastName')}
+                    ref={refs.lastName}
+                    required
+                  />
+                  <label className="floating-label">Last Name</label>
+                </div>
                 {isFieldInvalid('lastName') && (
                   <p className="field-error-text">This field is required</p>
                 )}
@@ -266,16 +272,19 @@ const SignUpPage = () => {
 
               {/* Row 2 */}
               <div className="input-group-vertical">
-                <input 
-                  type="email" 
-                  placeholder="Email Address" 
-                  className={getFieldClass('email')}
-                  title="Please fill out this field."
-                  value={formData.email}
-                  onChange={(e) => handleInputChange(e, 'email')}
-                  ref={refs.email}
-                  required
-                />
+                <div className="input-container">
+                  <input 
+                    type="email" 
+                    placeholder=" " 
+                    className={getFieldClass('email')}
+                    title="Please fill out this field."
+                    value={formData.email}
+                    onChange={(e) => handleInputChange(e, 'email')}
+                    ref={refs.email}
+                    required
+                  />
+                  <label className="floating-label">Email Address</label>
+                </div>
                 {isFieldInvalid('email') && formData.email.length === 0 && (
                   <p className="field-error-text">This field is required</p>
                 )}
@@ -288,7 +297,7 @@ const SignUpPage = () => {
                   <span className="phone-prefix">+63</span>
                   <input 
                     type="tel" 
-                    placeholder="Mobile Number" 
+                    placeholder=" " 
                     className={getFieldClass('phone')}
                     title="Please fill out this field."
                     value={formData.phone}
@@ -297,6 +306,7 @@ const SignUpPage = () => {
                     ref={refs.phone}
                     required
                   />
+                  <label className="floating-label phone-label">Mobile Number</label>
                 </div>
                 {isFieldInvalid('phone') && formData.phone.length === 0 && (
                   <p className="field-error-text">This field is required</p>
@@ -311,21 +321,24 @@ const SignUpPage = () => {
 
               {/* Row 3 */}
               <div className="input-group-vertical">
-                <input 
-                  type="password" 
-                  placeholder="Password" 
-                  className={getFieldClass('password')}
-                  title="Please fill out this field."
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    handleInputChange(e, 'password');
-                  }}
-                  onFocus={() => setIsPasswordFocused(true)}
-                  onBlur={() => setIsPasswordFocused(false)}
-                  ref={refs.password}
-                  required
-                />
+                <div className="input-container">
+                  <input 
+                    type="password" 
+                    placeholder=" " 
+                    className={getFieldClass('password')}
+                    title="Please fill out this field."
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      handleInputChange(e, 'password');
+                    }}
+                    onFocus={() => setIsPasswordFocused(true)}
+                    onBlur={() => setIsPasswordFocused(false)}
+                    ref={refs.password}
+                    required
+                  />
+                  <label className="floating-label">Password</label>
+                </div>
                 {showHint && (
                   <p className="password-hint hint-error">
                     {hintText}
@@ -336,16 +349,19 @@ const SignUpPage = () => {
                 )}
               </div>
               <div className="input-group-vertical">
-                <input 
-                  type="password" 
-                  placeholder="Password Confirmation" 
-                  className={getFieldClass('passwordConfirmation')}
-                  title="Please fill out this field."
-                  value={formData.passwordConfirmation}
-                  onChange={(e) => handleInputChange(e, 'passwordConfirmation')}
-                  ref={refs.passwordConfirmation}
-                  required
-                />
+                <div className="input-container">
+                  <input 
+                    type="password" 
+                    placeholder=" " 
+                    className={getFieldClass('passwordConfirmation')}
+                    title="Please fill out this field."
+                    value={formData.passwordConfirmation}
+                    onChange={(e) => handleInputChange(e, 'passwordConfirmation')}
+                    ref={refs.passwordConfirmation}
+                    required
+                  />
+                  <label className="floating-label">Password Confirmation</label>
+                </div>
                 {isFieldInvalid('passwordConfirmation') && formData.passwordConfirmation.length === 0 && (
                   <p className="field-error-text">This field is required</p>
                 )}
