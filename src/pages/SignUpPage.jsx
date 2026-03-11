@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/SignUpPage.css';
 import logo from '../assets/Logo.svg';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const [password, setPassword] = useState('');
+
+  const isPasswordValid = password.length >= 8 && /[a-z]/.test(password) && /[A-Z]/.test(password) && /\d/.test(password);
+  const isPasswordInvalid = password.length > 0 && !isPasswordValid;
 
   return (
     <div className="signup-container">
@@ -76,15 +80,20 @@ const SignUpPage = () => {
               </div>
 
               {/* Row 3 */}
-              <div className="input-group">
+              <div className="input-group-vertical">
                 <input 
                   type="password" 
                   placeholder="Password" 
-                  className="form-input"
+                  className={`form-input ${isPasswordInvalid ? 'input-error' : ''} ${isPasswordValid ? 'input-success' : ''}`}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <p className={`password-hint ${isPasswordValid ? 'hint-success' : 'hint-error'}`}>
+                  Password should be at least 8 characters with number, uppercase letter and lower case letter
+                </p>
               </div>
-              <div className="input-group">
+              <div className="input-group-vertical">
                 <input 
                   type="password" 
                   placeholder="Password Confirmation" 

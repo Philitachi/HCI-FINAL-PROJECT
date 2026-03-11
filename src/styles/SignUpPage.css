@@ -133,6 +133,15 @@
   align-items: center;
 }
 
+.input-group-vertical {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+
 .signup-form .form-input {
   width: 100%;
   background-color: #161B22;
@@ -156,6 +165,38 @@
   /* Match sign in page focus border */
   box-shadow: 0 0 0 1px #2BA03C;
 }
+
+/* Validation Styles */
+.signup-form .form-input.input-error {
+  border-color: #EF4444; /* red-500 */
+}
+
+.signup-form .form-input.input-error:focus {
+  box-shadow: 0 0 0 1px #EF4444;
+}
+
+.signup-form .form-input.input-success {
+  border-color: #10B981; /* emerald-500 */
+}
+
+.signup-form .form-input.input-success:focus {
+  box-shadow: 0 0 0 1px #10B981;
+}
+
+.password-hint {
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+.hint-error {
+  color: #EF4444;
+}
+
+.hint-success {
+  color: #10B981;
+}
+
 
 /* Terms Text */
 .terms-text {
