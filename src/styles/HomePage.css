@@ -12,7 +12,8 @@ body {
 }
 
 .homepage-container {
-  min-height: max(680px, 100vh);
+  height: 100vh;
+  max-height: 680px;
   width: 100%;
   max-width: 1518px;
   margin: 0 auto;
