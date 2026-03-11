@@ -40,6 +40,29 @@
   align-items: center;
 }
 
+/* --- Animation Classes --- */
+.slide-up-element {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+  transition-delay: 0.4s; /* Added a bit more delay */
+}
+
+.slide-up-element.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in-element {
+  opacity: 0;
+  transition: opacity 1.5s ease-out;
+}
+
+/* Only transition the watermark to 0.04 opacity instead of full 1 */
+.about-fsis-watermark.fade-in-element.is-visible {
+  opacity: 0.04; 
+}
+
 /* Left Column: Text */
 .about-fsis-text-col {
   display: flex;
@@ -47,9 +70,9 @@
 }
 
 .about-fsis-title {
-  font-size: 4rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
+  font-size: 4.2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
   color: white;
   letter-spacing: -1px;
 }

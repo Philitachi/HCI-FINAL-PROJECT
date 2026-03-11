@@ -1,23 +1,48 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../styles/AboutFSIS.css';
 import logo from '../assets/Logo.svg'; // Reuse the logo for the background watermark
 import TopNavigationBar from '../components/TopNavigationBar';
 
-const AboutFSIS = () => {
+const AboutFSIS = ({ standalone = true }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
+      },
+      { threshold: 0.2 } // Trigger when 20% of the section is visible
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      // Cleanup observer on unmount
+      observer.disconnect();
+    };
+  }, []);
   return (
     <>
-      <TopNavigationBar />
-      <div className="about-fsis-container">
+      {standalone && <TopNavigationBar />}
+      <section id="about" className="about-fsis-container" ref={sectionRef}>
         {/* Background Watermark Logo */}
-        <img src={logo} alt="" className="about-fsis-watermark" aria-hidden="true" />
+        <img src={logo} alt="" className={`about-fsis-watermark fade-in-element ${isVisible ? 'is-visible' : ''}`} aria-hidden="true" />
         
-        <div className="about-fsis-content">
+        <div className={`about-fsis-content slide-up-element ${isVisible ? 'is-visible' : ''}`}>
           
           {/* Left Column: Text */}
           <div className="about-fsis-text-col">
             <h1 className="about-fsis-title">About FSIS</h1>
             <p className="about-fsis-body">
-              The Fire Safety Information System (FSIS) is a digital platform designed to streamline fire safety compliance and reporting for businesses and individuals. FSIS enables users to easily access government services, submit applications, and track the status of their requests—all from their mobile devices. By leveraging modern technology, FSIS aims to improve transparency, efficiency, and accessibility in fire safety management across the country.
+              The <strong>Fire Safety Inspection System (FSIS)</strong> is a digital platform designed to streamline fire safety compliance and reporting for businesses and individuals. FSIS enables users to easily access government services, submit applications, and track the status of their requests—all from their mobile devices. By leveraging modern technology, FSIS aims to improve transparency, efficiency, and accessibility in fire safety management across the country.
             </p>
           </div>
 
@@ -48,7 +73,7 @@ const AboutFSIS = () => {
           </div>
 
         </div>
-      </div>
+      </section>
     </>
   );
 };

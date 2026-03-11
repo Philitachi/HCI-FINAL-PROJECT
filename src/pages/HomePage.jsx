@@ -1,11 +1,24 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import TopNavigationBar from '../components/TopNavigationBar';
 import '../styles/HomePage.css';
 import backgroundImage from '../assets/backgroundImage.svg';
+import AboutFSIS from './AboutFSIS';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === '#about') {
+      const element = document.getElementById('about');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else if (!location.hash) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [location]);
 
   return (
     <div className="homepage-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
@@ -38,6 +51,8 @@ const HomePage = () => {
           </div>
         </div>
       </main>
+      
+      <AboutFSIS standalone={false} />
     </div>
   );
 };
