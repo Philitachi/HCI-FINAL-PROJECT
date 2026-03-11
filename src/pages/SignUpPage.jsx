@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/SignUpPage.css';
 import logo from '../assets/Logo.svg';
+import ExitButton from '../components/exitButton';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -208,16 +209,7 @@ const SignUpPage = () => {
 
         {/* Signup Card */}
         <div className="signup-card">
-          <button 
-            className="btn-close" 
-            onClick={() => navigate('/')}
-            aria-label="Close"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
+          <ExitButton to="/" />
 
           <h2 className="card-title-left">Create Account</h2>
           <p className="card-subtitle-left">

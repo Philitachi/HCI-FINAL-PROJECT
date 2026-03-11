@@ -32,8 +32,7 @@
   align-items: center;
   width: 100%;
   max-width: 900px;
-  padding: 2rem;
-  height: 95vh;
+  padding: 2rem 1rem;
 }
 
 /* Header Styles */
@@ -58,46 +57,29 @@
 
 /* Card Styles */
 .terms-card {
-  background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 0.5rem;
-  padding: 2rem 1.5rem 2rem 2.5rem;
-  /* Less padding on right for scrollbar */
+  background-color: #1F252E;
+  border-radius: 1rem;
+  padding: 2.5rem 3.5rem;
   width: 100%;
-  height: calc(100% - 100px);
+  height: calc(100vh - 160px);
+  min-height: 400px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
-  position: relative;
   box-sizing: border-box;
 }
 
-.terms-btn-close {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s;
-  z-index: 10;
-}
-
-.terms-btn-close:hover {
-  color: #ccc;
-}
-
 .terms-card-title {
-  text-align: left;
+  text-align: center;
   font-size: 1.75rem;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 1.5rem;
   margin-top: 0;
-  padding-right: 2rem;
+  color: white;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #30363D;
 }
 
 /* Scrollable Area */
@@ -105,6 +87,7 @@
   flex: 1;
   overflow-y: auto;
   padding-right: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 /* Custom Scrollbar for terms scroll area */
@@ -124,44 +107,57 @@
 
 .terms-scroll-area p {
   font-size: 0.9375rem;
-  color: #e5e7eb;
+  color: #9CA3AF;
   line-height: 1.7;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .terms-scroll-area h3 {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: white;
-  margin-top: 1.25rem;
-  margin-bottom: 0.5rem;
+  color: #E5E7EB;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .terms-scroll-area ul {
   list-style-type: none;
-  padding-left: 1rem;
-  margin-bottom: 1.25rem;
+  padding-left: 0;
+  margin-bottom: 1.5rem;
   margin-top: 0;
 }
 
 .terms-scroll-area li {
   font-size: 0.9375rem;
-  color: #e5e7eb;
+  color: #9CA3AF;
   line-height: 1.6;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
   position: relative;
 }
 
 .terms-scroll-area li::before {
-  content: "•";
+  content: "";
   position: absolute;
-  left: -1rem;
-  color: white;
+  left: 0;
+  top: 0.6rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #0d94a1;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .terms-card {
-    padding: 1.5rem 1rem 1.5rem 1.5rem;
+    padding: 2rem;
+    height: calc(100vh - 140px);
+  }
+}
+
+@media (max-width: 480px) {
+  .terms-card {
+    padding: 1.5rem;
+    height: calc(100vh - 120px);
   }
 }

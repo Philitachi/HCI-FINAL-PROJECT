@@ -22,8 +22,8 @@ const HomePage = () => {
             <span className="highlight-text">Government Transactions</span>
           </h1>
           <p className="hero-subtitle">
-            Empowering Every Filipino with One-Click to Public<br/>
-            Services. Streamline your fire safety permits and<br/>
+            Empowering Every Filipino with One-Click to Public Services.<br/>
+            Streamline your fire safety permits and<br/>
             certificates today.
           </p>
           <div className="hero-actions">
