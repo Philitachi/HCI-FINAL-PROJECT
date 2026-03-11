@@ -3,7 +3,7 @@
 .terms-container {
   min-height: max(680px, 100vh);
   width: 100%;
-  max-width: 1518px;
+  max-width: 1540px;
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -61,7 +61,8 @@
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.5rem;
-  padding: 2rem 1.5rem 2rem 2.5rem; /* Less padding on right for scrollbar */
+  padding: 2rem 1.5rem 2rem 2.5rem;
+  /* Less padding on right for scrollbar */
   width: 100%;
   height: calc(100% - 100px);
   display: flex;
@@ -112,12 +113,12 @@
 }
 
 .terms-scroll-area::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1); 
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
 
 .terms-scroll-area::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.4); 
+  background-color: rgba(255, 255, 255, 0.4);
   border-radius: 4px;
 }
 
