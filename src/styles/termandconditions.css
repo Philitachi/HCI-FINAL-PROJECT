@@ -1,8 +1,7 @@
 /* termandconditions.css */
 
 .terms-container {
-  height: 100vh;
-  max-height: 680px;
+  min-height: max(680px, 100vh);
   width: 100%;
   max-width: 1518px;
   margin: 0 auto;
