@@ -1,0 +1,164 @@
+/* termandconditions.css */
+
+.terms-container {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  color: white;
+  overflow: hidden;
+}
+
+.terms-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #101c26 0%, #1a1e24 50%, #2a2022 100%);
+  z-index: 1;
+}
+
+.terms-content-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+  padding: 2rem;
+  height: 95vh;
+}
+
+/* Header Styles */
+.terms-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.terms-logo {
+  width: 48px;
+  height: 48px;
+}
+
+.terms-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* Card Styles */
+.terms-card {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 2rem 1.5rem 2rem 2.5rem; /* Less padding on right for scrollbar */
+  width: 100%;
+  height: calc(100% - 100px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.terms-btn-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  z-index: 10;
+}
+
+.terms-btn-close:hover {
+  color: #ccc;
+}
+
+.terms-card-title {
+  text-align: left;
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  padding-right: 2rem;
+}
+
+/* Scrollable Area */
+.terms-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 1.5rem;
+}
+
+/* Custom Scrollbar for terms scroll area */
+.terms-scroll-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terms-scroll-area::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1); 
+  border-radius: 4px;
+}
+
+.terms-scroll-area::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4); 
+  border-radius: 4px;
+}
+
+.terms-scroll-area p {
+  font-size: 0.9375rem;
+  color: #e5e7eb;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.terms-scroll-area h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.terms-scroll-area ul {
+  list-style-type: none;
+  padding-left: 1rem;
+  margin-bottom: 1.25rem;
+  margin-top: 0;
+}
+
+.terms-scroll-area li {
+  font-size: 0.9375rem;
+  color: #e5e7eb;
+  line-height: 1.6;
+  margin-bottom: 0.25rem;
+  position: relative;
+}
+
+.terms-scroll-area li::before {
+  content: "•";
+  position: absolute;
+  left: -1rem;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .terms-card {
+    padding: 1.5rem 1rem 1.5rem 1.5rem;
+  }
+}
