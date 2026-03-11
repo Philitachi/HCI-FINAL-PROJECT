@@ -16,7 +16,8 @@ const TopNavigationBar = () => {
       </div>
       
       <nav className="navbar-controls">
-        <a href="#home" className="nav-link active">Home</a>
+        <a href="#home" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('/'); }}>Home</a>
+        <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('/about'); }}>About Us</a>
         <span className="divider">|</span>
         <button className="theme-toggle" aria-label="Toggle dark mode">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

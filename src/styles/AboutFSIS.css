@@ -1,0 +1,197 @@
+/* AboutFSIS.css */
+
+.about-fsis-container {
+  min-height: max(680px, 100vh);
+  width: 100%;
+  max-width: 1540px;
+  margin: 0 auto;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  color: white;
+  background-color: #121A2F; /* Dark blue background from reference */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 4rem 5%;
+}
+
+/* Faint Watermark Logo */
+.about-fsis-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; /* Large scale */
+  height: auto;
+  opacity: 0.04; /* Very faint, reduced opacity */
+  z-index: 1;
+  pointer-events: none;
+}
+
+.about-fsis-content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1200px;
+  width: 100%;
+  align-items: center;
+}
+
+/* Left Column: Text */
+.about-fsis-text-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-fsis-title {
+  font-size: 4rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: white;
+  letter-spacing: -1px;
+}
+
+.about-fsis-body {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: #F3F4F6; /* Lighter white for body text */
+}
+
+/* Right Column: Video Container */
+.about-fsis-video-wrapper {
+  width: 100%;
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  background-color: #D9D9D9; /* Light grey placeholder matching reference image */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-fsis-video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* YouTube Thumbnail Mock */
+.yt-thumbnail-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #1a1a1a;
+  background-image: 
+    radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%),
+    linear-gradient(45deg, #1f2937, #111827);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.yt-bg {
+  fill: #212121;
+  fill-opacity: 0.8;
+  transition: fill 0.1s cubic-bezier(0.0,0.0,0.2,1), fill-opacity 0.1s;
+}
+
+.yt-thumbnail-container:hover .yt-bg {
+  fill: #ff0000;
+  fill-opacity: 1;
+}
+
+.yt-play-button {
+  width: 68px;
+  height: 48px;
+}
+
+.yt-duration {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: "Roboto", "Arial", sans-serif;
+}
+
+.yt-title-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.yt-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.yt-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.yt-video-title {
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 400;
+  font-family: "Roboto", "Arial", sans-serif;
+  text-shadow: 0 0 4px rgba(0,0,0,0.8);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .about-fsis-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .about-fsis-watermark {
+    width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-fsis-container {
+    padding: 3rem 1.5rem;
+  }
+
+  .about-fsis-title {
+    font-size: 2.25rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .about-fsis-body {
+    font-size: 1rem;
+  }
+}
