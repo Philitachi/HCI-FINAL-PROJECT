@@ -165,8 +165,38 @@
   box-shadow: none !important;
 }
 
+/* Hide the default browser's 'reveal password' eye icon (specifically in Edge/IE) */
+.signin-form .form-input::-ms-reveal,
+.signin-form .form-input::-ms-clear {
+  display: none;
+}
+
 .form-input::placeholder {
   color: #6B7280;
+}
+
+.password-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  padding: 0;
+  padding-right: 0.75rem;
+  background-color: transparent !important;
+  border: none !important;
+  color: #9CA3AF;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.2s;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.password-toggle-btn:hover,
+.password-toggle-btn:focus-visible {
+  color: white;
 }
 
 .btn-submit {
