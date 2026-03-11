@@ -12,16 +12,19 @@ body {
 }
 
 .homepage-container {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+  width: 1518px;
+  height: 680px;
+  max-width: 100vw;
+  max-height: 100vh;
+  position: relative;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  position: relative;
   display: flex;
   flex-direction: column;
-  color: white;
+  overflow: hidden;
+  margin: 0 auto; /* Center it if the screen is larger */
+  color: white; /* Retained from original */
 }
 
 .homepage-overlay {
