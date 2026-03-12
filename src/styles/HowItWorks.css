@@ -1,0 +1,164 @@
+/* HowItWorks.css */
+
+.hiw-section {
+  min-height: max(680px, 100vh);
+  width: 100%;
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: 6rem 5%;
+  background-color: #171E2D; /* A deep dark color matching the UI transition from AboutFSIS */
+  color: white;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hiw-content-container {
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
+  z-index: 2;
+}
+
+.hiw-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.hiw-section-title {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.hiw-section-subtitle {
+  font-size: 1.25rem;
+  color: #D1D5DB;
+  font-weight: 400;
+}
+
+/* Steps Layout */
+.hiw-steps-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  gap: 2rem;
+}
+
+/* Decorative SVG Lines container */
+.hiw-curves-container {
+  position: absolute;
+  top: 15%; /* Adjust vertical placement of curves relative to circles */
+  left: 0;
+  width: 100%;
+  z-index: 1; /* Below the steps but above background */
+  pointer-events: none; /* Let events pass through */
+}
+
+/* Make sure the paths render visibly */
+.hiw-dotted-line {
+  stroke: rgba(255, 255, 255, 0.4); /* Faded white/grey for the dots */
+}
+
+/* Individual Step */
+.hiw-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2; /* Sit cleanly above the SVG curves */
+}
+
+/* Faded Circle Background */
+.hiw-circle-bg {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  /* Very subtle, dark radial gradient to create depth, no harsh borders */
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 70%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.hiw-step:hover .hiw-circle-bg {
+  transform: translateY(-5px);
+  background: radial-gradient(circle at center, rgba(6, 182, 212, 0.06) 0%, rgba(255, 255, 255, 0.01) 70%, transparent 100%);
+}
+
+.hiw-illustration {
+  width: 160px; /* Adjust size inside the circle */
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3)); /* Give the image itself a shadow to pop out */
+}
+
+/* Text Below the Circle */
+.hiw-step-text {
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.hiw-step-text h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  color: white;
+}
+
+.hiw-step-text p {
+  font-size: 1rem;
+  color: #9CA3AF; /* Clear, secondary text color */
+  line-height: 1.6;
+}
+
+/* Animations */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.hiw-content-container.is-visible .fade-in-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .hidden-mobile {
+    display: none; /* Hide complex SVG curves on smaller screens */
+  }
+
+  .hiw-steps-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .hiw-circle-bg {
+    width: 220px;
+    height: 220px;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hiw-section-title {
+    font-size: 2.5rem;
+  }
+  
+  .hiw-section-subtitle {
+    font-size: 1.1rem;
+  }
+}
