@@ -255,3 +255,71 @@
     padding: 2rem 1.5rem;
   }
 }
+
+/* =========================================
+   Light Mode Overrides
+   ========================================= */
+:root.light-mode .signin-container {
+  color: #111827;
+}
+
+:root.light-mode .signin-background {
+  background: linear-gradient(135deg, #E2E8F0 0%, #F8FAFC 100%); /* Darker slate gradient to reduce brightness */
+  opacity: 1;
+  z-index: 1;
+}
+
+:root.light-mode .signin-content::before {
+  display: none;
+}
+
+:root.light-mode .signin-card {
+  background-color: #FFFFFF;
+  border: 1px solid #CBD5E1; /* Darker border for definition */
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Stronger shadow for contrast */
+}
+
+:root.light-mode .signin-subtitle,
+:root.light-mode .card-subtitle {
+  color: #6B7280;
+}
+
+:root.light-mode .input-wrapper {
+  background-color: #F9FAFB;
+  border-color: #9CA3AF; /* Darker border for better visibility */
+}
+
+:root.light-mode .input-wrapper:not(:focus-within) {
+  border-color: #9CA3AF; /* Darker border for better visibility */
+  box-shadow: none;
+}
+
+:root.light-mode .input-wrapper:focus-within {
+  border-color: #2BA03C;
+  box-shadow: 0 0 0 1px #2BA03C;
+}
+
+:root.light-mode .signin-form .form-input {
+  color: #111827;
+}
+
+:root.light-mode .form-input::placeholder {
+  color: #9CA3AF;
+}
+
+:root.light-mode .input-icon {
+  color: #6B7280;
+}
+
+:root.light-mode .password-toggle-btn {
+  color: #6B7280;
+}
+
+:root.light-mode .password-toggle-btn:hover,
+:root.light-mode .password-toggle-btn:focus-visible {
+  color: #111827;
+}
+
+:root.light-mode .signup-prompt {
+  color: #6B7280;
+}

@@ -23,3 +23,16 @@
   background-color: rgba(255, 255, 255, 0.1);
   transform: scale(1.05);
 }
+
+/* =========================================
+   Light Mode Overrides
+   ========================================= */
+:root.light-mode .exit-btn-custom {
+  color: #6B7280;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+:root.light-mode .exit-btn-custom:hover {
+  color: #111827;
+  background-color: rgba(0, 0, 0, 0.1);
+}
