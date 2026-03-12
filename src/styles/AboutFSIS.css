@@ -8,12 +8,26 @@
   position: relative;
   font-family: 'Inter', sans-serif;
   color: white;
-  background-color: #121A2F; /* Dark blue background from reference */
+  /* Rich, premium, deep blue radial gradient background */
+  background: radial-gradient(circle at 70% 30%, #17284b 0%, #111a31 40%, #080c18 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   padding: 4rem 5%;
+}
+
+/* Add a glowing subtle orb effect using pseudo-element */
+.about-fsis-container::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 50%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Faint Watermark Logo */
@@ -24,7 +38,8 @@
   transform: translate(-50%, -50%);
   width: 600px; /* Large scale */
   height: auto;
-  opacity: 0.04; /* Very faint, reduced opacity */
+  opacity: 0.06; /* Slightly more visible but deeply blended */
+  mix-blend-mode: overlay; /* Blends better with the gradient */
   z-index: 1;
   pointer-events: none;
 }
@@ -45,7 +60,7 @@
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 1s ease-out, transform 1s ease-out;
-  transition-delay: 0.4s; /* Added a bit more delay */
+  transition-delay: 0.3s; /* Added a bit more delay */
 }
 
 .slide-up-element.is-visible {
@@ -58,9 +73,9 @@
   transition: opacity 1.5s ease-out;
 }
 
-/* Only transition the watermark to 0.04 opacity instead of full 1 */
+/* Only transition the watermark to 0.06 opacity instead of full 1 */
 .about-fsis-watermark.fade-in-element.is-visible {
-  opacity: 0.04; 
+  opacity: 0.06; 
 }
 
 /* Left Column: Text */
@@ -70,17 +85,24 @@
 }
 
 .about-fsis-title {
-  font-size: 4.2rem;
+  font-size: 4.5rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
-  color: white;
-  letter-spacing: -1px;
+  /* Striking text gradient */
+  background: linear-gradient(135deg, #22D3EE 0%, #0d94a1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #22D3EE; /* fallback */
+  letter-spacing: -1.5px;
+  display: inline-block;
 }
 
 .about-fsis-body {
   font-size: 1.25rem;
   line-height: 1.8;
-  color: #F3F4F6; /* Lighter white for body text */
+  color: #9CA3AF; /* Softer, highly legible gray */
+  font-weight: 400;
 }
 
 /* Right Column: Video Container */
@@ -89,14 +111,25 @@
   position: relative;
   padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
   height: 0;
-  border-radius: 1rem;
+  border-radius: 1.25rem;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  background-color: #D9D9D9; /* Light grey placeholder matching reference image */
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Enhance shadow for depth */
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(6, 182, 212, 0.1);
+  /* Glassmorphism background fallback */
+  background: rgba(31, 41, 55, 0.4); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border for glass effect */
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.about-fsis-video-wrapper:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9), 0 0 50px rgba(6, 182, 212, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .about-fsis-video-wrapper iframe {
@@ -117,24 +150,28 @@
   height: 100%;
   background-color: #1a1a1a;
   background-image: 
-    radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%),
-    linear-gradient(45deg, #1f2937, #111827);
+    radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%),
+    linear-gradient(135deg, #1f2937, #0f172a);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s;
 }
 
 .yt-bg {
-  fill: #212121;
-  fill-opacity: 0.8;
-  transition: fill 0.1s cubic-bezier(0.0,0.0,0.2,1), fill-opacity 0.1s;
+  fill: #111827; /* Darker clean button */
+  fill-opacity: 0.9;
+  transition: fill 0.2s cubic-bezier(0.4,0.0,0.2,1), fill-opacity 0.2s, transform 0.2s;
+  transform-origin: center;
 }
 
-.yt-thumbnail-container:hover .yt-bg {
-  fill: #ff0000;
+.about-fsis-video-wrapper:hover .yt-bg {
+  fill: #ff0000; /* Standard YouTube red */
   fill-opacity: 1;
+}
+
+.about-fsis-video-wrapper:hover .yt-play-button svg {
+  transform: scale(1.1);
 }
 
 .yt-play-button {
