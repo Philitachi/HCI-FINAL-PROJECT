@@ -77,7 +77,7 @@ const SignInPage = () => {
           </form>
 
           <div className="card-footer">
-            <a href="#forgot" className="link-forgot">Forgot Password?</a>
+            <a href="#" className="link-forgot" onClick={(e) => { e.preventDefault(); navigate('/forgot-password'); }}>Forgot Password?</a>
             <p className="signup-prompt">
               Don't have an account? <a href="#" className="link-create" onClick={(e) => { e.preventDefault(); navigate('/signup'); }}>Create one <span className="arrow">→</span></a>
             </p>
