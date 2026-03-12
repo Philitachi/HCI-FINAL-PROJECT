@@ -71,11 +71,58 @@
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, color 0.3s;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .theme-toggle:hover {
-  opacity: 0.8;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle svg {
+  position: absolute;
+  transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.theme-toggle svg.moon-icon {
+  transform: rotate(-90deg) scale(0.5);
+  opacity: 0;
+}
+
+.theme-toggle svg.sun-icon {
+  transform: rotate(90deg) scale(0.5);
+  opacity: 0;
+}
+
+/* Base Light Mode Overrides for text/icons */
+:root.light-mode .navbar {
+  background: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+:root.light-mode .brand-text,
+:root.light-mode .navbar-controls .nav-link,
+:root.light-mode .btn-signin,
+:root.light-mode .theme-toggle {
+  color: #111827;
+}
+
+/* Light mode hover effect */
+:root.light-mode .navbar-controls .nav-link:hover,
+:root.light-mode .btn-signin:hover {
+  color: #0369A1; /* Dark blue hover */
+}
+
+:root.light-mode .divider {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+:root.light-mode .theme-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .btn-signin {

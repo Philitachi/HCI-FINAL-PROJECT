@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ForgotPasswordPage.css';
-import illustration from '../assets/ForgotPasswordIllustrationDarkmode.svg';
+import illustrationDark from '../assets/ForgotPasswordIllustrationDarkmode.svg';
+import illustrationLight from '../assets/forgotPasswordIllustrationLightmode.svg';
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -34,7 +35,8 @@ const ForgotPasswordPage = () => {
       <div className="forgot-content">
         <div className="forgot-card">
           <div className="illustration-wrapper">
-            <img src={illustration} alt="Forgot Password Illustration" className="forgot-illustration" />
+            <img src={illustrationDark} alt="Forgot Password Illustration" className="forgot-illustration dark-img" />
+            <img src={illustrationLight} alt="Forgot Password Illustration" className="forgot-illustration light-img" />
           </div>
           
           <h2 className="forgot-title">Forgot your password?</h2>
