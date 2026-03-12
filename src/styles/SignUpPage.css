@@ -239,11 +239,11 @@
 
 /* Validation Styles */
 .signup-form .form-input.input-error {
-  border-color: #EF4444; /* red-500 */
+  border-color: #EF4444 !important; /* Force red border even on focus */
 }
 
 .signup-form .form-input.input-error:focus {
-  box-shadow: 0 0 0 1px #EF4444;
+  box-shadow: 0 0 0 1px #EF4444 !important; /* Force red shadow on focus */
 }
 
 .signup-form .form-input.input-success {
@@ -391,4 +391,119 @@
   .signup-card {
     padding: 1.5rem;
   }
+}
+/* =========================================
+   Light Mode Overrides
+   ========================================= */
+:root.light-mode .signup-container {
+  color: #111827;
+}
+
+:root.light-mode .signup-background {
+  background: linear-gradient(135deg, #E2E8F0 0%, #F8FAFC 100%);
+  opacity: 1;
+  z-index: 1;
+}
+
+:root.light-mode .signup-card {
+  background-color: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+:root.light-mode .card-title-left {
+  color: #111827;
+}
+
+:root.light-mode .card-subtitle-left {
+  color: #6B7280;
+}
+
+:root.light-mode .signup-form .form-input {
+  background-color: #FFFFFF;
+  border-color: #9CA3AF;
+  color: #111827;
+}
+
+:root.light-mode .signup-form .form-input::placeholder {
+  color: #9CA3AF;
+}
+
+:root.light-mode .signup-form .form-input:focus {
+  border-color: #0d94a1;
+  box-shadow: 0 0 0 1px #0d94a1;
+}
+
+/* Floating labels */
+:root.light-mode .floating-label {
+  color: #6B7280;
+}
+
+/* Floating labels when focused or filled */
+:root.light-mode .signup-form .form-input:focus ~ .floating-label,
+:root.light-mode .signup-form .form-input:not(:placeholder-shown) ~ .floating-label {
+  background-color: #FFFFFF; /* Match the bright card background */
+}
+
+/* Specific label color states in light mode */
+:root.light-mode .signup-form .form-input:focus ~ .floating-label {
+  color: #0d94a1;
+}
+
+:root.light-mode .signup-form .form-input.input-error ~ .floating-label,
+:root.light-mode .signup-form .form-input.input-error:focus ~ .floating-label {
+  color: #EF4444; 
+}
+
+:root.light-mode .signup-form .form-input.input-success ~ .floating-label,
+:root.light-mode .signup-form .form-input.input-success:focus ~ .floating-label {
+  color: #0d94a1; 
+}
+
+/* Validation states inside light mode */
+:root.light-mode .signup-form .form-input.input-error {
+  border-color: #EF4444 !important;
+}
+
+:root.light-mode .signup-form .form-input.input-error:focus {
+  box-shadow: 0 0 0 1px #EF4444 !important;
+}
+
+:root.light-mode .signup-form .form-input.input-success {
+  border-color: #0d94a1;
+}
+
+/* Phone input prefix divider */
+:root.light-mode .phone-prefix {
+  color: #6B7280;
+}
+
+:root.light-mode .phone-prefix::after {
+  background-color: #D1D5DB; /* Lighter divider */
+}
+
+/* Error/Hint Texts */
+:root.light-mode .field-error-text,
+:root.light-mode .hint-error,
+:root.light-mode .form-top-error {
+  color: #EF4444;
+}
+
+:root.light-mode .form-top-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+:root.light-mode .hint-success {
+  color: #0d94a1;
+}
+
+/* Terms and Conditions text below form */
+:root.light-mode .terms-text {
+  color: #6B7280;
+}
+
+/* Small Prompts */
+:root.light-mode .signin-prompt {
+  color: #6B7280;
 }

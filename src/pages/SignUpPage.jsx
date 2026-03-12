@@ -78,10 +78,12 @@ const SignUpPage = () => {
       let pwClass = 'form-input';
       if (isInvalid) {
         pwClass += ' input-error';
+        if (isPasswordFocused) pwClass += ' focus-error';
       } else if (isPasswordFocused && password.length === 0) {
         pwClass += ' input-success';
       } else if (password.length > 0 || hasSubmitted) {
         pwClass += isPasswordValid ? ' input-success' : ' input-error';
+        if (!isPasswordValid && isPasswordFocused) pwClass += ' focus-error';
       }
       return pwClass;
     }
