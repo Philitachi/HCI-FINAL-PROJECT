@@ -97,7 +97,7 @@
 }
 
 .hiw-illustration {
-  width: 160px; /* Adjust size inside the circle */
+  width: 200px; /* Increased size inside the circle */
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3)); /* Give the image itself a shadow to pop out */
