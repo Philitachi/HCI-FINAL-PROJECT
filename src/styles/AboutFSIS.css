@@ -85,15 +85,14 @@
 }
 
 .about-fsis-title {
-  font-size: 4.5rem;
+  font-size: 4rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
   /* Striking text gradient */
-  background: linear-gradient(135deg, #22D3EE 0%, #0d94a1 100%);
+  background:  #ffffff;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: #22D3EE; /* fallback */
   letter-spacing: -1.5px;
   display: inline-block;
 }

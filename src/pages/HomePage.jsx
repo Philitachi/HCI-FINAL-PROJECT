@@ -4,6 +4,7 @@ import TopNavigationBar from '../components/TopNavigationBar';
 import '../styles/HomePage.css';
 import backgroundImage from '../assets/backgroundImage.svg';
 import AboutFSIS from './AboutFSIS';
+import HowItWorks from './HowItWorks';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const HomePage = () => {
       </main>
       
       <AboutFSIS standalone={false} />
+      <HowItWorks />
     </div>
   );
 };
