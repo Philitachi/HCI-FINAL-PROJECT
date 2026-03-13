@@ -170,7 +170,11 @@
 }
 
 :root.light-mode .hiw-section-title {
-  color: #111827;
+  /* Match the dark striking text gradient from About FSIS */
+  background: linear-gradient(to right, #111827, #374151);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 :root.light-mode .hiw-section-subtitle {
