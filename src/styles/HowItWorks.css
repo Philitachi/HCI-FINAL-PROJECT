@@ -31,14 +31,21 @@
 
 .hiw-section-title {
   font-size: 3rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: white;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  /* Striking text gradient to match About FSIS */
+  background: #ffffff;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -1.5px;
+  display: inline-block;
 }
 
 .hiw-section-subtitle {
   font-size: 1.25rem;
-  color: #D1D5DB;
+  line-height: 1.8;
+  color: #9CA3AF; /* Softer, highly legible gray */
   font-weight: 400;
 }
 
