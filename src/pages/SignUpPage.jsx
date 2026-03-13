@@ -21,8 +21,10 @@ const SignUpPage = () => {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [touchedFields, setTouchedFields] = useState({});
+  const [isEmailTyping, setIsEmailTyping] = useState(false);
 
   // Refs for focusing
+  const emailTypingTimeoutId = useRef(null);
   const refs = {
     firstName: useRef(null),
     lastName: useRef(null),
@@ -103,7 +105,11 @@ const SignUpPage = () => {
       if (isInvalid) {
         emailClass += ' input-error';
       } else if (formData.email.length > 0) {
-        emailClass += isEmailValid ? ' input-success' : ' input-error';
+        if (isEmailValid) {
+          emailClass += ' input-success';
+        } else if (!isEmailTyping && !isEmailValid) {
+          emailClass += ' input-error';
+        }
       }
       return emailClass;
     }
@@ -136,6 +142,16 @@ const SignUpPage = () => {
     // Enforce max length of 11 digits for phone before stripping
     if (fieldName === 'phone') {
       if (value.length > 11) return;
+    }
+
+    if (fieldName === 'email') {
+      setIsEmailTyping(true);
+      if (emailTypingTimeoutId.current) {
+        clearTimeout(emailTypingTimeoutId.current);
+      }
+      emailTypingTimeoutId.current = setTimeout(() => {
+        setIsEmailTyping(false);
+      }, 2000);
     }
 
     setFormData({ ...formData, [fieldName]: value });
@@ -282,7 +298,7 @@ const SignUpPage = () => {
                 {isFieldInvalid('email') && formData.email.length === 0 && (
                   <p className="field-error-text">This field is required</p>
                 )}
-                {formData.email.length > 0 && !isEmailValid && (
+                {formData.email.length > 0 && !isEmailValid && !isEmailTyping && (
                   <p className="field-error-text">Please provide a valid email address</p>
                 )}
               </div>
