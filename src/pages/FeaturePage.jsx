@@ -22,13 +22,13 @@ const features = [
   },
   {
     title: "Secure Data Management",
-    description: "Your privacy is our priority. We employ state-of-the-art encryption to ensure that all submitted documents and business information remain fully protected and compliant with government standards.",
+    description: "Your data and documents are protected through secure encryption and storage, ensuring that all submitted information and files remain private and compliant with government standards.",
     imgSrc: SecureMgmtImg,
     altText: "Secure Document Management Illustration",
   },
   {
     title: "Dedicated Support",
-    description: "Access our comprehensive resource center featuring step-by-step guides, FAQs, and responsive customer assistance tailored to help you navigate the FSIC process quickly and accurately.",
+    description: "Business owners can access step-by-step guides, frequently asked questions (FAQs), and responsive support services to assist them in completing their FSIC application quickly and accurately.",
     imgSrc: AssistanceImg,
     altText: "Assistance for Business Owners Illustration",
   }
@@ -67,7 +67,7 @@ const FeaturePage = () => {
         {/* Main Header */}
         <div className="features-header fade-in-up">
           <h2 className="features-main-title">
-            <span className="text-gradient">Why choose our system?</span>
+            <span className="text-gradient">What We Offer</span>
           </h2>
           <p className="features-main-subtitle">
             We make compliance easy with a fast, transparent, and fully secure platform designed for business owners.
