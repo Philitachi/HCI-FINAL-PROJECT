@@ -68,6 +68,16 @@
   font-size: 1.05rem;
   color: #94a3b8;
   line-height: 1.6;
+  
+  /* Extremely subtle faded container styling */
+  padding: 2.5rem;
+  margin: -2.5rem; /* Offset padding to keep grid alignment */
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.012); /* Barely visible background tint */
+  border: 1px solid rgba(255, 255, 255, 0.02); /* Extremely faint border to catch light */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
+              inset 0 0 20px rgba(255, 255, 255, 0.005); /* Soft drop shadow with a faint inner glow */
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Clearfix for floated content */
@@ -79,6 +89,10 @@
 
 .feature-item:hover {
   transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.02); /* Slightly more visible on hover */
+  border-color: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25), 
+              inset 0 0 20px rgba(255, 255, 255, 0.01);
 }
 
 /* Floated Illustration */
@@ -142,7 +156,7 @@
 @media (max-width: 768px) {
   .features-grid {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 4rem;
   }
   
   .features-section {
@@ -152,5 +166,33 @@
   .features-main-title {
     font-size: 2.5rem;
     letter-spacing: -1px;
+    text-align: center;
+  }
+
+  .features-main-subtitle {
+    text-align: center;
+  }
+
+  .features-header {
+    margin: 0 auto 4rem auto;
+    text-align: center;
+  }
+
+  /* Override floats for mobile */
+  .feature-illustration-float {
+    float: none;
+    width: 60%; /* Let it grow base on screen shrink */
+    max-width: 250px;
+    margin: 2rem auto 0 auto; /* Push it down below text and center it */
+    display: block;
+  }
+  
+  .feature-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .feature-description {
+    text-align: justify;
   }
 }
