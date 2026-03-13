@@ -196,3 +196,43 @@
     text-align: justify;
   }
 }
+
+/* Light Mode Styles */
+:root.light-mode .features-section {
+  background-color: #F1F5F9; /* A slightly grayish/slate white, distinct from How It Works */
+  color: #111827; /* Dark text */
+}
+
+:root.light-mode .features-main-title .text-gradient {
+  /* Match the dark striking text gradient from How It Works & About FSIS */
+  background: linear-gradient(to right, #111827, #374151);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+:root.light-mode .features-main-subtitle {
+  color: #4B5563; /* Darker gray for better readability */
+}
+
+/* Feature Item Light Mode */
+:root.light-mode .feature-item {
+  background: rgba(255, 255, 255, 1); /* Clean white background */
+  border: 1px solid rgba(0, 0, 0, 0.05); /* Soft border */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Soft shadow */
+  color: #4B5563;
+}
+
+:root.light-mode .feature-item:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+:root.light-mode .feature-title {
+  color: #111827; /* Dark title */
+}
+
+:root.light-mode .feature-description {
+  color: #4B5563; /* Darker desc text */
+}
