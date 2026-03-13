@@ -85,7 +85,7 @@
 }
 
 .about-fsis-title {
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
   /* Striking text gradient */
@@ -262,9 +262,12 @@
   color: #111827;
 }
 
+
+/*background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+
 /* Redefine the glowing orb for light mode */
 :root.light-mode .about-fsis-container::before {
-  /*background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+  background: none;
 }
 
 :root.light-mode .about-fsis-watermark {
