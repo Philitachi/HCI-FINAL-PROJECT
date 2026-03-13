@@ -5,6 +5,7 @@ import '../styles/HomePage.css';
 import backgroundImage from '../assets/backgroundImage.svg';
 import AboutFSIS from './AboutFSIS';
 import HowItWorks from './HowItWorks';
+import FeaturePage from './FeaturePage';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ const HomePage = () => {
       
       <AboutFSIS standalone={false} />
       <HowItWorks />
+      <FeaturePage />
     </div>
   );
 };
