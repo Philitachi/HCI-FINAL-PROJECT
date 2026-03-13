@@ -162,3 +162,39 @@
     font-size: 1.1rem;
   }
 }
+
+/* Light Mode Styles */
+:root.light-mode .hiw-section {
+  background-color: #FAFAFA; /* Very light gray/white background */
+  color: #111827; /* Dark text */
+}
+
+:root.light-mode .hiw-section-title {
+  color: #111827;
+}
+
+:root.light-mode .hiw-section-subtitle {
+  color: #4B5563; /* Darker gray for better readability */
+}
+
+/* Make dotted lines dark in light mode */
+:root.light-mode .hiw-dotted-line {
+  stroke: rgba(0, 0, 0, 0.2); 
+}
+
+/* Update circle backgrounds for light mode */
+:root.light-mode .hiw-circle-bg {
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.01) 70%, transparent 100%);
+}
+
+:root.light-mode .hiw-step:hover .hiw-circle-bg {
+  background: radial-gradient(circle at center, rgba(6, 182, 212, 0.08) 0%, rgba(0, 0, 0, 0.02) 70%, transparent 100%);
+}
+
+:root.light-mode .hiw-step-text h3 {
+  color: #111827;
+}
+
+:root.light-mode .hiw-step-text p {
+  color: #4B5563;
+}
