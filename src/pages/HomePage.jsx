@@ -22,14 +22,16 @@ const HomePage = () => {
   }, [location]);
 
   return (
-    <div className="homepage-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
-      {/* Overlay to darken background image for better text readability */}
-      <div className="homepage-overlay"></div>
-
+    <div className="homepage-container">
       <TopNavigationBar />
 
       {/* Main Content / Hero Section */}
-      <main className="hero-section">
+      <main 
+        className="hero-section" 
+        style={{ 
+          backgroundImage: `linear-gradient(to right, rgba(17, 24, 39, 0.95) 0%, rgba(17, 24, 39, 0.8) 40%, rgba(17, 24, 39, 0.3) 100%), url(${backgroundImage})` 
+        }}
+      >
         <div className="hero-content">
           <h1 className="hero-title">
             Redefining <br/> Convenience in <br/>
