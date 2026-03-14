@@ -7,6 +7,8 @@ import AboutFSIS from './AboutFSIS';
 import HowItWorks from './HowItWorks';
 import FeaturePage from './FeaturePage';
 import WatchUsOnYoutube from './watchusonYoutube';
+import CTA from './CTA';
+import Footer from './Footer';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -61,6 +63,8 @@ const HomePage = () => {
       <HowItWorks />
       <FeaturePage />
       <WatchUsOnYoutube />
+      <CTA />
+      <Footer />
     </div>
   );
 };

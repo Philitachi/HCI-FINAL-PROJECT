@@ -1,0 +1,181 @@
+/* CTA section container */
+.cta-section {
+  width: 100%;
+  max-width: 1540px;
+  height: 340px; /* Exact requested height */
+  margin: 0 auto;
+  background-color: #0d121c; /* Deep rich navy, aligned with the image */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Subtle glowing background accents for premium feel */
+.cta-glow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+.cta-glow-left {
+  top: -50px;
+  left: -50px;
+  background-color: #3b82f6; /* Soft blue */
+}
+
+.cta-glow-right {
+  bottom: -50px;
+  right: -50px;
+  background-color: #06b6d4; /* Cyan */
+}
+
+/* Inner content wrapper */
+.cta-content {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  padding: 0 2rem;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Typography styles */
+.cta-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #ffffff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cta-subtitle {
+  font-size: 1.05rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+/* Enhanced CTA Button */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); /* Premium teal/blue gradient */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px; /* Slightly squarer than full pill for a modern software look */
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+  box-shadow: 0 8px 16px rgba(2, 132, 199, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.cta-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+}
+
+.cta-button-icon {
+  transition: transform 0.3s ease;
+}
+
+.cta-button:hover .cta-button-icon {
+  transform: translateX(4px);
+}
+
+/* Animations matching other sections */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), 
+              transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.cta-container.is-visible .fade-in-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .cta-section {
+    height: auto;
+    min-height: 340px;
+    padding: 3rem 1.5rem;
+  }
+  
+  .cta-title {
+    font-size: 2rem;
+  }
+  
+  .cta-subtitle {
+    font-size: 0.95rem;
+  }
+}
+
+/* ========== LIGHT MODE OVERRIDES ========== */
+:root.light-mode .cta-section {
+  background-color: #F8FAFC; /* Clean white/gray */
+  color: #111827;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+:root.light-mode .cta-title {
+  background: linear-gradient(135deg, #111827 0%, #374151 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+:root.light-mode .cta-subtitle {
+  color: #4B5563; /* Darker gray for readability on light background */
+}
+
+/* We invert or brighten the glowing accents in light mode so they are visible but subtle */
+:root.light-mode .cta-glow-left {
+  background-color: #60a5fa; 
+  opacity: 0.2;
+}
+
+:root.light-mode .cta-glow-right {
+  background-color: #22d3ee; 
+  opacity: 0.2;
+}
+
+/* Maintain blue button, just soften the shadows for light mode */
+:root.light-mode .cta-button {
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+:root.light-mode .cta-button:hover {
+  box-shadow: 0 8px 16px rgba(2, 132, 199, 0.25);
+}
