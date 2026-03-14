@@ -27,9 +27,11 @@ const WatchUsOnYoutube = () => {
         const [entry] = entries;
         if (entry.isIntersecting) {
           setIsVisible(true);
+        } else {
+          setIsVisible(false);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     if (sectionRef.current) {
