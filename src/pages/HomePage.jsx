@@ -6,6 +6,7 @@ import backgroundImage from '../assets/backgroundImage.svg';
 import AboutFSIS from './AboutFSIS';
 import HowItWorks from './HowItWorks';
 import FeaturePage from './FeaturePage';
+import WatchUsOnYoutube from './watchusonYoutube';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const HomePage = () => {
       <AboutFSIS standalone={false} />
       <HowItWorks />
       <FeaturePage />
+      <WatchUsOnYoutube />
     </div>
   );
 };
