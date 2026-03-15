@@ -1,0 +1,113 @@
+.email-verified-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: max(680px, 100vh);
+  width: 100%;
+  max-width: 1540px;
+  margin: 0 auto;
+  position: relative;
+  background: linear-gradient(135deg, #101c26 0%, #1a1e24 50%, #2a2022 100%);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  padding: 20px;
+}
+
+.email-verified-box {
+  background-color: #1F252E;
+  border-radius: 1rem;
+  padding: 60px 80px;
+  text-align: center;
+  max-width: 650px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.email-verified-icon {
+  width: 120px;
+  height: auto;
+  margin-bottom: 24px;
+}
+
+.email-verified-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: #f8fafc;
+  letter-spacing: -0.025em;
+}
+
+.email-verified-description {
+  font-size: 1rem;
+  color: #cbd5e1;
+  margin-bottom: 40px;
+}
+
+.btn-back-to-signin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #0d94a1;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 10px 24px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  font-family: inherit;
+  width: auto;
+  min-width: 180px;
+}
+
+.btn-back-to-signin:hover {
+  background-color: #0b7f8b;
+}
+
+.btn-back-to-signin:active {
+  transform: scale(0.98);
+}
+
+/* Animations */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.email-verified-box {
+  animation: fadeInScale 0.4s ease-out forwards;
+}
+
+/* =========================================
+   Light Mode Overrides
+   ========================================= */
+:root.light-mode .email-verified-page-container {
+  background: linear-gradient(135deg, #E2E8F0 0%, #F8FAFC 100%);
+  color: #111827;
+}
+
+:root.light-mode .email-verified-box {
+  background-color: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+:root.light-mode .email-verified-title {
+  color: #111827;
+}
+
+:root.light-mode .email-verified-description {
+  color: #475569;
+}

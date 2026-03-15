@@ -1,0 +1,159 @@
+.email-verification-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: max(680px, 100vh);
+  width: 100%;
+  max-width: 1540px;
+  margin: 0 auto;
+  position: relative;
+  background: linear-gradient(135deg, #101c26 0%, #1a1e24 50%, #2a2022 100%);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  padding: 20px;
+}
+
+.email-verification-box {
+  background-color: #1F252E;
+  border-radius: 1rem;
+  padding: 60px 80px;
+  text-align: center;
+  max-width: 650px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.email-verification-icon {
+  width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.email-verification-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #f8fafc;
+  letter-spacing: -0.025em;
+}
+
+.email-verification-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 20px;
+}
+
+.email-highlight {
+  color: #2ecc71; /* Green color from design */
+  font-weight: 700;
+  background-color: rgba(46, 204, 113, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.email-verification-divider {
+  width: 80%;
+  height: 1px;
+  background-color: #334155;
+  margin: 20px 0;
+}
+
+.email-resend-container {
+  font-size: 1rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.email-resend-button {
+  background: none;
+  border: none;
+  color: #6366f1; /* Purple/Blue link color */
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.email-resend-button:hover:not(:disabled) {
+  color: #818cf8;
+  text-decoration: underline;
+}
+
+.email-resend-button:disabled {
+  color: #64748b;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.timer-text {
+  color: #cbd5e1;
+  font-weight: 500;
+  margin-left: 5px;
+  background-color: #334155;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 1.1em;
+}
+
+/* Animations */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.email-verification-box {
+  animation: fadeInScale 0.4s ease-out forwards;
+}
+
+/* Light Mode Overrides (if required later, base is dark mode per instruction) */
+:root.light-mode .email-verification-page-container {
+    background: linear-gradient(135deg, #E2E8F0 0%, #F8FAFC 100%);
+    color: #111827;
+}
+:root.light-mode .email-verification-box {
+    background-color: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+:root.light-mode .email-verification-title {
+    color: #111827;
+}
+:root.light-mode .email-verification-description {
+    color: #475569;
+}
+:root.light-mode .email-verification-divider {
+    background-color: #CBD5E1;
+}
+:root.light-mode .email-resend-container {
+    color: #64748b;
+}
+:root.light-mode .timer-text {
+    background-color: #e2e8f0;
+    color: #334155;
+}
+:root.light-mode .email-resend-button {
+    color: #4F46E5;
+}
+:root.light-mode .email-resend-button:hover:not(:disabled) {
+    color: #6366f1;
+}
+:root.light-mode .email-resend-button:disabled {
+    color: #94A3B8;
+}
