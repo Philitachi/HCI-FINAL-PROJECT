@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
+import emailjs from '@emailjs/browser';
 import '../styles/SignInPage.css';
 import logo from '../assets/Logo.svg';
 import ExitButton from '../components/exitButton';
@@ -7,6 +11,83 @@ import ExitButton from '../components/exitButton';
 const SignInPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    try {
+      // 1. Sign in with Firebase Auth
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // 2. Check emailVerified status in Firestore
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        
+        if (userData.emailVerified) {
+          // Email is verified → go to dashboard
+          navigate('/dashboard');
+        } else {
+          // Email is NOT verified → send a new code and go to verification page
+          const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+          const codeExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+          // Update code in Firestore
+          await updateDoc(doc(db, 'users', user.uid), {
+            verificationCode: verificationCode,
+            codeExpiresAt: codeExpiresAt.toISOString()
+          });
+
+          // Send code via EmailJS
+          await emailjs.send(
+            'service_1sel32g',
+            'template_d5x199o',
+            {
+              to_email: userData.email,
+              verification_code: verificationCode,
+              to_name: userData.firstName || 'User',
+            },
+            'TkdpHziryGZ1SETq9'
+          );
+
+          navigate(`/verify-email?email=${encodeURIComponent(userData.email)}`);
+        }
+      } else {
+        // User document doesn't exist in Firestore
+        setError('Account data not found. Please sign up again.');
+      }
+    } catch (error) {
+      console.error('Sign-in error:', error);
+      switch (error.code) {
+        case 'auth/user-not-found':
+        case 'auth/invalid-credential':
+          setError('Invalid email or password. Please try again.');
+          break;
+        case 'auth/wrong-password':
+          setError('Invalid email or password. Please try again.');
+          break;
+        case 'auth/too-many-requests':
+          setError('Too many failed attempts. Please try again later.');
+          break;
+        case 'auth/network-request-failed':
+          setError('Network error. Please check your connection.');
+          break;
+        default:
+          setError('An unexpected error occurred. Please try again.');
+          break;
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="signin-container">
@@ -26,7 +107,11 @@ const SignInPage = () => {
             Enter your credentials to access your<br />dashboard
           </p>
 
-          <form className="signin-form" onSubmit={(e) => e.preventDefault()}>
+          <form className="signin-form" onSubmit={handleSignIn}>
+            {error && (
+              <div className="form-top-error">{error}</div>
+            )}
+
             {/* Email Input */}
             <div className="input-wrapper">
               <span className="input-icon">
@@ -38,6 +123,8 @@ const SignInPage = () => {
                 type="email" 
                 placeholder="Email Address" 
                 className="form-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -53,6 +140,8 @@ const SignInPage = () => {
                 type={showPassword ? "text" : "password"} 
                 placeholder="Password" 
                 className="form-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <button 
@@ -73,7 +162,9 @@ const SignInPage = () => {
               </button>
             </div>
 
-            <button type="submit" className="btn-submit">Sign In</button>
+            <button type="submit" className="btn-submit" disabled={isLoading}>
+              {isLoading ? 'Signing In...' : 'Sign In'}
+            </button>
           </form>
 
           <div className="card-footer">

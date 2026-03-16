@@ -7,6 +7,7 @@ import TermsAndConditions from './pages/termandconditons';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import EmailVerification from './pages/emailVerification';
 import EmailVerified from './pages/emailVerified';
+import Dashboard from './pages/dashboard';
 
 function App() {
   useEffect(() => {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/email-verified" element={<EmailVerified />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );

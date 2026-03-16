@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc, updateDoc, collection, query, where, getDocs, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import emailjs from '@emailjs/browser';
 import '../styles/SignUpPage.css';
@@ -249,6 +249,45 @@ const SignUpPage = () => {
       // Map Firebase error codes to user-friendly messages
       switch (error.code) {
         case 'auth/email-already-in-use':
+          // Check if the existing account is verified or not
+          try {
+            const userCred = await signInWithEmailAndPassword(auth, formData.email, password);
+            const usersRef = collection(db, 'users');
+            const q = query(usersRef, where('email', '==', formData.email));
+            const snap = await getDocs(q);
+
+            if (!snap.empty) {
+              const existingUser = snap.docs[0];
+              const existingData = existingUser.data();
+
+              if (!existingData.emailVerified) {
+                // Not verified → send new code and redirect
+                const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+                const newExpiry = new Date(Date.now() + 10 * 60 * 1000);
+
+                await updateDoc(doc(db, 'users', existingUser.id), {
+                  verificationCode: newCode,
+                  codeExpiresAt: newExpiry.toISOString()
+                });
+
+                await emailjs.send(
+                  'service_1sel32g',
+                  'template_d5x199o',
+                  {
+                    to_email: formData.email,
+                    verification_code: newCode,
+                    to_name: existingData.firstName || formData.firstName,
+                  },
+                  'TkdpHziryGZ1SETq9'
+                );
+
+                navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
+                return;
+              }
+            }
+          } catch (signInErr) {
+            // Password doesn't match the existing account
+          }
           setFirebaseError('This email address is already registered. Please sign in instead.');
           break;
         case 'auth/invalid-email':
