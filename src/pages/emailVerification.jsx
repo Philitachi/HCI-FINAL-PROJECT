@@ -1,18 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
+import emailjs from '@emailjs/browser';
 import '../styles/emailVerification.css';
 import verifyEmailIcon from '../assets/verifyyouemailaddress.svg';
 
 const EmailVerification = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const userEmail = searchParams.get('email') || 'your email';
+  
+  const [code, setCode] = useState(['', '', '', '', '', '']);
   const [resendCount, setResendCount] = useState(0);
-  const [timer, setTimer] = useState(0); // Timer in seconds
+  const [timer, setTimer] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
+  const [verifyError, setVerifyError] = useState('');
+  const [verifySuccess, setVerifySuccess] = useState('');
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [resendStatus, setResendStatus] = useState('');
+
+  const inputRefs = useRef([]);
 
   useEffect(() => {
-    // Check initial theme
     setIsLightMode(document.documentElement.classList.contains('light-mode'));
-
-    // Observer to detect class changes on the html element
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === 'class') {
@@ -20,9 +32,7 @@ const EmailVerification = () => {
         }
       });
     });
-
     observer.observe(document.documentElement, { attributes: true });
-
     return () => observer.disconnect();
   }, []);
 
@@ -39,18 +49,153 @@ const EmailVerification = () => {
     return () => clearInterval(interval);
   }, [isTimerActive, timer]);
 
-  const handleResend = () => {
+  // Auto-focus first input on mount
+  useEffect(() => {
+    if (inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
+  }, []);
+
+  const handleCodeChange = (index, value) => {
+    // Only allow single digits
+    if (value && !/^\d$/.test(value)) return;
+
+    const newCode = [...code];
+    newCode[index] = value;
+    setCode(newCode);
+    setVerifyError('');
+
+    // Auto-focus next input
+    if (value && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (index, e) => {
+    // On backspace, if current is empty, go to previous
+    if (e.key === 'Backspace' && !code[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData('text').trim();
+    if (/^\d{6}$/.test(pastedData)) {
+      const digits = pastedData.split('');
+      setCode(digits);
+      inputRefs.current[5]?.focus();
+    }
+  };
+
+  const handleVerify = async () => {
+    const enteredCode = code.join('');
+    if (enteredCode.length !== 6) {
+      setVerifyError('Please enter the complete 6-digit code.');
+      return;
+    }
+
+    setIsVerifying(true);
+    setVerifyError('');
+    setVerifySuccess('');
+
+    try {
+      // Find the user document by email
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('email', '==', userEmail));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        setVerifyError('No account found with this email. Please sign up again.');
+        setIsVerifying(false);
+        return;
+      }
+
+      const userDoc = querySnapshot.docs[0];
+      const userData = userDoc.data();
+
+      // Check if code matches
+      if (userData.verificationCode !== enteredCode) {
+        setVerifyError('Invalid verification code. Please try again.');
+        setIsVerifying(false);
+        return;
+      }
+
+      // Check if code is expired
+      const expiresAt = new Date(userData.codeExpiresAt);
+      if (new Date() > expiresAt) {
+        setVerifyError('Verification code has expired. Please request a new one.');
+        setIsVerifying(false);
+        return;
+      }
+
+      // Code is valid! Update emailVerified status
+      await updateDoc(doc(db, 'users', userDoc.id), {
+        emailVerified: true,
+        verificationCode: null,
+        codeExpiresAt: null
+      });
+
+      setVerifySuccess('Email verified successfully!');
+      
+      // Navigate to email-verified page after a brief delay
+      setTimeout(() => {
+        navigate('/email-verified');
+      }, 1000);
+    } catch (error) {
+      console.error('Verification error:', error);
+      setVerifyError('An error occurred. Please try again.');
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  const handleResend = async () => {
     if (!isTimerActive) {
       const newCount = resendCount + 1;
       setResendCount(newCount);
-      
-        // Calculate countdown duration in seconds
-        const minutes = 1; // Always 1 minute based on recent instruction
-        setTimer(minutes * 60);
-        setIsTimerActive(true);
-      
-      // TODO: Implement actual resend API logic here
-      console.log(`Resend email triggered. Count: ${newCount}, Wait Time: ${minutes} min`);
+      setTimer(60);
+      setIsTimerActive(true);
+      setResendStatus('');
+      setVerifyError('');
+
+      try {
+        // Generate a new code
+        const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const newExpiry = new Date(Date.now() + 10 * 60 * 1000);
+
+        // Find the user doc by email and update the code
+        const usersRef = collection(db, 'users');
+        const q = query(usersRef, where('email', '==', userEmail));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0];
+          await updateDoc(doc(db, 'users', userDoc.id), {
+            verificationCode: newCode,
+            codeExpiresAt: newExpiry.toISOString()
+          });
+
+          // Send via EmailJS
+          await emailjs.send(
+            'service_1sel32g',
+            'template_d5x199o',
+            {
+              to_email: userEmail,
+              verification_code: newCode,
+              to_name: 'User',
+            },
+            'TkdpHziryGZ1SETq9'
+          );
+
+          setResendStatus('New verification code sent!');
+        } else {
+          setResendStatus('No account found. Please sign up again.');
+        }
+      } catch (error) {
+        console.error('Resend error:', error);
+        setResendStatus('Failed to resend code. Please try again.');
+      }
     }
   };
 
@@ -72,24 +217,61 @@ const EmailVerification = () => {
         <h1 className="email-verification-title">Verify your email address</h1>
         
         <p className="email-verification-description">
-          We have sent email to <span className="email-highlight">philipcorpin@gmail.com</span> to verify the validity of our email address. After receiving the email follow the link provided to complete your registration.
+          We have sent a 6-digit verification code to <span className="email-highlight">{userEmail}</span>. Enter the code below to complete your registration.
         </p>
+
+        {/* 6-Digit Code Input */}
+        <div className="code-input-container">
+          {code.map((digit, index) => (
+            <input
+              key={index}
+              ref={(el) => (inputRefs.current[index] = el)}
+              type="text"
+              inputMode="numeric"
+              maxLength={1}
+              className={`code-input-box ${digit ? 'has-value' : ''} ${verifyError ? 'code-error' : ''} ${verifySuccess ? 'code-success' : ''}`}
+              value={digit}
+              onChange={(e) => handleCodeChange(index, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(index, e)}
+              onPaste={index === 0 ? handlePaste : undefined}
+              autoComplete="off"
+            />
+          ))}
+        </div>
+
+        {verifyError && (
+          <p className="verify-error-text">{verifyError}</p>
+        )}
+        {verifySuccess && (
+          <p className="verify-success-text">{verifySuccess}</p>
+        )}
+
+        <button 
+          className="btn-verify-code" 
+          onClick={handleVerify}
+          disabled={isVerifying || code.join('').length !== 6}
+        >
+          {isVerifying ? 'Verifying...' : 'Verify Code'}
+        </button>
 
         <div className="email-verification-divider"></div>
 
         <div className="email-resend-container">
-          <span>If you not got any mail</span>
+          <span>Didn't receive the code?</span>
           <button 
             className="email-resend-button" 
             onClick={handleResend}
             disabled={isTimerActive}
           >
-            {isTimerActive ? `Resend available in` : 'Resend confirmation mail'}
+            {isTimerActive ? `Resend available in` : 'Resend code'}
           </button>
           {isTimerActive && (
             <span className="timer-text">{formatTime(timer)}</span>
           )}
         </div>
+        {resendStatus && (
+          <p className="resend-status-text">{resendStatus}</p>
+        )}
       </div>
     </div>
   );

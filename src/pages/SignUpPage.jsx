@@ -1,5 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, db } from '../firebase';
+import emailjs from '@emailjs/browser';
 import '../styles/SignUpPage.css';
 import logo from '../assets/Logo.svg';
 import ExitButton from '../components/exitButton';
@@ -22,6 +26,8 @@ const SignUpPage = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [touchedFields, setTouchedFields] = useState({});
   const [isEmailTyping, setIsEmailTyping] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [firebaseError, setFirebaseError] = useState('');
 
   // Refs for focusing
   const emailTypingTimeoutId = useRef(null);
@@ -175,9 +181,10 @@ const SignUpPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setHasSubmitted(true);
+    setFirebaseError('');
     
     // Check all fields
     const fieldOrder = ['firstName', 'lastName', 'email', 'phone', 'password', 'passwordConfirmation'];
@@ -200,8 +207,66 @@ const SignUpPage = () => {
       }
     }
     
-    // If we reach here, form is valid
-    console.log("Form submitted successfully");
+    // If we reach here, form is valid — proceed with Firebase
+    setIsSubmitting(true);
+    try {
+      // 1. Create user account with Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, password);
+      const user = userCredential.user;
+
+      // 2. Generate a 6-digit verification code
+      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const codeExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+
+      // 3. Save user data + verification code to Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: `+63${formData.phone}`,
+        emailVerified: false,
+        verificationCode: verificationCode,
+        codeExpiresAt: codeExpiresAt.toISOString(),
+        createdAt: serverTimestamp()
+      });
+
+      // 4. Send verification code via EmailJS
+      await emailjs.send(
+        'service_1sel32g',
+        'template_d5x199o',
+        {
+          to_email: formData.email,
+          verification_code: verificationCode,
+          to_name: formData.firstName,
+        },
+        'TkdpHziryGZ1SETq9'
+      );
+
+      // 5. Navigate to email verification page with the email as a param
+      navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
+    } catch (error) {
+      console.error('Sign-up error:', error);
+      // Map Firebase error codes to user-friendly messages
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          setFirebaseError('This email address is already registered. Please sign in instead.');
+          break;
+        case 'auth/invalid-email':
+          setFirebaseError('The email address is not valid.');
+          break;
+        case 'auth/weak-password':
+          setFirebaseError('The password is too weak. Please use a stronger password.');
+          break;
+        case 'auth/network-request-failed':
+          setFirebaseError('Network error. Please check your connection and try again.');
+          break;
+        default:
+          setFirebaseError('An unexpected error occurred. Please try again.');
+          break;
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const isFieldInvalid = (fieldName) => {
@@ -238,6 +303,11 @@ const SignUpPage = () => {
             {showTopError && (
               <div className="form-top-error">
                 Please fill up all the required fields
+              </div>
+            )}
+            {firebaseError && (
+              <div className="form-top-error">
+                {firebaseError}
               </div>
             )}
             
@@ -389,7 +459,9 @@ const SignUpPage = () => {
             </p>
 
             <div className="submit-container">
-              <button type="submit" className="btn-signup-submit">Sign Up</button>
+              <button type="submit" className="btn-signup-submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Creating Account...' : 'Sign Up'}
+              </button>
             </div>
           </form>
 

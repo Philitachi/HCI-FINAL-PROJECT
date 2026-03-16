@@ -46,22 +46,128 @@
   font-size: 1.1rem;
   line-height: 1.6;
   color: #cbd5e1;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .email-highlight {
-  color: #2ecc71; /* Green color from design */
+  color: #2ecc71;
   font-weight: 700;
   background-color: rgba(46, 204, 113, 0.1);
   padding: 2px 8px;
   border-radius: 4px;
 }
 
+/* ============================
+   6-Digit Code Input
+   ============================ */
+.code-input-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.code-input-box {
+  width: 56px;
+  height: 64px;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: 'Inter', monospace;
+  border: 2px solid #334155;
+  border-radius: 12px;
+  background-color: #161b22;
+  color: #f8fafc;
+  outline: none;
+  transition: all 0.2s ease;
+  caret-color: #6366f1;
+}
+
+.code-input-box:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  background-color: #1a2030;
+}
+
+.code-input-box.has-value {
+  border-color: #6366f1;
+  background-color: #1a2030;
+}
+
+.code-input-box.code-error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.code-input-box.code-error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
+.code-input-box.code-success {
+  border-color: #2ecc71;
+  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+
+/* ============================
+   Verify Button
+   ============================ */
+.btn-verify-code {
+  width: 100%;
+  max-width: 360px;
+  padding: 14px 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.025em;
+}
+
+.btn-verify-code:hover:not(:disabled) {
+  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+}
+
+.btn-verify-code:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-verify-code:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================
+   Error / Success Messages
+   ============================ */
+.verify-error-text {
+  font-size: 0.95rem;
+  color: #ef4444;
+  font-weight: 500;
+  margin: 0;
+}
+
+.verify-success-text {
+  font-size: 0.95rem;
+  color: #2ecc71;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ============================
+   Divider, Resend, Timer
+   ============================ */
 .email-verification-divider {
   width: 80%;
   height: 1px;
   background-color: #334155;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .email-resend-container {
@@ -71,12 +177,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .email-resend-button {
   background: none;
   border: none;
-  color: #6366f1; /* Purple/Blue link color */
+  color: #6366f1;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -106,7 +213,16 @@
   font-size: 1.1em;
 }
 
-/* Animations */
+.resend-status-text {
+  font-size: 0.9rem;
+  color: #2ecc71;
+  font-weight: 500;
+  margin-top: -8px;
+}
+
+/* ============================
+   Animations
+   ============================ */
 @keyframes fadeInScale {
   from {
     opacity: 0;
@@ -122,7 +238,9 @@
   animation: fadeInScale 0.4s ease-out forwards;
 }
 
-/* Light Mode Overrides (if required later, base is dark mode per instruction) */
+/* ============================
+   Light Mode Overrides
+   ============================ */
 :root.light-mode .email-verification-page-container {
     background: linear-gradient(135deg, #E2E8F0 0%, #F8FAFC 100%);
     color: #111827;
@@ -156,4 +274,24 @@
 }
 :root.light-mode .email-resend-button:disabled {
     color: #94A3B8;
+}
+:root.light-mode .code-input-box {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #111827;
+}
+:root.light-mode .code-input-box:focus {
+    border-color: #4F46E5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    background-color: #ffffff;
+}
+:root.light-mode .code-input-box.has-value {
+    border-color: #4F46E5;
+    background-color: #ffffff;
+}
+:root.light-mode .btn-verify-code {
+    background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
+}
+:root.light-mode .btn-verify-code:hover:not(:disabled) {
+    background: linear-gradient(135deg, #6366f1 0%, #4F46E5 100%);
 }

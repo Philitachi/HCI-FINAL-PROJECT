@@ -1,0 +1,22 @@
+// Firebase Configuration and Initialization
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAUaZyt9xvSVUt9GaW3ayZKUxnAZiFNjcs",
+  authDomain: "hci-final-project-c0074.firebaseapp.com",
+  projectId: "hci-final-project-c0074",
+  storageBucket: "hci-final-project-c0074.firebasestorage.app",
+  messagingSenderId: "271755850528",
+  appId: "1:271755850528:web:191ff22945b132e2959d45",
+  measurementId: "G-G22D2NDDBP"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Firebase Authentication and Firestore
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export default app;
