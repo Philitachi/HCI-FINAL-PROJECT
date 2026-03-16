@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import emailjs from '@emailjs/browser';
 import '../styles/SignInPage.css';
 import logo from '../assets/Logo.svg';
 import ExitButton from '../components/exitButton';
+import { hashPassword } from '../utils/crypto';
 
 const SignInPage = () => {
   const navigate = useNavigate();
@@ -22,68 +23,60 @@ const SignInPage = () => {
     setIsLoading(true);
 
     try {
-      // 1. Sign in with Firebase Auth
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      // 1. Query Firestore for the user with this email
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('email', '==', email));
+      const querySnapshot = await getDocs(q);
 
-      // 2. Check emailVerified status in Firestore
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
-      
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        
-        if (userData.emailVerified) {
-          // Email is verified → go to dashboard
-          navigate('/dashboard');
-        } else {
-          // Email is NOT verified → send a new code and go to verification page
-          const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-          const codeExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+      if (querySnapshot.empty) {
+        setError('No account found with this email. Please sign up.');
+        setIsLoading(false);
+        return;
+      }
 
-          // Update code in Firestore
-          await updateDoc(doc(db, 'users', user.uid), {
-            verificationCode: verificationCode,
-            codeExpiresAt: codeExpiresAt.toISOString()
-          });
+      const userDoc = querySnapshot.docs[0];
+      const userData = userDoc.data();
 
-          // Send code via EmailJS
-          await emailjs.send(
-            'service_1sel32g',
-            'template_d5x199o',
-            {
-              to_email: userData.email,
-              verification_code: verificationCode,
-              to_name: userData.firstName || 'User',
-            },
-            'TkdpHziryGZ1SETq9'
-          );
+      // 2. Hash the entered password and compare with the one in Firestore
+      const hashedAttempt = await hashPassword(password);
+      if (userData.password !== hashedAttempt) {
+        setError('Invalid email or password. Please try again.');
+        setIsLoading(false);
+        return;
+      }
 
-          navigate(`/verify-email?email=${encodeURIComponent(userData.email)}`);
-        }
+      // 3. Password matches! Check email verification status
+      if (userData.emailVerified) {
+        // Email is verified → go to dashboard
+        navigate('/dashboard');
       } else {
-        // User document doesn't exist in Firestore
-        setError('Account data not found. Please sign up again.');
+        // Email is NOT verified → send a new code and go to verification page
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const codeExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+        // Update code in Firestore
+        await updateDoc(doc(db, 'users', userDoc.id), {
+          verificationCode: verificationCode,
+          codeExpiresAt: codeExpiresAt.toISOString()
+        });
+
+        // Send code via EmailJS
+        await emailjs.send(
+          'service_1sel32g',
+          'template_d5x199o',
+          {
+            to_email: userData.email,
+            verification_code: verificationCode,
+            to_name: userData.firstName || 'User',
+          },
+          'TkdpHziryGZ1SETq9'
+        );
+
+        navigate(`/verify-email?email=${encodeURIComponent(userData.email)}`);
       }
     } catch (error) {
       console.error('Sign-in error:', error);
-      switch (error.code) {
-        case 'auth/user-not-found':
-        case 'auth/invalid-credential':
-          setError('Invalid email or password. Please try again.');
-          break;
-        case 'auth/wrong-password':
-          setError('Invalid email or password. Please try again.');
-          break;
-        case 'auth/too-many-requests':
-          setError('Too many failed attempts. Please try again later.');
-          break;
-        case 'auth/network-request-failed':
-          setError('Network error. Please check your connection.');
-          break;
-        default:
-          setError('An unexpected error occurred. Please try again.');
-          break;
-      }
+      setError('An error occurred during sign-in. Please try again.');
     } finally {
       setIsLoading(false);
     }

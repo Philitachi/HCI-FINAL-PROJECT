@@ -7,6 +7,7 @@ import emailjs from '@emailjs/browser';
 import '../styles/SignUpPage.css';
 import logo from '../assets/Logo.svg';
 import ExitButton from '../components/exitButton';
+import { hashPassword } from '../utils/crypto';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -218,11 +219,15 @@ const SignUpPage = () => {
       const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
       const codeExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
+      // 2.5 Hash password for security
+      const hashedPass = await hashPassword(password);
+
       // 3. Save user data + verification code to Firestore
       await setDoc(doc(db, 'users', user.uid), {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
+        password: hashedPass, // Store hashed password for the reset hack
         phone: `+63${formData.phone}`,
         emailVerified: false,
         verificationCode: verificationCode,
