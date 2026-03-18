@@ -9,7 +9,7 @@ import AssistanceImg from '../assets/Assistance for every business owner.svg';
 
 const features = [
   {
-    title: "FSIC Online Application",
+    title: "FSIC Online Application System",
     description: "Apply for your Fire Safety Inspection Certificate (FSIC) with ease. Our streamlined digital platform provides a fast, convenient way for business owners to fulfill compliance requirements seamlessly.",
     imgSrc: FsicSystemImg,
     altText: "Online Application System Illustration",
@@ -82,10 +82,12 @@ const FeaturePage = () => {
               className={`feature-item fade-in-up`} 
               style={{ transitionDelay: `${0.1 * (index + 1)}s` }}
             >
-              <div className="feature-illustration-float">
-                <img src={feature.imgSrc} alt={feature.altText} />
+              <div className="feature-item-header">
+                <div className="feature-illustration-float">
+                  <img src={feature.imgSrc} alt={feature.altText} />
+                </div>
+                <h3 className="feature-title">{feature.title}</h3>
               </div>
-              <h3 className="feature-title">{feature.title}</h3>
               <p className="feature-description">{feature.description}</p>
             </div>
           ))}
