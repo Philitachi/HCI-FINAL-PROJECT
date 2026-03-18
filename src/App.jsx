@@ -9,6 +9,7 @@ import EmailVerification from './pages/emailVerification';
 import EmailVerified from './pages/emailVerified';
 import Dashboard from './pages/dashboard';
 import ResetPassword from './pages/ResetPassword';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   useEffect(() => {
@@ -31,7 +32,14 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/email-verified" element={<EmailVerified />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </Router>

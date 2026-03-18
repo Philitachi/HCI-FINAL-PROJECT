@@ -47,7 +47,14 @@ const SignInPage = () => {
 
       // 3. Password matches! Check email verification status
       if (userData.emailVerified) {
-        // Email is verified → go to dashboard
+        // Email is verified → set local session with expiration (24 hours - standard)
+        const expirationTime = new Date().getTime() + (24 * 60 * 60 * 1000); // 24 hours from now
+        const sessionData = {
+          isAuthenticated: true,
+          expiresAt: expirationTime,
+          email: userData.email, // Convenient for dashboard greeting
+        };
+        localStorage.setItem('userSession', JSON.stringify(sessionData));
         navigate('/dashboard');
       } else {
         // Email is NOT verified → send a new code and go to verification page
