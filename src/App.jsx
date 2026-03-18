@@ -9,6 +9,8 @@ import EmailVerification from './pages/emailVerification';
 import EmailVerified from './pages/emailVerified';
 import Dashboard from './pages/dashboard';
 import ResetPassword from './pages/ResetPassword';
+import CreateNewPassword from './pages/CreateNewPassword';
+import PasswordResetSuccess from './pages/PasswordResetSuccess';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -41,6 +43,8 @@ function App() {
           } 
         />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/create-new-password" element={<CreateNewPassword />} />
+        <Route path="/password-reset-success" element={<PasswordResetSuccess />} />
       </Routes>
     </Router>
   );
