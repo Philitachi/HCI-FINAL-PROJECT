@@ -6,6 +6,7 @@ import { auth, db } from '../firebase';
 import emailjs from '@emailjs/browser';
 import '../styles/ResetPassword.css';
 import illustrationDark from '../assets/verifyyouridentitydarkmode.svg';
+import illustrationLight from '../assets/verifyyouridentityLightmode.svg';
 import { hashPassword } from '../utils/crypto';
 
 const ResetPassword = () => {
@@ -234,11 +235,18 @@ const ResetPassword = () => {
   return (
     <div className="reset-password-page-container">
       <div className="reset-password-box">
-        <img 
-          src={illustrationDark} 
-          alt="Reset Password" 
-          className="reset-password-icon" 
-        />
+        <div className="illustration-wrapper-reset">
+          <img 
+            src={illustrationDark} 
+            alt="Verify Identity" 
+            className="reset-password-icon dark-img" 
+          />
+          <img 
+            src={illustrationLight} 
+            alt="Verify Identity" 
+            className="reset-password-icon light-img" 
+          />
+        </div>
 
         {/* STEP 1: Enter Code */}
         {step === 'code' && (
