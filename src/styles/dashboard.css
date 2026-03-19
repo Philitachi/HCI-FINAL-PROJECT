@@ -1,0 +1,156 @@
+/* dashboard.css */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--dashboard-bg-color, #111827);
+  color: var(--text-primary-color, #ffffff);
+}
+
+.dashboard-body {
+  display: flex;
+  flex: 1;
+}
+
+.dashboard-main-content {
+  flex-grow: 1;
+  padding: 2.5rem 3rem;
+  max-width: 1400px;
+}
+
+.welcome-h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-p {
+  color: var(--text-secondary-color, #9ca3af);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Action Cards */
+.action-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.card {
+  padding: 2.5rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.05));
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.apply-card {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.card-icon {
+  margin-bottom: 0.5rem;
+  color: inherit;
+  opacity: 0.9;
+}
+
+.pending-card, .status-card {
+  color: var(--text-primary-color, #e2e8f0);
+}
+
+/* Recent Activity */
+.recent-activity {
+  background-color: var(--card-bg-color, #1e293b);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+}
+
+.recent-activity h2 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary-color, white);
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-item {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+  color: var(--text-primary-color, white);
+  font-size: 0.95rem;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.text-muted {
+  color: var(--text-secondary-color, #9ca3af);
+}
+
+/* Light Mode Overrides */
+:root.light-mode .dashboard-container {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+:root.light-mode .recent-activity h2,
+:root.light-mode .activity-item,
+:root.light-mode .pending-card, 
+:root.light-mode .status-card {
+  color: #0f172a;
+}
+
+:root.light-mode .card,
+:root.light-mode .recent-activity {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+:root.light-mode .apply-card {
+  color: #ffffff; /* Explicitly keep the gradient card text white */
+}
+
+:root.light-mode .activity-item {
+  border-bottom-color: #e2e8f0;
+}
+
+:root.light-mode .welcome-p,
+:root.light-mode .text-muted {
+  color: #64748b;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .action-cards {
+    grid-template-columns: 1fr;
+  }
+}

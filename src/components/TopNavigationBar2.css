@@ -1,0 +1,169 @@
+/* TopNavigationBar2.css */
+.topnav2-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--dashboard-bg-color, #111827);
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 70px;
+}
+
+.topnav2-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topnav2-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.topnav2-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-primary-color, #ffffff);
+}
+
+.topnav2-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Theme Toggle */
+.topnav2-theme-toggle {
+  background: none;
+  border: none;
+  color: var(--text-primary-color, white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  transition: opacity 0.2s, color 0.3s;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.topnav2-theme-toggle:hover {
+  background-color: var(--hover-bg-color, rgba(255, 255, 255, 0.1));
+}
+
+.topnav2-theme-toggle svg {
+  position: absolute;
+  transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.topnav2-theme-toggle svg.moon-icon {
+  transform: rotate(-90deg) scale(0.5);
+  opacity: 0;
+}
+
+.topnav2-theme-toggle svg.sun-icon {
+  transform: rotate(90deg) scale(0.5);
+  opacity: 0;
+}
+
+/* User Profile Dropdown */
+.topnav2-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  padding: 0.25rem;
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+}
+
+.topnav2-user-profile:hover {
+  background-color: var(--hover-bg-color, rgba(255, 255, 255, 0.05));
+}
+
+.topnav2-avatar {
+  width: 36px;
+  height: 36px;
+  background-color: #38bdf8;
+  color: #0f172a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.topnav2-chevron-icon {
+  color: var(--text-secondary-color, #9ca3af);
+}
+
+.topnav2-user-dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background-color: var(--card-bg-color, #1f2937);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 50;
+}
+
+.topnav2-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--text-primary-color, white);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.topnav2-dropdown-item:hover {
+  background-color: var(--hover-bg-color, rgba(255, 255, 255, 0.05));
+}
+
+/* Light Mode Overrides */
+:root.light-mode .topnav2-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+:root.light-mode .topnav2-title,
+:root.light-mode .topnav2-theme-toggle,
+:root.light-mode .topnav2-dropdown-item {
+  color: #0f172a;
+}
+
+:root.light-mode .topnav2-theme-toggle:hover,
+:root.light-mode .topnav2-user-profile:hover,
+:root.light-mode .topnav2-dropdown-item:hover {
+  background-color: #f1f5f9;
+}
+
+:root.light-mode .topnav2-chevron-icon {
+  color: #64748b;
+}
+
+:root.light-mode .topnav2-user-dropdown {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
