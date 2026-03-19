@@ -14,6 +14,7 @@ import OngoingApplicationsAssessment from './pages/myapplication/OngoingApplicat
 import OngoingApplicationsPending from './pages/myapplication/OngoingApplications-pending';
 import OngoingApplicationsIssuance from './pages/myapplication/OngoingApplications-issuance';
 import CompletedApplications from './pages/myapplication/CompletedApplications';
+import CancelledApplications from './pages/myapplication/CancelledApplications';
 import ResetPassword from './pages/ResetPassword';
 import CreateNewPassword from './pages/CreateNewPassword';
 import PasswordResetSuccess from './pages/PasswordResetSuccess';
@@ -109,6 +110,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CompletedApplications />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications/cancelled" 
+          element={
+            <ProtectedRoute>
+              <CancelledApplications />
             </ProtectedRoute>
           } 
         />

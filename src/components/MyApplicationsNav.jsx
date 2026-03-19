@@ -66,9 +66,7 @@ const MyApplicationsNav = ({ activeMainTab, activeSubTab }) => {
         </div>
       )}
 
-      {activeMainTab === 'cancelled' && (
-        <div className="filter-tabs empty-filter-tabs"></div>
-      )}
+
     </div>
   );
 };

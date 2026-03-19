@@ -1,0 +1,44 @@
+@import './OngoingApplications-completenesscheck.css';
+
+/* Page Title */
+.cancelled-page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary-color, white);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.3px;
+}
+
+:root.light-mode .cancelled-page-title {
+  color: #0f172a;
+}
+
+/* Date Picker Bar */
+.date-picker-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary-color, #9ca3af);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.date-picker-bar:hover {
+  border-color: #14b8a6;
+}
+
+.calendar-icon {
+  color: #14b8a6;
+}
+
+:root.light-mode .date-picker-bar {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}

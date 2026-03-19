@@ -1,7 +1,6 @@
 /* MyApplicationsNav.css */
 .applications-tabs-container {
   margin-bottom: 2rem;
-  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
   position: sticky;
   top: 70px;
   z-index: 40;
