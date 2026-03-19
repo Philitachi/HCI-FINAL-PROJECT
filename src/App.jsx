@@ -8,6 +8,11 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import EmailVerification from './pages/emailVerification';
 import EmailVerified from './pages/emailVerified';
 import Dashboard from './pages/dashboard';
+import OngoingApplicationsAll from './pages/myapplication/OngoingApplications-All';
+import OngoingApplicationsCompletenessCheck from './pages/myapplication/OngoingApplications-completenesscheck';
+import OngoingApplicationsAssessment from './pages/myapplication/OngoingApplications-assessment';
+import OngoingApplicationsPending from './pages/myapplication/OngoingApplications-pending';
+import OngoingApplicationsIssuance from './pages/myapplication/OngoingApplications-issuance';
 import ResetPassword from './pages/ResetPassword';
 import CreateNewPassword from './pages/CreateNewPassword';
 import PasswordResetSuccess from './pages/PasswordResetSuccess';
@@ -39,6 +44,54 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications" 
+          element={
+            <ProtectedRoute>
+              <OngoingApplicationsAll />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications/all" 
+          element={
+            <ProtectedRoute>
+              <OngoingApplicationsAll />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications/completeness" 
+          element={
+            <ProtectedRoute>
+              <OngoingApplicationsCompletenessCheck />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications/assessment" 
+          element={
+            <ProtectedRoute>
+              <OngoingApplicationsAssessment />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications/pending" 
+          element={
+            <ProtectedRoute>
+              <OngoingApplicationsPending />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications/issuance" 
+          element={
+            <ProtectedRoute>
+              <OngoingApplicationsIssuance />
             </ProtectedRoute>
           } 
         />

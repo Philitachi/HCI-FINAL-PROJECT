@@ -119,7 +119,7 @@ const Sidebar = () => {
           <Link
             key={item.name}
             to={item.path}
-            className={`sidebar-link ${location.pathname === item.path ? 'active' : ''}`}
+            className={`sidebar-link ${location.pathname === item.path || location.pathname.startsWith(item.path + '/') ? 'active' : ''}`}
             title={isCollapsed ? item.name : ''}
           >
             <span className="sidebar-icon" style={{ color: item.iconColor }}>{item.icon}</span>

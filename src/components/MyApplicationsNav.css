@@ -1,0 +1,77 @@
+/* MyApplicationsNav.css */
+.applications-tabs-container {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+}
+
+.main-tabs {
+  display: flex;
+  gap: 2.5rem;
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary-color, #9ca3af);
+  font-size: 1.25rem;
+  font-weight: 500;
+  padding: 0.875rem 0;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+  letter-spacing: -0.2px;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary-color, white);
+}
+
+.tab-btn.active {
+  color: #14b8a6; /* Teal */
+  font-weight: 600;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #14b8a6;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.empty-filter-tabs {
+  min-height: 2.5rem; /* Reserve height to avoid layout shift when switching */
+}
+
+.filter-chip {
+  background: none;
+  border: none;
+  color: var(--text-secondary-color, #9ca3af);
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.filter-chip.active {
+  color: #14b8a6;
+  background-color: rgba(20, 184, 166, 0.1);
+  border-radius: 4px 4px 0 0;
+  border-bottom: 2px solid #14b8a6;
+}
+
+.filter-chip:hover:not(.active) {
+  color: var(--text-primary-color, white);
+}
