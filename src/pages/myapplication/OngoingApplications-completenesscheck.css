@@ -327,6 +327,10 @@
 :root.light-mode .search-input {
   background-color: #f8fafc;
 }
+:root.light-mode .search-input:focus {
+  border-color: #0d9488;
+  box-shadow: 0 0 0 1px #0d9488;
+}
 :root.light-mode .app-list-card:hover {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
 }

@@ -81,7 +81,6 @@
   padding: 0.875rem 0;
   cursor: pointer;
   position: relative;
-  transition: color 0.2s;
   letter-spacing: -0.2px;
 }
 
@@ -129,7 +128,7 @@
   padding: 0.6rem 1.25rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .segment-btn:hover {
@@ -180,7 +179,6 @@ html:not(.light-mode) .segment-btn.active {
   font-size: 0.95rem;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  transition: color 0.2s, background-color 0.2s;
   border-bottom: 2px solid transparent;
 }
 
