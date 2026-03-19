@@ -4,7 +4,7 @@ import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import MyApplicationsNav from '../../components/MyApplicationsNav';
 import './OngoingApplications-completenesscheck.css';
-import '../../styles/dashboard.css';
+import '../Dashboard/dashboard.css';
 
 const OngoingApplicationsCompletenessCheck = () => {
   const navigate = useNavigate();
@@ -15,11 +15,6 @@ const OngoingApplicationsCompletenessCheck = () => {
       <div className="dashboard-body">
         <Sidebar />
         <main className="dashboard-main-content applications-content">
-          <div className="applications-header">
-            <h1 className="welcome-h1">My Application</h1>
-            <p className="welcome-p">Manage and track the status of your fire safety applications.</p>
-          </div>
-
           <MyApplicationsNav activeMainTab="ongoing" activeSubTab="completeness" />
 
           <div className="search-filter-bar">

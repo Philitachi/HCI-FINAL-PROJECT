@@ -7,12 +7,13 @@ import TermsAndConditions from './pages/termandconditons';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import EmailVerification from './pages/emailVerification';
 import EmailVerified from './pages/emailVerified';
-import Dashboard from './pages/dashboard';
+import Dashboard from './pages/Dashboard/dashboard';
 import OngoingApplicationsAll from './pages/myapplication/OngoingApplications-All';
 import OngoingApplicationsCompletenessCheck from './pages/myapplication/OngoingApplications-completenesscheck';
 import OngoingApplicationsAssessment from './pages/myapplication/OngoingApplications-assessment';
 import OngoingApplicationsPending from './pages/myapplication/OngoingApplications-pending';
 import OngoingApplicationsIssuance from './pages/myapplication/OngoingApplications-issuance';
+import CompletedApplications from './pages/myapplication/CompletedApplications';
 import ResetPassword from './pages/ResetPassword';
 import CreateNewPassword from './pages/CreateNewPassword';
 import PasswordResetSuccess from './pages/PasswordResetSuccess';
@@ -92,6 +93,22 @@ function App() {
           element={
             <ProtectedRoute>
               <OngoingApplicationsIssuance />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications/completed" 
+          element={
+            <ProtectedRoute>
+              <CompletedApplications />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications/completed/:filter" 
+          element={
+            <ProtectedRoute>
+              <CompletedApplications />
             </ProtectedRoute>
           } 
         />

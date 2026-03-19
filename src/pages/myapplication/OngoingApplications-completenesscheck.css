@@ -16,7 +16,7 @@
 .search-wrapper {
   flex-grow: 1;
   position: relative;
-  max-width: 800px;
+  max-width: none;
 }
 
 .search-icon {
@@ -349,7 +349,27 @@
   background-color: #0d9488;
 }
 :root.light-mode .app-list-card.active-card {
-  background-color: #f0fdfa; /* Light teal tint */
+  background-color: #f0fdfa;
+  border-color: #14b8a6;
+}
+:root.light-mode .app-meta,
+:root.light-mode .rows-per-page,
+:root.light-mode .page-btn {
+  color: #64748b;
+}
+:root.light-mode .page-btn:hover:not(.active) {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+:root.light-mode .type-filter-btn svg:first-child,
+:root.light-mode .search-icon {
+  color: #64748b;
+}
+:root.light-mode .empty-state-container {
+  color: #64748b;
+}
+:root.light-mode .empty-folder-icon {
+  color: #94a3b8;
 }
 
 /* Empty State */
