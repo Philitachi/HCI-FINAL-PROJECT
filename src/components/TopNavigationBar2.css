@@ -73,6 +73,39 @@
   opacity: 0;
 }
 
+/* Notification Button */
+.topnav2-notification-btn {
+  background: none;
+  border: none;
+  color: var(--text-primary-color, white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  transition: background-color 0.2s, color 0.3s;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.topnav2-notification-btn:hover {
+  background-color: var(--hover-bg-color, rgba(255, 255, 255, 0.1));
+}
+
+.notification-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 10px;
+  height: 10px;
+  background-color: #f97316; /* Orange color */
+  border-radius: 50%;
+  border: 2px solid var(--dashboard-bg-color, #111827);
+  box-sizing: border-box;
+}
+
 /* User Profile Dropdown */
 .topnav2-user-profile {
   display: flex;
@@ -148,14 +181,20 @@
 
 :root.light-mode .topnav2-title,
 :root.light-mode .topnav2-theme-toggle,
+:root.light-mode .topnav2-notification-btn,
 :root.light-mode .topnav2-dropdown-item {
   color: #0f172a;
 }
 
 :root.light-mode .topnav2-theme-toggle:hover,
+:root.light-mode .topnav2-notification-btn:hover,
 :root.light-mode .topnav2-user-profile:hover,
 :root.light-mode .topnav2-dropdown-item:hover {
   background-color: #f1f5f9;
+}
+
+:root.light-mode .notification-badge {
+  border-color: #ffffff;
 }
 
 :root.light-mode .topnav2-chevron-icon {
