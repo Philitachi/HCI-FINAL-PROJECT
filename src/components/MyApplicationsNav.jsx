@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MyApplicationsNav.css';
 
-const MyApplicationsNav = ({ activeMainTab, activeSubTab }) => {
+const MyApplicationsNav = ({ activeMainTab, activeSubTab, children }) => {
   const navigate = useNavigate();
 
   return (
@@ -67,6 +67,7 @@ const MyApplicationsNav = ({ activeMainTab, activeSubTab }) => {
       )}
 
 
+      {children}
     </div>
   );
 };
