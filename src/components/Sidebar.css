@@ -60,9 +60,16 @@
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease, padding 0.3s ease;
+  transition: background-color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+              color 0.2s ease,
+              padding 0.3s ease,
+              border-left-color 0.3s ease,
+              margin-right 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-radius 0.3s ease,
+              transform 0.2s ease;
   border-left: 3px solid transparent;
   white-space: nowrap;
+  position: relative;
 }
 
 .sidebar.collapsed .sidebar-link {
@@ -78,11 +85,31 @@
 }
 
 .sidebar-link.active {
-  background-color: var(--active-bg-color, rgba(88, 45, 12, 0.6)); /* Brownish based on design */
+  background-color: var(--active-bg-color, rgba(88, 45, 12, 0.6));
   color: var(--text-primary-color, #e4a275);
   border-left: 3px solid var(--accent-color, #d97706);
   border-radius: 0 8px 8px 0;
   margin-right: 1rem;
+}
+
+.sidebar-link.active.animate {
+  animation: slideInActive 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes slideInActive {
+  0% {
+    background-color: transparent;
+    border-left-color: transparent;
+    transform: translateX(-12px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .sidebar.collapsed .sidebar-link.active {

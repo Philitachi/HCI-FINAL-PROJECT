@@ -368,32 +368,161 @@
   opacity: 0.5;
 }
 
-/* Floating Action Button (FAB) */
-.fab-button {
+
+/* Issuance Modal Overlay styles */
+.issuance-modal-overlay {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background-color: #0265ba; /* Default matching the user's blue */
-  color: white;
-  border: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent */
+  backdrop-filter: blur(4px);
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(2, 101, 186, 0.4);
+  animation: fadeIn 0.3s ease;
+}
+
+.issuance-modal-content {
+  background-color: var(--card-bg-color, #1e253c);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  padding: 1.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  animation: scaleUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary-color, white);
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary-color, #94a3b8);
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  z-index: 100;
+  padding: 0.25rem;
 }
 
-.fab-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(2, 101, 186, 0.6);
+.close-modal-btn:hover {
+  color: var(--text-primary-color, white);
 }
 
-.fab-icon {
-  width: 24px;
-  height: 24px;
+.important-info-box {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-secondary-color, #94a3b8);
+}
+
+.info-row strong {
+  color: var(--text-primary-color, white);
+}
+
+.status-highlight, .cost-highlight {
+  border-top: 1px dashed var(--border-color, rgba(255, 255, 255, 0.1));
+  padding-top: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.badge-highlight {
+  background-color: rgba(245, 158, 11, 0.1); /* Amber */
+  color: #f59e0b;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.amount-highlight {
+  color: #10b981; /* Emerald/Green representing money */
+  font-size: 1.2rem;
+}
+
+.payment-notice {
+  font-size: 0.85rem;
+  color: #fb923c; /* Warning orange */
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+}
+
+.modal-actions-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.secondary-btn {
+  flex: 1;
+  background-color: transparent;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  color: var(--text-secondary-color, #94a3b8);
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.primary-pay-btn {
+  flex: 1.2;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.primary-pay-btn:hover {
+  filter: brightness(1.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Light Mode Overrides */
+:root.light-mode .issuance-modal-content {
+  background-color: #ffffff;
+}
+
+:root.light-mode .modal-header h2,
+:root.light-mode .info-row strong {
+  color: #1e293b;
+}
+
+:root.light-mode .important-info-box {
+  background-color: #f1f5f9;
+}
+

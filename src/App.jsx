@@ -1,5 +1,15 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+
+// Scrolls to top on route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 import HomePage from './pages/HomePage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
@@ -14,6 +24,7 @@ import OngoingApplicationsAssessment from './pages/myapplication/OngoingApplicat
 import OngoingApplicationsPending from './pages/myapplication/OngoingApplications-pending';
 import OngoingApplicationsIssuance from './pages/myapplication/OngoingApplications-issuance';
 import CompletedApplications from './pages/myapplication/CompletedApplications';
+import Payment from './pages/Payment';
 import CancelledApplications from './pages/myapplication/CancelledApplications';
 import ResetPassword from './pages/ResetPassword';
 import CreateNewPassword from './pages/CreateNewPassword';
@@ -32,6 +43,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignInPage />} />
@@ -46,6 +58,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/payment" 
+          element={
+            <ProtectedRoute>
+              <Payment />
             </ProtectedRoute>
           } 
         />

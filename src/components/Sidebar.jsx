@@ -9,6 +9,22 @@ const Sidebar = () => {
     return saved ? JSON.parse(saved) : false;
   });
 
+  // Determine which sidebar item is currently active
+  const getActiveSidebarItem = (pathname) => {
+    const items = ['/dashboard', '/applications', '/renewals', '/establishment', '/payment', '/requirements', '/complaint'];
+    return items.find(p => pathname === p || pathname.startsWith(p + '/')) || null;
+  };
+
+  const currentActiveItem = getActiveSidebarItem(location.pathname);
+  const [shouldAnimate, setShouldAnimate] = useState(() => {
+    const prev = sessionStorage.getItem('prevSidebarItem');
+    return prev !== currentActiveItem;
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('prevSidebarItem', currentActiveItem);
+  }, [currentActiveItem]);
+
   useEffect(() => {
     localStorage.setItem('sidebarCollapsed', JSON.stringify(isCollapsed));
   }, [isCollapsed]);
@@ -126,7 +142,7 @@ const Sidebar = () => {
           <Link
             key={item.name}
             to={item.path}
-            className={`sidebar-link ${location.pathname === item.path || location.pathname.startsWith(item.path + '/') ? 'active' : ''}`}
+            className={`sidebar-link ${location.pathname === item.path || location.pathname.startsWith(item.path + '/') ? 'active' : ''} ${(location.pathname === item.path || location.pathname.startsWith(item.path + '/')) && shouldAnimate ? 'animate' : ''}`}
             title={isCollapsed ? item.name : ''}
           >
             <span className="sidebar-icon" style={{ color: item.iconColor }}>{item.icon}</span>

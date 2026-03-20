@@ -92,6 +92,21 @@
   font-weight: 500;
 }
 
+.tab-btn.active.animate {
+  animation: tabSlideIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes tabSlideIn {
+  0% {
+    opacity: 0.3;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .tab-btn.active::after {
   content: '';
   position: absolute;
@@ -100,6 +115,19 @@
   width: 100%;
   height: 2px;
   background-color: #14b8a6;
+}
+
+.tab-btn.active.animate::after {
+  animation: underlineGrow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes underlineGrow {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
 }
 
 /* Segmented Control for Completed Applications */
@@ -139,6 +167,23 @@
   color: #14b8a6;
   font-weight: 500;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  animation: segmentPop 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes segmentPop {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.92);
+    box-shadow: none;
+  }
+  60% {
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
 }
 
 html:not(.light-mode) .segmented-control {

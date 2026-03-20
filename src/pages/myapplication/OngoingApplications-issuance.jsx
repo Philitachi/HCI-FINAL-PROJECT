@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import MyApplicationsNav from '../../components/MyApplicationsNav';
@@ -6,6 +7,32 @@ import './OngoingApplications-issuance.css';
 import '../Dashboard/dashboard.css';
 
 const OngoingApplicationsIssuance = () => {
+  const navigate = useNavigate();
+  const [selectedApp, setSelectedApp] = useState(null);
+
+  const applications = [
+    {
+      id: 1,
+      title: "Jollibee - Main Branch",
+      date: "Mar 15, 2026",
+      type: "Business Permit Renewal",
+      location: "F. Ramos St., Cebu City",
+      status: "Awaiting Issuance",
+      refNo: "BFP-2026-00421",
+      fee: "₱ 2,500.00"
+    },
+    {
+      id: 2,
+      title: "Mang Inasal - Cyberzone",
+      date: "Mar 18, 2026",
+      type: "New Fire Safety Inspection",
+      location: "SM City Cebu, Cebu City",
+      status: "Awaiting Issuance",
+      refNo: "BFP-2026-00518",
+      fee: "₱ 1,800.00"
+    }
+  ];
+
   return (
     <div className="dashboard-container">
       <TopNavigationBar2 />
@@ -35,23 +62,102 @@ const OngoingApplicationsIssuance = () => {
             </div>
           </MyApplicationsNav>
 
-          <div className="empty-state-container">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" className="empty-folder-icon" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
-            </svg>
-            <p>No data available</p>
+          <div className="applications-list">
+            {applications.map((app) => (
+              <div key={app.id} className="app-list-card" onClick={() => setSelectedApp(app)}>
+                <div className="app-card-left">
+                  <h3 className="app-title">{app.title}</h3>
+                  <div className="app-meta">
+                    <span className="app-id"># {app.id}</span>
+                    <span className="meta-divider">•</span>
+                    <span className="app-date">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                      {app.date}
+                    </span>
+                  </div>
+                  
+                  <div className="app-details-row">
+                    <div className="app-detail-item">
+                      <span className="detail-label">APPLICATION TYPE</span>
+                      <div className="detail-value">
+                        <svg className="detail-icon orange" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        {app.type}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="app-card-middle">
+                  <div className="status-badge orange">
+                    <span className="status-dot"></span>
+                    {app.status}
+                  </div>
+                </div>
+
+                <div className="app-card-right">
+                  <div className="ref-info">
+                    <span className="ref-label">REFERENCE NO.</span>
+                    <span className="ref-value">{app.refNo}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
-          <button className="fab-button" aria-label="More actions">
-            <svg className="fab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="8" y1="6" x2="21" y2="6"></line>
-              <line x1="8" y1="12" x2="21" y2="12"></line>
-              <line x1="8" y1="18" x2="21" y2="18"></line>
-              <line x1="3" y1="6" x2="3.01" y2="6"></line>
-              <line x1="3" y1="12" x2="3.01" y2="12"></line>
-              <line x1="3" y1="18" x2="3.01" y2="18"></line>
-            </svg>
-          </button>
+          {/* Details Modal */}
+          {selectedApp && (
+            <div className="issuance-modal-overlay" onClick={() => setSelectedApp(null)}>
+              <div className="issuance-modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                  <h2>Application Information</h2>
+                  <button className="close-modal-btn" onClick={() => setSelectedApp(null)}>
+                    &times;
+                  </button>
+                </div>
+                
+                <div className="modal-body">
+                  <div className="important-info-box">
+                    <div className="info-row">
+                      <span>Establishment:</span>
+                      <strong>{selectedApp.title}</strong>
+                    </div>
+                    <div className="info-row">
+                      <span>Reference No:</span>
+                      <span>{selectedApp.refNo}</span>
+                    </div>
+                    <div className="info-row">
+                      <span>Type:</span>
+                      <span>{selectedApp.type}</span>
+                    </div>
+                    <div className="info-row status-highlight">
+                      <span>Status:</span>
+                      <span className="badge-highlight">{selectedApp.status}</span>
+                    </div>
+                    <div className="info-row cost-highlight">
+                      <span>Amount Due:</span>
+                      <strong className="amount-highlight">{selectedApp.fee}</strong>
+                    </div>
+                  </div>
+
+                  <p className="payment-notice">
+                    💡 Please proceed to the **Payment Section** to settle fees online or offline before the certificate is officially issued and sent to you.
+                  </p>
+
+                  <div className="modal-actions-buttons">
+                    <button className="secondary-btn" onClick={() => alert('Access Full Info functionality to be implemented')}>
+                      Access Full Information
+                    </button>
+                    <button className="primary-pay-btn" onClick={() => navigate('/payment')}>
+                      Proceed to Payment
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>

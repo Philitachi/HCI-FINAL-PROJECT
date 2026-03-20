@@ -5,11 +5,18 @@ import './MyApplicationsNav.css';
 const MyApplicationsNav = ({ activeMainTab, activeSubTab, children }) => {
   const navigate = useNavigate();
 
+  // Only animate the main tab when it actually changes
+  const prevMainTab = sessionStorage.getItem('prevMainTab');
+  const shouldAnimateMainTab = prevMainTab !== activeMainTab;
+  React.useEffect(() => {
+    sessionStorage.setItem('prevMainTab', activeMainTab);
+  }, [activeMainTab]);
+
   return (
     <div className="applications-tabs-container">
       <div className="main-tabs">
         <button 
-          className={`tab-btn ${activeMainTab === 'ongoing' ? 'active' : ''}`} 
+          className={`tab-btn ${activeMainTab === 'ongoing' ? 'active' : ''} ${activeMainTab === 'ongoing' && shouldAnimateMainTab ? 'animate' : ''}`} 
           onClick={() => navigate('/applications/all')}
         >
           <svg className="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -19,7 +26,7 @@ const MyApplicationsNav = ({ activeMainTab, activeSubTab, children }) => {
           Ongoing Applications
         </button>
         <button 
-          className={`tab-btn ${activeMainTab === 'completed' ? 'active' : ''}`} 
+          className={`tab-btn ${activeMainTab === 'completed' ? 'active' : ''} ${activeMainTab === 'completed' && shouldAnimateMainTab ? 'animate' : ''}`} 
           onClick={() => navigate('/applications/completed')}
         >
           <svg className="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -29,7 +36,7 @@ const MyApplicationsNav = ({ activeMainTab, activeSubTab, children }) => {
           Completed Applications
         </button>
         <button 
-          className={`tab-btn ${activeMainTab === 'cancelled' ? 'active' : ''}`} 
+          className={`tab-btn ${activeMainTab === 'cancelled' ? 'active' : ''} ${activeMainTab === 'cancelled' && shouldAnimateMainTab ? 'animate' : ''}`} 
           onClick={() => navigate('/applications/cancelled')}
         >
           <svg className="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
