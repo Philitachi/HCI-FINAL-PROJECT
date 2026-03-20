@@ -52,7 +52,9 @@ const SignInPage = () => {
         const sessionData = {
           isAuthenticated: true,
           expiresAt: expirationTime,
-          email: userData.email, // Convenient for dashboard greeting
+          email: userData.email,
+          firstName: userData.firstName || '',
+          lastName: userData.lastName || ''
         };
         localStorage.setItem('userSession', JSON.stringify(sessionData));
         navigate('/dashboard');

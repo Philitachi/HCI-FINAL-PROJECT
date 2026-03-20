@@ -115,11 +115,12 @@
   position: relative;
   padding: 0.25rem;
   border-radius: 9999px;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
 .topnav2-user-profile:hover {
   background-color: var(--hover-bg-color, rgba(255, 255, 255, 0.05));
+  transform: scale(1.02);
 }
 
 .topnav2-avatar {
@@ -137,6 +138,11 @@
 
 .topnav2-chevron-icon {
   color: var(--text-secondary-color, #9ca3af);
+  transition: transform 0.3s ease;
+}
+
+.topnav2-chevron-icon.open {
+  transform: rotate(180deg);
 }
 
 .topnav2-user-dropdown {
@@ -188,9 +194,13 @@
 
 :root.light-mode .topnav2-theme-toggle:hover,
 :root.light-mode .topnav2-notification-btn:hover,
-:root.light-mode .topnav2-user-profile:hover,
 :root.light-mode .topnav2-dropdown-item:hover {
   background-color: #f1f5f9;
+}
+
+:root.light-mode .topnav2-user-profile:hover {
+  background-color: #f1f5f9;
+  transform: scale(1.02);
 }
 
 :root.light-mode .notification-badge {

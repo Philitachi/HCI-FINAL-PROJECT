@@ -1,11 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import './dashboard.css';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState(() => {
+    try {
+      const sessionData = localStorage.getItem('userSession');
+      if (sessionData) {
+        const session = JSON.parse(sessionData);
+        if (session.firstName || session.lastName) {
+          return `${session.firstName || ''} ${session.lastName || ''}`.trim();
+        }
+      }
+    } catch (e) {}
+    return '';
+  });
 
   useEffect(() => {
     const isDarkMode = localStorage.getItem('theme') !== 'light';
@@ -16,6 +30,39 @@ const Dashboard = () => {
       document.documentElement.classList.add('light-mode');
       localStorage.setItem('theme', 'light');
     }
+
+    const fetchUserName = async () => {
+      try {
+        const sessionData = localStorage.getItem('userSession');
+        if (sessionData) {
+          const session = JSON.parse(sessionData);
+          if (session.email) {
+            const usersRef = collection(db, 'users');
+            const q = query(usersRef, where('email', '==', session.email));
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+              const userData = querySnapshot.docs[0].data();
+              const fullName = `${userData.firstName || ''} ${userData.lastName || ''}`.trim();
+              setUserName(fullName || 'User');
+              
+              // Silently patch the session if missing
+              if (!session.firstName) {
+                session.firstName = userData.firstName;
+                session.lastName = userData.lastName;
+                localStorage.setItem('userSession', JSON.stringify(session));
+              }
+            } else {
+              setUserName('User');
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user name:', error);
+        setUserName('User');
+      }
+    };
+
+    fetchUserName();
   }, []);
 
   return (
@@ -25,7 +72,7 @@ const Dashboard = () => {
         <Sidebar />
         <main className="dashboard-main-content">
           <div className="welcome-section">
-            <h1 className="welcome-h1">Welcome back, John Doe</h1>
+            <h1 className="welcome-h1">Welcome back, <span className="highlight-name">{userName || '...'}</span></h1>
             <p className="welcome-p">Your fire safety permit applications are up to date.</p>
           </div>
 

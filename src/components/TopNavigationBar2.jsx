@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import logo from '../assets/Logo.svg';
 import './TopNavigationBar2.css';
 
@@ -9,6 +11,18 @@ const TopNavigationBar2 = () => {
     return localStorage.getItem('theme') !== 'light';
   });
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userInitial, setUserInitial] = useState(() => {
+    try {
+      const sessionData = localStorage.getItem('userSession');
+      if (sessionData) {
+        const session = JSON.parse(sessionData);
+        if (session.firstName) {
+          return session.firstName.charAt(0).toUpperCase();
+        }
+      }
+    } catch (e) {}
+    return 'U';
+  });
 
   useEffect(() => {
     if (isDarkMode) {
@@ -19,6 +33,40 @@ const TopNavigationBar2 = () => {
       localStorage.setItem('theme', 'light');
     }
   }, [isDarkMode]);
+
+  useEffect(() => {
+    const fetchUserInitial = async () => {
+      try {
+        const sessionData = localStorage.getItem('userSession');
+        if (sessionData) {
+          const session = JSON.parse(sessionData);
+          if (session.email) {
+            const usersRef = collection(db, 'users');
+            const q = query(usersRef, where('email', '==', session.email));
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+              const userData = querySnapshot.docs[0].data();
+              if (userData.firstName) {
+                setUserInitial(userData.firstName.charAt(0).toUpperCase());
+                
+                // Silently patch the session if missing
+                if (!session.firstName) {
+                  session.firstName = userData.firstName;
+                  session.lastName = userData.lastName;
+                  localStorage.setItem('userSession', JSON.stringify(session));
+                }
+              } else {
+                setUserInitial('U');
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user initial:', error);
+      }
+    };
+    fetchUserInitial();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('userSession');
@@ -66,8 +114,8 @@ const TopNavigationBar2 = () => {
         </button>
 
         <div className="topnav2-user-profile" onClick={() => setDropdownOpen(!dropdownOpen)}>
-          <div className="topnav2-avatar">J</div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="topnav2-chevron-icon">
+          <div className="topnav2-avatar">{userInitial}</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`topnav2-chevron-icon ${dropdownOpen ? 'open' : ''}`}>
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
           

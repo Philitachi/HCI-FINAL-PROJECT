@@ -30,6 +30,10 @@
   margin-bottom: 2rem;
 }
 
+.highlight-name {
+  color: #14b8a6;
+}
+
 /* Action Cards */
 .action-cards {
   display: grid;
@@ -120,6 +124,10 @@
 :root.light-mode .dashboard-container {
   background-color: #f1f5f9;
   color: #0f172a;
+}
+
+:root.light-mode .highlight-name {
+  color: #0d9488;
 }
 
 :root.light-mode .recent-activity h2,
