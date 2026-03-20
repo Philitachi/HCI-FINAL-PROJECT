@@ -36,14 +36,6 @@ const Requirements = () => {
         "Copy of fire insurance (if any)",
         "Affidavit of no alteration to building (for new business with valid fsic issued for occupancy)"
       ]
-    },
-    {
-      title: "FSIC - Business Permit (Renewal)",
-      items: [
-        "Fees assessment bill from the business permit and licensing office",
-        "Copy of fire insurance (if any)",
-        "Affidavit of no alteration to building"
-      ]
     }
   ];
 

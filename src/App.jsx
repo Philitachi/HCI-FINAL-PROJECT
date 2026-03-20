@@ -31,6 +31,7 @@ import CreateNewPassword from './pages/CreateNewPassword';
 import PasswordResetSuccess from './pages/PasswordResetSuccess';
 import ProtectedRoute from './components/ProtectedRoute';
 import Requirements from './pages/Requirements';
+import Complaint from './pages/Complaint';
 
 function App() {
   useEffect(() => {
@@ -150,6 +151,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Requirements />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/complaint" 
+          element={
+            <ProtectedRoute>
+              <Complaint />
             </ProtectedRoute>
           } 
         />
