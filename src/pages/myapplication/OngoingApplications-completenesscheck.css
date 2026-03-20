@@ -1,8 +1,11 @@
-/* OngoingApplications.css */
 .applications-content {
   color: var(--text-primary-color, white);
   max-width: 1200px;
-  margin: 0 auto;
+  transition: max-width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sidebar.collapsed ~ main.applications-content {
+  max-width: 1400px;
 }
 
 /* Search and Filter Bar */

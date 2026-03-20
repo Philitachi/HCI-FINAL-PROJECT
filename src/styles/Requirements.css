@@ -1,0 +1,145 @@
+/* Requirements.css */
+
+/* Header */
+.requirements-header {
+  margin-bottom: 2rem;
+  max-width: 990px;
+  width: 100%;
+  transition: max-width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: max-width;
+}
+
+.sidebar.collapsed ~ main .requirements-header {
+  max-width: 100%;
+}
+
+.requirements-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary-color, #ffffff);
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.5px;
+}
+
+.requirements-subtitle {
+  color: var(--text-secondary-color, #9ca3af);
+  font-size: 0.95rem;
+}
+
+/* Grid Layout */
+.requirements-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 990px;
+  width: 100%;
+  min-width: 0;
+  transition: max-width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: max-width;
+}
+
+.sidebar.collapsed ~ main .requirements-grid {
+  max-width: 1400px;
+}
+
+/* Card */
+.requirement-card {
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.06));
+  border-radius: 14px;
+  padding: 2rem 2.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.requirement-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Header */
+.requirement-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+}
+
+.requirement-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.15) 0%, rgba(13, 148, 136, 0.05) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #14b8a6;
+  flex-shrink: 0;
+}
+
+.requirement-card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary-color, #ffffff);
+  letter-spacing: -0.2px;
+}
+
+/* Checklist */
+.requirement-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.requirement-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary-color, #cbd5e1);
+  line-height: 1.55;
+}
+
+.check-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Light Mode */
+:root.light-mode .requirement-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+:root.light-mode .requirement-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+:root.light-mode .requirement-card-header {
+  border-bottom-color: #e2e8f0;
+}
+
+:root.light-mode .requirement-icon {
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.1) 0%, rgba(13, 148, 136, 0.04) 100%);
+  color: #0d9488;
+}
+
+:root.light-mode .requirement-card-title {
+  color: #0f172a;
+}
+
+:root.light-mode .requirements-title {
+  color: #0f172a;
+}
+
+:root.light-mode .requirements-subtitle {
+  color: #64748b;
+}
+
+:root.light-mode .requirement-item {
+  color: #475569;
+}

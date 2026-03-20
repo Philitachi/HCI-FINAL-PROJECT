@@ -1,6 +1,7 @@
 /* Sidebar.css */
 .sidebar {
   width: 260px;
+  flex-shrink: 0;
   background-color: var(--sidebar-bg-color, #1a2234); /* Dark shade default */
   border-right: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
   display: flex;

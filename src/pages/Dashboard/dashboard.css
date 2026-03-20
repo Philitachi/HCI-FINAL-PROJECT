@@ -16,6 +16,7 @@
   flex-grow: 1;
   padding: 2.5rem 3rem;
   max-width: 1400px;
+  min-width: 0;
 }
 
 .welcome-h1 {

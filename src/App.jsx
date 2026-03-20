@@ -30,6 +30,7 @@ import ResetPassword from './pages/ResetPassword';
 import CreateNewPassword from './pages/CreateNewPassword';
 import PasswordResetSuccess from './pages/PasswordResetSuccess';
 import ProtectedRoute from './components/ProtectedRoute';
+import Requirements from './pages/Requirements';
 
 function App() {
   useEffect(() => {
@@ -144,6 +145,14 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/create-new-password" element={<CreateNewPassword />} />
         <Route path="/password-reset-success" element={<PasswordResetSuccess />} />
+        <Route 
+          path="/requirements" 
+          element={
+            <ProtectedRoute>
+              <Requirements />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </Router>
   );
