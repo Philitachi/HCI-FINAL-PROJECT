@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import SharedApplicationForm from '../../components/SharedApplicationForm';
+import ExitButton from '../../components/exitButton';
 import '../../styles/NewApplication.css';
 import '../Dashboard/dashboard.css';
 
@@ -98,9 +99,7 @@ const ApplicationClearance = () => {
                   <h2 className="clearance-modal-title">Clearance Applications</h2>
                   <p className="clearance-modal-subtitle">{selectedTitle}</p>
                 </div>
-                <button className="clearance-modal-close" onClick={() => setShowClearanceModal(false)}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
+                <ExitButton onClick={() => setShowClearanceModal(false)} />
               </div>
 
               <div className="clearance-modal-body">

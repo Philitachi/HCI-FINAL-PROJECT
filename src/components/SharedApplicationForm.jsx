@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/NewApplication.css';
 import '../styles/Complaint.css';
 import EmailVerifiedSVG from '../assets/EmailVerified.svg';
+import ExitButton from './exitButton';
 
 export const CustomSelect = ({ name, value, options, onChange, placeholder, disabled, error }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,6 +73,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
 
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [dragActiveId, setDragActiveId] = useState(null);
+  const [showPezaModal, setShowPezaModal] = useState(false);
   
   const getRequirements = (title) => {
     if (!title) return [];
@@ -335,7 +337,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
             <button 
               type="button" 
               className="ieza-button"
-              onClick={() => setFormData(prev => ({ ...prev, isPeza: !prev.isPeza }))}
+              onClick={() => formData.isPeza ? setFormData(prev => ({ ...prev, isPeza: false })) : setShowPezaModal(true)}
               style={{ 
                 opacity: formData.isPeza ? 1 : 0.7,
                 filter: formData.isPeza ? 'none' : 'grayscale(0.3)'
@@ -343,6 +345,31 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
             >
               {formData.isPeza ? "✓ PEZA ESTABLISHMENT" : "CLICK IF PEZA ESTABLISHMENT"}
             </button>
+
+            {/* PEZA Modal */}
+            {showPezaModal && (
+              <div className="peza-modal-overlay" onClick={() => setShowPezaModal(false)}>
+                <div className="peza-modal" onClick={(e) => e.stopPropagation()}>
+                  <div className="peza-modal-header">
+                    <div className="peza-modal-icon">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                      </svg>
+                    </div>
+                    <h3>PEZA</h3>
+                    <ExitButton onClick={() => setShowPezaModal(false)} />
+                  </div>
+                  <div className="peza-modal-body">
+                    <p>The Philippine Economic Zone Authority (PEZA) is a government agency tasked with promoting investments, extending assistance, registering, granting incentives to, and facilitating the business operations of investors in export-oriented manufacturing and service facilities inside selected areas throughout the country proclaimed by the President of the Philippines as PEZA Special Economic Zones.</p>
+                  </div>
+                  <div className="peza-modal-actions">
+                    <button type="button" className="peza-btn-cancel" onClick={() => setShowPezaModal(false)}>CANCEL</button>
+                    <button type="button" className="peza-btn-confirm" onClick={() => { setFormData(prev => ({ ...prev, isPeza: true })); setShowPezaModal(false); }}>YES, THIS IS PEZA</button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <h3 className="app-form-title">Contact Information</h3>

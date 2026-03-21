@@ -600,6 +600,7 @@
   align-items: flex-start;
   padding: 1.75rem 2rem 1.25rem;
   border-bottom: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.06));
+  position: relative;
 }
 
 .clearance-modal-title {
@@ -1094,6 +1095,137 @@
   line-height: 1.6;
 }
 
+/* ====== PEZA MODAL ====== */
+.peza-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.peza-modal {
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  width: 480px;
+  max-width: 90vw;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.25s ease;
+  overflow: hidden;
+}
+
+.peza-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+.peza-modal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(20, 184, 166, 0.05));
+  color: #14b8a6;
+  flex-shrink: 0;
+}
+
+.peza-modal-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary-color, #f8fafc);
+  margin: 0;
+  flex-grow: 1;
+}
+
+.peza-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary-color, #94a3b8);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+.peza-modal-close:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary-color, #f8fafc);
+}
+
+.peza-modal-body {
+  padding: 1.75rem;
+}
+.peza-modal-body p {
+  color: var(--text-secondary-color, #94a3b8);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.peza-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.25rem 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.peza-btn-cancel {
+  background-color: transparent;
+  color: var(--text-secondary-color, #94a3b8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.65rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.peza-btn-cancel:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary-color, #f8fafc);
+}
+
+.peza-btn-confirm {
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+  color: white;
+  border: none;
+  padding: 0.65rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25);
+}
+.peza-btn-confirm:hover {
+  background: linear-gradient(135deg, #0f766e, #0d9488);
+  box-shadow: 0 6px 16px rgba(20, 184, 166, 0.35);
+  transform: translateY(-1px);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* ====== STEP 3: CONFIRM & SUBMIT ====== */
 .confirm-info-card {
   display: flex;
@@ -1434,4 +1566,35 @@
 }
 :root.light-mode .confirm-disclaimer p {
   color: #64748b;
+}
+
+/* Light mode overrides for PEZA modal */
+:root.light-mode .peza-modal {
+  background-color: white;
+  border-color: #e2e8f0;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+}
+:root.light-mode .peza-modal-header {
+  border-bottom-color: #e2e8f0;
+}
+:root.light-mode .peza-modal-header h3 {
+  color: #0f172a;
+}
+:root.light-mode .peza-modal-close:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+:root.light-mode .peza-modal-body p {
+  color: #334155;
+}
+:root.light-mode .peza-modal-actions {
+  border-top-color: #e2e8f0;
+}
+:root.light-mode .peza-btn-cancel {
+  color: #64748b;
+  border-color: #cbd5e1;
+}
+:root.light-mode .peza-btn-cancel:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
 }
