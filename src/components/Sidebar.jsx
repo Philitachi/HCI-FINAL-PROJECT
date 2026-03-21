@@ -20,7 +20,7 @@ const Sidebar = () => {
 
   // Determine which sidebar item is currently active
   const getActiveSidebarItem = (pathname) => {
-    const items = ['/dashboard', '/new-application', '/applications', '/renewals', '/establishment', '/payment', '/requirements', '/complaint'];
+    const items = ['/dashboard', '/new-application', '/applications', '/renewals', '/establishment', '/payment', '/requirements', '/complaint', '/drafts'];
     return items.find(p => pathname === p || pathname.startsWith(p + '/')) || null;
   };
 
@@ -182,6 +182,20 @@ const Sidebar = () => {
           <path d="M12 21a9 9 0 1 0-9-9c0 1.48.36 2.89 1 4.14L3 21l4.86-1c1.25.64 2.66 1 4.14 1Z" />
           <path d="M12 8v4" />
           <path d="M12 16h.01" />
+        </svg>
+      )
+    },
+    {
+      name: 'Drafts',
+      path: '/drafts',
+      iconColor: '#94a3b8', // Slate/Gray
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M15 2H6a2 2 0 0 0-2 2v8" />
+          <path d="M12 22h6a2 2 0 0 0 2-2V8l-6-6" />
+          <path d="M14 2v6h6" />
+          <circle cx="7" cy="17" r="5" />
+          <polyline points="7 14.5 7 17 8.5 18.5" />
         </svg>
       )
     }
