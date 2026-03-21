@@ -9,9 +9,18 @@ const Sidebar = () => {
     return saved ? JSON.parse(saved) : false;
   });
 
+  const [openMenus, setOpenMenus] = useState(() => {
+    const saved = localStorage.getItem('sidebarOpenMenus');
+    let initial = saved ? JSON.parse(saved) : {};
+    if (location.pathname.startsWith('/new-application')) {
+      initial['New Application'] = true;
+    }
+    return initial;
+  });
+
   // Determine which sidebar item is currently active
   const getActiveSidebarItem = (pathname) => {
-    const items = ['/dashboard', '/applications', '/renewals', '/establishment', '/payment', '/requirements', '/complaint'];
+    const items = ['/dashboard', '/new-application', '/applications', '/renewals', '/establishment', '/payment', '/requirements', '/complaint'];
     return items.find(p => pathname === p || pathname.startsWith(p + '/')) || null;
   };
 
@@ -21,13 +30,45 @@ const Sidebar = () => {
     return prev !== currentActiveItem;
   });
 
+  const [shouldAnimateSub, setShouldAnimateSub] = useState(() => {
+    const prevPath = sessionStorage.getItem('prevPathname');
+    return prevPath !== location.pathname;
+  });
+
   useEffect(() => {
     sessionStorage.setItem('prevSidebarItem', currentActiveItem);
   }, [currentActiveItem]);
 
   useEffect(() => {
+    sessionStorage.setItem('prevPathname', location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
     localStorage.setItem('sidebarCollapsed', JSON.stringify(isCollapsed));
   }, [isCollapsed]);
+
+  useEffect(() => {
+    localStorage.setItem('sidebarOpenMenus', JSON.stringify(openMenus));
+  }, [openMenus]);
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/new-application')) {
+      setOpenMenus(prev => {
+        if (prev['New Application']) return prev;
+        return { ...prev, 'New Application': true };
+      });
+    }
+  }, [location.pathname]);
+
+  const toggleMenu = (name, e) => {
+    if (e) e.preventDefault();
+    if (isCollapsed) {
+      setIsCollapsed(false);
+      setOpenMenus(prev => ({ ...prev, [name]: true }));
+    } else {
+      setOpenMenus(prev => ({ ...prev, [name]: !prev[name] }));
+    }
+  };
 
   const menuItems = [
     {
@@ -42,6 +83,24 @@ const Sidebar = () => {
           <rect x="3" y="14" width="7" height="7" rx="1.5" />
         </svg>
       )
+    },
+    {
+      name: 'New Application',
+      path: '/new-application',
+      isAccordion: true,
+      iconColor: '#ec4899', // Pink
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+        </svg>
+      ),
+      children: [
+        { name: 'Apply for evaluation', path: '/new-application/evaluation' },
+        { name: 'Apply for occupancy permit', path: '/new-application/occupancy' },
+        { name: 'Apply for certificate', path: '/new-application/certificate' },
+        { name: 'Apply for other clearance', path: '/new-application/clearance' }
+      ]
     },
     {
       name: 'My Applications',
@@ -139,15 +198,52 @@ const Sidebar = () => {
       </div>
       <nav className="sidebar-nav">
         {menuItems.map((item) => (
-          <Link
-            key={item.name}
-            to={item.path}
-            className={`sidebar-link ${location.pathname === item.path || location.pathname.startsWith(item.path + '/') ? 'active' : ''} ${(location.pathname === item.path || location.pathname.startsWith(item.path + '/')) && shouldAnimate ? 'animate' : ''}`}
-            title={isCollapsed ? item.name : ''}
-          >
-            <span className="sidebar-icon" style={{ color: item.iconColor }}>{item.icon}</span>
-            <span className="sidebar-text">{item.name}</span>
-          </Link>
+          <div key={item.name} className="sidebar-item-container">
+            {item.isAccordion ? (
+              <>
+                <div 
+                  className={`sidebar-link ${location.pathname.startsWith(item.path) ? 'active' : ''} ${openMenus[item.name] ? 'open' : ''} ${location.pathname.startsWith(item.path) && shouldAnimate ? 'animate' : ''}`}
+                  onClick={(e) => toggleMenu(item.name, e)}
+                  style={{ cursor: 'pointer' }}
+                  title={isCollapsed ? item.name : ''}
+                >
+                  <span className="sidebar-icon" style={{ color: item.iconColor }}>{item.icon}</span>
+                  <span className="sidebar-text">{item.name}</span>
+                  {!isCollapsed && (
+                    <span className="sidebar-accordion-arrow">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: openMenus[item.name] ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }}>
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
+                    </span>
+                  )}
+                </div>
+                {/* Expandable sub-menu */}
+                <div className={`sidebar-submenu ${openMenus[item.name] && !isCollapsed ? 'open' : ''}`}>
+                  {item.children.map(child => {
+                    const isActive = location.pathname === child.path || location.pathname.startsWith(child.path + '/');
+                    return (
+                      <Link
+                        key={child.name}
+                        to={child.path}
+                        className={`sidebar-sublink ${isActive ? 'active' : ''} ${isActive && shouldAnimateSub ? 'animate' : ''}`}
+                      >
+                        {child.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <Link
+                to={item.path}
+                className={`sidebar-link ${location.pathname === item.path || location.pathname.startsWith(item.path + '/') ? 'active' : ''} ${(location.pathname === item.path || location.pathname.startsWith(item.path + '/')) && shouldAnimate ? 'animate' : ''}`}
+                title={isCollapsed ? item.name : ''}
+              >
+                <span className="sidebar-icon" style={{ color: item.iconColor }}>{item.icon}</span>
+                <span className="sidebar-text">{item.name}</span>
+              </Link>
+            )}
+          </div>
         ))}
       </nav>
     </aside>

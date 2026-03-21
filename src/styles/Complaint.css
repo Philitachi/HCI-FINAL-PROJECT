@@ -565,8 +565,14 @@
 }
 :root.light-mode .custom-select-trigger {
   color: #0f172a;
-  background-color: white;
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
 }
+:root.light-mode .custom-select-trigger.disabled {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+}
+
 :root.light-mode .custom-options-list {
   background-color: white;
   border-color: #cbd5e1;

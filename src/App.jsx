@@ -32,6 +32,10 @@ import PasswordResetSuccess from './pages/PasswordResetSuccess';
 import ProtectedRoute from './components/ProtectedRoute';
 import Requirements from './pages/Requirements';
 import Complaint from './pages/Complaint';
+import ApplicationEvaluation from './pages/newapplication/ApplicationEvaluation';
+import ApplicationOccupancy from './pages/newapplication/ApplicationOccupancy';
+import ApplicationCertificate from './pages/newapplication/ApplicationCertificate';
+import ApplicationClearance from './pages/newapplication/ApplicationClearance';
 
 function App() {
   useEffect(() => {
@@ -159,6 +163,38 @@ function App() {
           element={
             <ProtectedRoute>
               <Complaint />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/new-application/evaluation" 
+          element={
+            <ProtectedRoute>
+              <ApplicationEvaluation />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/new-application/occupancy" 
+          element={
+            <ProtectedRoute>
+              <ApplicationOccupancy />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/new-application/certificate" 
+          element={
+            <ProtectedRoute>
+              <ApplicationCertificate />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/new-application/clearance" 
+          element={
+            <ProtectedRoute>
+              <ApplicationClearance />
             </ProtectedRoute>
           } 
         />

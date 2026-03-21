@@ -77,7 +77,7 @@ const Dashboard = () => {
           </div>
 
           <div className="action-cards">
-            <div className="card apply-card">
+            <div className="card apply-card" onClick={() => navigate('/new-application/evaluation')} style={{ cursor: 'pointer' }}>
               <svg className="card-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h6" />
                 <path d="M14 2v4a2 2 0 0 0 2 2h4" />
@@ -87,7 +87,7 @@ const Dashboard = () => {
                 <line x1="15" y1="17.5" x2="20" y2="17.5" stroke="#0369a1" strokeWidth="2" />
                 <line x1="17.5" y1="15" x2="17.5" y2="20" stroke="#0369a1" strokeWidth="2" />
               </svg>
-              <h3>Apply for New Permit</h3>
+              <h3>Apply for New Application</h3>
             </div>
             <div className="card pending-card">
               <svg className="card-icon" style={{ color: '#14b8a6' }} width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

@@ -162,3 +162,101 @@
   color: #9a3412;
   border-left: 3px solid #ea580c;
 }
+
+:root.light-mode .sidebar-link.open .sidebar-accordion-arrow {
+  color: #0f172a;
+}
+
+:root.light-mode .sidebar-link.active.open .sidebar-accordion-arrow {
+  color: #9a3412;
+}
+
+/* Sidebar Accordion Styles */
+.sidebar-item-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.sidebar-accordion-arrow {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary-color, #9ca3af);
+  transition: transform 0.2s ease;
+}
+
+.sidebar-link.open .sidebar-accordion-arrow {
+  color: var(--text-primary-color, #ffffff);
+}
+
+.sidebar-submenu {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease, margin 0.3s ease;
+  opacity: 0;
+  margin-left: 2.5rem; /* Indent sub items */
+  border-left: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+.sidebar-submenu.open {
+  max-height: 300px;
+  opacity: 1;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-sublink {
+  padding: 0.6rem 1rem 0.6rem 1rem;
+  color: var(--text-secondary-color, #9ca3af);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.2s ease, background-color 0.2s ease, border-left-color 0.2s ease;
+  border-left: 2px solid transparent;
+  margin-left: -1px; /* Align with parent border */
+  border-radius: 0 4px 4px 0;
+  white-space: normal;
+  line-height: 1.4;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.sidebar-sublink:last-child {
+  border-bottom: none;
+}
+
+.sidebar-sublink:hover {
+  color: var(--text-primary-color, #ffffff);
+  background-color: var(--hover-bg-color, rgba(255, 255, 255, 0.05));
+}
+
+.sidebar-sublink.active {
+  color: var(--text-primary-color, #e4a275);
+  border-left-color: var(--accent-color, #d97706);
+  background-color: var(--hover-bg-color, rgba(255, 255, 255, 0.05));
+  font-weight: 600;
+}
+
+.sidebar-sublink.active.animate {
+  animation: slideInActive 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Light mode overrides for submenu */
+:root.light-mode .sidebar-submenu {
+  border-left-color: #e2e8f0;
+}
+:root.light-mode .sidebar-sublink {
+  border-bottom-color: rgba(0, 0, 0, 0.04);
+}
+:root.light-mode .sidebar-sublink:hover {
+  color: #0f172a;
+  background-color: #f1f5f9;
+}
+:root.light-mode .sidebar-sublink.active {
+  color: #9a3412;
+  border-left-color: #ea580c;
+  background-color: #fef08a; /* Soft warning/orange */
+}
