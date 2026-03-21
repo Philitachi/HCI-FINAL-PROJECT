@@ -1,9 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = () => {
   const location = useLocation();
+  const sidebarRef = useRef(null);
+
+  useEffect(() => {
+    const savedScrollPos = sessionStorage.getItem('sidebarScrollPos');
+    if (sidebarRef.current && savedScrollPos) {
+      sidebarRef.current.scrollTop = parseInt(savedScrollPos, 10);
+    }
+  }, []);
+
+  const handleScroll = (e) => {
+    sessionStorage.setItem('sidebarScrollPos', e.target.scrollTop);
+  };
   const [isCollapsed, setIsCollapsed] = useState(() => {
     const saved = localStorage.getItem('sidebarCollapsed');
     return saved ? JSON.parse(saved) : false;
@@ -20,7 +32,7 @@ const Sidebar = () => {
 
   // Determine which sidebar item is currently active
   const getActiveSidebarItem = (pathname) => {
-    const items = ['/dashboard', '/new-application', '/applications', '/renewals', '/establishment', '/payment', '/requirements', '/complaint', '/drafts'];
+    const items = ['/dashboard', '/new-application', '/applications', '/renewals', '/establishment', '/payment', '/requirements', '/complaint', '/drafts', '/faqs'];
     return items.find(p => pathname === p || pathname.startsWith(p + '/')) || null;
   };
 
@@ -198,11 +210,27 @@ const Sidebar = () => {
           <polyline points="7 14.5 7 17 8.5 18.5" />
         </svg>
       )
+    },
+    {
+      name: 'FAQs',
+      path: '/faqs',
+      iconColor: '#a855f7', // Purple
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+      )
     }
   ];
 
   return (
-    <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+    <aside 
+      className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}
+      ref={sidebarRef}
+      onScroll={handleScroll}
+    >
       <div className="sidebar-header" onClick={() => setIsCollapsed(!isCollapsed)}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="toggle-sidebar-icon">
           <line x1="3" y1="12" x2="21" y2="12"></line>

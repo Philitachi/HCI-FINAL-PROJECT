@@ -611,6 +611,26 @@
 :root.light-mode .step-line {
   background-color: #cbd5e1;
 }
+:root.light-mode .step-indicator.active .step-circle {
+  background-color: #0d9488;
+  border-color: #14b8a6;
+  color: white;
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
+}
+:root.light-mode .step-indicator.active .step-label {
+  color: #0f172a;
+}
+:root.light-mode .step-indicator.completed .step-circle {
+  background-color: #ffffff;
+  border-color: #14b8a6;
+  color: #14b8a6;
+}
+:root.light-mode .step-indicator.completed .step-label {
+  color: #64748b;
+}
+:root.light-mode .step-indicator.completed .step-line {
+  background-color: #14b8a6;
+}
 :root.light-mode .form-actions {
   border-top-color: #e2e8f0;
 }
