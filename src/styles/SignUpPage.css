@@ -166,6 +166,18 @@
   outline: none;
   border-color: #0d94a1;
   box-shadow: 0 0 0 1px #0d94a1;
+  background-color: #161B22 !important;
+}
+
+/* Autofill styling to prevent white/black backgrounds from browser override */
+.signup-form .form-input:-webkit-autofill,
+.signup-form .form-input:-webkit-autofill:hover, 
+.signup-form .form-input:-webkit-autofill:focus, 
+.signup-form .form-input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #161B22 !important;
 }
 
 /* Input Container for Floating Labels */

@@ -37,8 +37,11 @@ const SignInPage = () => {
       const userDoc = querySnapshot.docs[0];
       const userData = userDoc.data();
 
-      // 2. Hash the entered password and compare with the one in Firestore
-      const hashedAttempt = await hashPassword(password);
+      // 2. Hash the entered password with salt and compare with the one in Firestore
+      // Legacy users might not have a salt, so we default to empty string
+      const userSalt = userData.salt || '';
+      const hashedAttempt = await hashPassword(password, userSalt);
+      
       if (userData.password !== hashedAttempt) {
         setError('Invalid email or password. Please try again.');
         setIsLoading(false);

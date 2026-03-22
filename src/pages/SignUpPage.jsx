@@ -7,7 +7,7 @@ import emailjs from '@emailjs/browser';
 import '../styles/SignUpPage.css';
 import logo from '../assets/Logo.svg';
 import ExitButton from '../components/exitButton';
-import { hashPassword } from '../utils/crypto';
+import { hashPassword, generateSalt } from '../utils/crypto';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -219,8 +219,11 @@ const SignUpPage = () => {
       const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
       const codeExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
-      // 2.5 Hash password for security
-      const hashedPass = await hashPassword(password);
+      // 2.2 Generate a salt
+      const userSalt = generateSalt(24); // 24 character salt
+
+      // 2.3 Hash password with salt
+      const hashedPass = await hashPassword(password, userSalt);
 
       // 3. Save user data + verification code to Firestore
       await setDoc(doc(db, 'users', user.uid), {
@@ -228,6 +231,7 @@ const SignUpPage = () => {
         lastName: formData.lastName,
         email: formData.email,
         password: hashedPass, // Store hashed password for the reset hack
+        salt: userSalt, // Store the salt so we can re-hash during login
         phone: `+63${formData.phone}`,
         emailVerified: false,
         verificationCode: verificationCode,

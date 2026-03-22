@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { hashPassword } from '../utils/crypto';
+import { hashPassword, generateSalt } from '../utils/crypto';
 import illustrationDark from '../assets/Createnewpassword.svg';
 import illustrationLight from '../assets/Createnewpassword.svg';
 import '../styles/CreateNewPassword.css';
@@ -67,12 +67,16 @@ const CreateNewPassword = () => {
     setError('');
 
     try {
-      // 1. Hash the new password
-      const hashedPass = await hashPassword(newPassword);
+      // 1. Generate a NEW salt for the new password
+      const newSalt = generateSalt(24);
 
-      // 2. Update the password in Firestore and clear the reset code
+      // 2. Hash the new password with the new salt
+      const hashedPass = await hashPassword(newPassword, newSalt);
+
+      // 3. Update the password and salt in Firestore and clear the reset code
       await updateDoc(doc(db, 'users', verifiedUserDocId), {
         password: hashedPass,
+        salt: newSalt,
         resetCode: null,
         resetCodeExpiresAt: null
       });
