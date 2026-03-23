@@ -1,0 +1,200 @@
+/* Drafts.css */
+.drafts-content {
+  color: var(--text-primary-color, white);
+  max-width: 1200px;
+  transition: max-width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding: 0 1rem;
+}
+
+.sidebar.collapsed ~ main.drafts-content {
+  max-width: 1400px;
+}
+
+.drafts-header {
+  margin-bottom: 2rem;
+}
+
+.drafts-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary-color, #111827);
+  letter-spacing: -0.5px;
+}
+
+.drafts-subtitle {
+  color: var(--text-secondary-color, #6b7280);
+  margin: 0 0 2rem 0;
+  font-size: 1.05rem;
+}
+
+/* App List Cards Customizations for Drafts */
+.draft-list-card {
+  background-color: var(--card-bg-color, #273142);
+  border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.03));
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.draft-list-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+.draft-card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.draft-icon-container {
+  flex-shrink: 0;
+}
+
+.draft-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgba(100, 116, 139, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.draft-title-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.draft-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary-color, white);
+  letter-spacing: -0.2px;
+}
+
+/* Slate colored draft badge instead of blue */
+.status-badge.draft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  background-color: #64748b;
+  color: #ffffff;
+}
+
+.draft-details-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.draft-detail-text {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary-color, #9ca3af);
+}
+
+.detail-icon {
+  color: var(--text-secondary-color, #9ca3af);
+}
+
+.detail-icon.outline {
+  stroke-width: 2px;
+}
+
+.draft-bottom-info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 0.25rem;
+}
+
+.draft-date-time,
+.draft-ref-bottom {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary-color, #9ca3af);
+  font-weight: 500;
+}
+
+/* Action Button */
+.draft-card-actions {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding-left: 2rem;
+}
+
+.btn-draft-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+  box-shadow: 0 3px 8px rgba(13, 148, 136, 0.15);
+}
+
+.btn-draft-continue:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(13, 148, 136, 0.2);
+}
+
+/* Light Mode Overrides */
+:root.light-mode .drafts-content {
+  color: #0f172a;
+}
+:root.light-mode .draft-list-card {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+}
+:root.light-mode .draft-list-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+:root.light-mode .draft-title {
+  color: #0f172a;
+}
+:root.light-mode .status-badge.draft {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+:root.light-mode .draft-detail-text,
+:root.light-mode .draft-date-time,
+:root.light-mode .draft-ref-bottom,
+:root.light-mode .detail-icon {
+  color: #64748b;
+}
+
+:root:not(.light-mode) .drafts-title {
+  color: #ffffff;
+}
+:root:not(.light-mode) .drafts-subtitle {
+  color: #94a3b8;
+}

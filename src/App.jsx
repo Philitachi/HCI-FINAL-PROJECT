@@ -38,6 +38,7 @@ import ApplicationCertificate from './pages/newapplication/ApplicationCertificat
 import ApplicationClearance from './pages/newapplication/ApplicationClearance';
 import Renewals from './pages/Renewals';
 import FAQs from './pages/FAQs';
+import Drafts from './pages/Drafts';
 
 function App() {
   useEffect(() => {
@@ -165,6 +166,14 @@ function App() {
           element={
             <ProtectedRoute>
               <FAQs />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/drafts" 
+          element={
+            <ProtectedRoute>
+              <Drafts />
             </ProtectedRoute>
           } 
         />
