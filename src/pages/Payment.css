@@ -1,0 +1,225 @@
+/* Payment.css */
+.payment-content {
+  color: var(--text-primary-color, white);
+  max-width: 1200px;
+  transition: max-width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding: 0 1rem;
+}
+
+.sidebar.collapsed ~ main.payment-content {
+  max-width: 1400px;
+}
+
+.payment-header {
+  margin-bottom: 2rem;
+}
+
+.payment-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary-color, #111827);
+  letter-spacing: -0.5px;
+}
+
+/* Custom Dropdown Styling to match image */
+.payment-dropdown-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 2rem;
+  z-index: 10;
+}
+
+.payment-dropdown-trigger {
+  width: 100%;
+  background-color: var(--card-bg-color, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  color: var(--text-primary-color, #1f2937);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); user-select: none;
+}
+
+.payment-dropdown-trigger:hover {
+  border-color: #cbd5e1;
+}
+
+.payment-dropdown-trigger.open {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px #2563eb, 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.payment-dropdown-arrow {
+  color: #1d4ed8; /* strong blue arrow from image */
+  transition: transform 0.2s ease;
+}
+
+.payment-dropdown-trigger.open .payment-dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.payment-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.25rem;
+  background-color: var(--card-bg-color, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 6px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  z-index: 20;
+}
+
+.payment-dropdown-item {
+  padding: 0.875rem 1.25rem;
+  color: var(--text-primary-color, #1f2937);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.15s;
+}
+
+.payment-dropdown-item:hover {
+  background-color: #f1f5f9;
+}
+
+.payment-dropdown-item.active {
+  background-color: #e0f2fe;
+  color: #0284c7;
+  font-weight: 500;
+}
+
+/* Date Range Inputs */
+.payment-date-range-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.payment-date-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.payment-date-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary-color, #4b5563);
+  font-weight: 500;
+}
+
+.payment-date-input {
+  width: 100%;
+  background-color: var(--card-bg-color, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary-color, #1f2937);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.payment-date-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px #2563eb, 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Remove default calendar icon across browsers (we let OS handle the picker on click, 
+   but style the input manually to look like design) */
+.payment-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  filter: var(--calendar-icon-filter, none);
+}
+.payment-date-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.payment-search-btn {
+  background-color: #1d4ed8;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  height: 48px; /* Match input height */
+  margin-bottom: 2px;
+}
+
+.payment-search-btn:hover {
+  background-color: #1e3a8a;
+}
+
+.payment-search-btn:active {
+  transform: translateY(1px);
+}
+
+.payment-empty-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 0;
+  margin-top: 2rem;
+}
+
+/* Dark mode overrides */
+:root:not(.light-mode) .payment-title {
+  color: #ffffff;
+}
+:root:not(.light-mode) .payment-dropdown-trigger {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+:root:not(.light-mode) .payment-dropdown-menu {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+:root:not(.light-mode) .payment-dropdown-item {
+  color: #f1f5f9;
+}
+:root:not(.light-mode) .payment-dropdown-item:hover {
+  background-color: #334155;
+}
+:root:not(.light-mode) .payment-dropdown-item.active {
+  background-color: #0f172a;
+  color: #38bdf8;
+}
+:root:not(.light-mode) .payment-date-input {
+  background-color: #1e293b;
+  border-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  --calendar-icon-filter: invert(1);
+}
+:root:not(.light-mode) .payment-date-label {
+  color: #cbd5e1;
+}

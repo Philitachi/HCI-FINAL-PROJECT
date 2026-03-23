@@ -36,6 +36,7 @@ import ApplicationEvaluation from './pages/newapplication/ApplicationEvaluation'
 import ApplicationOccupancy from './pages/newapplication/ApplicationOccupancy';
 import ApplicationCertificate from './pages/newapplication/ApplicationCertificate';
 import ApplicationClearance from './pages/newapplication/ApplicationClearance';
+import Renewals from './pages/Renewals';
 
 function App() {
   useEffect(() => {
@@ -144,6 +145,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CancelledApplications />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/renewals" 
+          element={
+            <ProtectedRoute>
+              <Renewals />
             </ProtectedRoute>
           } 
         />

@@ -56,6 +56,35 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
   // We'll map the previous steps 2,3,4 to 1,2,3 for this shared component
   const [step, setStep] = useState(1);
 
+  // Detect if this is a renewal application
+  const isRenewal = selectedCategoryTitle?.toUpperCase().includes('RENEWAL');
+  const [selectedApplication, setSelectedApplication] = useState(null);
+
+  // Mock previous applications data for renewal
+  const previousApplications = [
+    // Empty array = no previous applications. Add sample data below to test with applications:
+    // {
+    //   id: 'APP-2025-1234',
+    //   establishmentName: 'Coastal Roasters Café',
+    //   owner: 'Maria Santos',
+    //   location: '124 Harbor Blvd, West District, Quezon City',
+    //   type: 'FSIC - Business Permit',
+    //   lastRenewal: 'Mar 15, 2025',
+    //   refNo: 'REF-9928-A1',
+    //   status: 'Completed'
+    // },
+    // {
+    //   id: 'APP-2025-0987',
+    //   establishmentName: 'Meridian Labs Facility',
+    //   owner: 'Juan Dela Cruz',
+    //   location: '890 Tech Park Way, North District, Makati',
+    //   type: 'FSIC - Business Permit',
+    //   lastRenewal: 'Jan 22, 2025',
+    //   refNo: 'REF-7734-B2',
+    //   status: 'Completed'
+    // },
+  ];
+
   const [formData, setFormData] = useState({
     establishmentName: '',
     ownerName: '',
@@ -375,10 +404,143 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
         </div>
       </div>
 
-      {/* STEP 1: FORM DETAILS */}
+      {/* STEP 1: FORM DETAILS (or RENEWAL APPLICATIONS LIST) */}
       {step === 1 && (
         <div className="step-content animate-fade-in">
 
+          {isRenewal ? (
+            /* ===== RENEWAL: Show Previous Applications List ===== */
+            <div className="renewal-applications-container">
+              <div className="renewal-header">
+                <div className="renewal-header-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="renewal-title">Applications</h3>
+                  <p className="renewal-subtitle">Select a previous application to renew</p>
+                </div>
+              </div>
+
+              {previousApplications.length > 0 ? (
+                <div className="renewal-app-list">
+                  {previousApplications.map((app) => (
+                    <div
+                      key={app.id}
+                      className={`renewal-app-card ${selectedApplication?.id === app.id ? 'selected' : ''}`}
+                      onClick={() => setSelectedApplication(app)}
+                    >
+                      <div className="renewal-app-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                      </div>
+                      <div className="renewal-app-info">
+                        <div className="renewal-app-name-row">
+                          <h4 className="renewal-app-name">{app.establishmentName}</h4>
+                          <span className="renewal-app-status-badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            {app.status}
+                          </span>
+                        </div>
+                        <div className="renewal-app-details">
+                          <span className="renewal-app-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                              <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            {app.owner}
+                          </span>
+                          <span className="renewal-app-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                              <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            {app.location}
+                          </span>
+                        </div>
+                        <div className="renewal-app-meta">
+                          <span className="renewal-app-meta-item">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                              <line x1="16" y1="2" x2="16" y2="6"></line>
+                              <line x1="8" y1="2" x2="8" y2="6"></line>
+                              <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            Last Renewed: {app.lastRenewal}
+                          </span>
+                          <span className="renewal-app-meta-item">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                              <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            {app.refNo}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="renewal-app-select-indicator">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                /* Empty State */
+                <div className="renewal-empty-state">
+                  <div className="renewal-empty-icon">
+                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                      <line x1="9" y1="15" x2="15" y2="15"></line>
+                    </svg>
+                  </div>
+                  <h3 className="renewal-empty-title">No Previous Applications Found</h3>
+                  <p className="renewal-empty-subtitle">We couldn't find any previous applications linked to your account.</p>
+
+                  <div className="renewal-info-banner">
+                    <div className="renewal-info-banner-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                      </svg>
+                    </div>
+                    <p>If your business establishment is missing, please contact your nearest fire station to have your record linked to your account.</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="app-form-actions">
+                <button type="button" className="btn-back" onClick={onBack}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                  Back
+                </button>
+
+                {previousApplications.length > 0 && (
+                  <div className="app-form-actions-right">
+                    <button
+                      type="button"
+                      className="btn-submit"
+                      disabled={!selectedApplication}
+                      onClick={() => { if (selectedApplication) setStep(2); }}
+                      style={{ opacity: selectedApplication ? 1 : 0.5, cursor: selectedApplication ? 'pointer' : 'not-allowed' }}
+                    >
+                      Proceed to Renewal
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            /* ===== NON-RENEWAL: Original Form ===== */
+            <>
           {/* General Information Section */}
           <h3 className="app-form-title">General Information</h3>
           <p className="form-block-subtitle">Type in the required information about the establishment</p>
@@ -709,6 +871,8 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
               </button>
             </div>
           </div>
+            </>
+          )}
         </div>
       )}
 
