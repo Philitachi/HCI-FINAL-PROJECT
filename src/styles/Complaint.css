@@ -1,7 +1,7 @@
 /* Complaint.css */
 .complaint-header {
   margin-bottom: 2rem;
-  max-width: 990px;
+  max-width: 100%;
   width: 100%;
   transition: max-width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -24,7 +24,7 @@
 }
 
 .complaint-content {
-  max-width: 990px;
+  max-width: 100%;
   width: 100%;
   transition: max-width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
