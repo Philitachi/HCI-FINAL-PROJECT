@@ -37,6 +37,7 @@ import ApplicationOccupancy from './pages/newapplication/ApplicationOccupancy';
 import ApplicationCertificate from './pages/newapplication/ApplicationCertificate';
 import ApplicationClearance from './pages/newapplication/ApplicationClearance';
 import Renewals from './pages/Renewals';
+import FAQs from './pages/FAQs';
 
 function App() {
   useEffect(() => {
@@ -159,6 +160,14 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/create-new-password" element={<CreateNewPassword />} />
         <Route path="/password-reset-success" element={<PasswordResetSuccess />} />
+        <Route 
+          path="/faqs" 
+          element={
+            <ProtectedRoute>
+              <FAQs />
+            </ProtectedRoute>
+          } 
+        />
         <Route 
           path="/requirements" 
           element={
