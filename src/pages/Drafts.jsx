@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import EmptyState from '../components/EmptyState';
-import './Drafts.css';
+import '../styles/Drafts.css';
 import './Dashboard/dashboard.css';
 
 const Drafts = () => {
@@ -35,8 +35,8 @@ const Drafts = () => {
         <main className="dashboard-main-content drafts-content">
           <div className="drafts-header">
             <h1 className="drafts-title">Drafts</h1>
-            <p className="drafts-subtitle">Pick up right where you left off. These applications are securely saved but not yet submitted.</p>
-          </div>
+              <p className="drafts-subtitle">Pick up right where you left off. These applications are securely saved but not yet submitted.</p>
+            </div>
 
           {draftsList.length > 0 ? (
             <div className="drafts-list">

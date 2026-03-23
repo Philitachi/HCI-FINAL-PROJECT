@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import EmptyState from '../components/EmptyState';
-import './Payment.css';
+import '../styles/Payment.css';
 import './Dashboard/dashboard.css';
 
 const Payment = () => {

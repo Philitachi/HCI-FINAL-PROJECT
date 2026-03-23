@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import EmptyState from '../components/EmptyState';
-import './Renewals.css';
+import '../styles/Renewals.css';
 import './Dashboard/dashboard.css';
 
 const Renewals = () => {

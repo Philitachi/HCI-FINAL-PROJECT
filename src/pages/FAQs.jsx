@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
-import './FAQs.css';
+import '../styles/FAQs.css';
 import './Dashboard/dashboard.css';
 
 const FAQItem = ({ question, answer, isActive, onClick }) => {
   return (
     <div className={`faq-item ${isActive ? 'active' : ''}`}>
       <button className="faq-question" onClick={onClick}>
-        {question}
-        <svg className="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <div className="faq-question-content">
+          <div className="faq-icon-wrapper">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </div>
+          <span>{question}</span>
+        </div>
+        <div className="faq-chevron-wrapper">
+          <svg className="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
       </button>
       <div className="faq-answer-container">
         <div className="faq-answer-inner">
           <div className="faq-answer-text">
-            {/* Split answers by \n for multiple paragraphs if needed */}
             {answer.split('\n').map((paragraph, idx) => (
               <p key={idx}>{paragraph}</p>
             ))}
@@ -29,11 +38,27 @@ const FAQItem = ({ question, answer, isActive, onClick }) => {
 };
 
 const FAQs = () => {
-  const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(null);
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const toggleFAQ = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    // Simulation of API call
+    setTimeout(() => {
+      setIsSubmitted(false);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    }, 5000);
   };
 
   const faqsList = [
@@ -69,9 +94,17 @@ const FAQs = () => {
       <div className="dashboard-body">
         <Sidebar />
         <main className="dashboard-main-content faqs-content">
-          <div className="faqs-header">
-            <h1 className="faqs-title">Frequently Asked Questions</h1>
-            <p className="faqs-subtitle">Find answers to common questions about your applications and fire safety compliance.</p>
+          <div className="faqs-hero">
+            <div className="faqs-hero-icon-container">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div className="faqs-hero-text">
+              <h1 className="faqs-title">Frequently Asked Questions</h1>
+              <p className="faqs-subtitle">Find answers to common questions about your applications and fire safety compliance.</p>
+            </div>
           </div>
 
           <div className="faqs-accordion-container">
@@ -86,15 +119,62 @@ const FAQs = () => {
             ))}
           </div>
 
-          <div className="faq-contact-box">
-            <h3>Still have questions?</h3>
-            <p>If you cannot find answer to your question in our FAQ, you can always contact our support team.</p>
-            <button className="faq-contact-btn" onClick={() => navigate('/complaint')}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-              </svg>
-              Contact Support
-            </button>
+          <div className="modern-contact-form-container">
+            <div className="contact-form-header">
+              <div className="contact-icon-container">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+              <div className="contact-header-text">
+                <h3>Still have questions?</h3>
+                <p>Send us a direct message and our support team will get back to you shortly.</p>
+              </div>
+            </div>
+
+            {isSubmitted ? (
+              <div className="contact-success-state animate-fade-in">
+                <div className="success-icon-wrapper">
+                  <svg className="success-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                </div>
+                <h4>Message Sent!</h4>
+                <p>We've received your query and will respond via email as soon as possible.</p>
+                <button className="reset-contact-btn" onClick={() => setIsSubmitted(false)}>Send another message</button>
+              </div>
+            ) : (
+              <form className="contact-form-body animate-fade-in" onSubmit={handleSubmit}>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Your Name</label>
+                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="E.g. John Doe" required className="modern-input" />
+                  </div>
+                  <div className="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="E.g. john@example.com" required className="modern-input" />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Subject</label>
+                  <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder="How can we help you?" required className="modern-input" />
+                </div>
+                <div className="form-group">
+                  <label>Message</label>
+                  <textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Type your message here..." rows="4" required className="modern-textarea"></textarea>
+                </div>
+                <div className="form-submit-row">
+                  <button type="submit" className="submit-contact-btn">
+                    <span>Send Message</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="22" y1="2" x2="11" y2="13"></line>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </main>
       </div>
