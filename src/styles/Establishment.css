@@ -1,0 +1,317 @@
+/* Establishment.css */
+.establishment-content {
+  color: var(--text-primary-color, white);
+  max-width: 1200px;
+  transition: max-width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sidebar.collapsed ~ main.establishment-content {
+  max-width: 1400px;
+}
+
+/* Header */
+.establishment-header {
+  margin-bottom: 1.75rem;
+}
+
+.establishment-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary-color, #ffffff);
+  letter-spacing: -0.5px;
+}
+
+.establishment-subtitle {
+  color: var(--text-secondary-color, #94a3b8);
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+/* Top Tabs - Newly Tagged / Already Applied */
+.est-top-tabs {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.est-top-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.08));
+  background-color: var(--card-bg-color, #1e293b);
+  color: var(--text-secondary-color, #94a3b8);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.est-top-tab:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-primary-color, #e2e8f0);
+}
+
+.est-top-tab.newly-tagged.active {
+  background-color: rgba(16, 185, 129, 0.1);
+  border-color: #10b981;
+  color: #34d399;
+}
+
+.est-top-tab.already-applied.active {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+  color: #60a5fa;
+}
+
+/* Filter Tab Bar */
+.establishment-filter-bar {
+  display: flex;
+  gap: 0.25rem;
+  padding: 4px;
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.05));
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+.establishment-filter-tab {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary-color, #94a3b8);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.establishment-filter-tab:hover:not(.active) {
+  color: var(--text-primary-color, #e2e8f0);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.establishment-filter-tab.active {
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+}
+
+/* Establishment List */
+.establishment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Establishment Card */
+.est-list-card {
+  background-color: var(--card-bg-color, #273142);
+  border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.03));
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.est-list-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Icon */
+.est-icon-container {
+  flex-shrink: 0;
+}
+
+.est-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Content */
+.est-card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.est-title-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.est-card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary-color, white);
+  letter-spacing: -0.2px;
+}
+
+.est-details-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.est-detail-text {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  color: var(--text-secondary-color, #9ca3af);
+}
+
+.est-bottom-info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 0.15rem;
+}
+
+.est-date-time,
+.est-ref-bottom {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary-color, #9ca3af);
+  font-weight: 500;
+}
+
+/* Actions / No Action */
+.est-card-actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-left: 1.5rem;
+  align-self: center;
+}
+
+.est-no-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-secondary-color, #94a3b8);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: default;
+  transition: color 0.2s;
+}
+
+.est-list-card:hover .est-no-action {
+  color: var(--text-primary-color, #cbd5e1);
+}
+
+/* ===== Light Mode Overrides ===== */
+:root.light-mode .establishment-content {
+  color: #0f172a;
+}
+
+:root.light-mode .establishment-title {
+  color: #0f172a;
+}
+
+:root.light-mode .establishment-subtitle {
+  color: #64748b;
+}
+
+:root.light-mode .est-top-tab {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
+:root.light-mode .est-top-tab:hover {
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+:root.light-mode .est-top-tab.newly-tagged.active {
+  background-color: rgba(16, 185, 129, 0.08);
+  border-color: #10b981;
+  color: #059669;
+}
+
+:root.light-mode .est-top-tab.already-applied.active {
+  background-color: rgba(59, 130, 246, 0.08);
+  border-color: #3b82f6;
+  color: #2563eb;
+}
+
+:root.light-mode .establishment-filter-bar {
+  background-color: #f1f5f9;
+  border-color: #e2e8f0;
+}
+
+:root.light-mode .establishment-filter-tab {
+  color: #64748b;
+}
+
+:root.light-mode .establishment-filter-tab:hover:not(.active) {
+  color: #0f172a;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+:root.light-mode .establishment-filter-tab.active {
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  color: #ffffff;
+}
+
+:root.light-mode .est-list-card {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+}
+
+:root.light-mode .est-list-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06);
+}
+
+:root.light-mode .est-card-title {
+  color: #0f172a;
+}
+
+:root.light-mode .est-detail-text,
+:root.light-mode .est-date-time,
+:root.light-mode .est-ref-bottom,
+:root.light-mode .est-no-action {
+  color: #64748b;
+}
+
+:root.light-mode .est-list-card:hover .est-no-action {
+  color: #334155;
+}
+
+:root.light-mode .search-input {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}
+
+:root.light-mode .search-input::placeholder {
+  color: #94a3b8;
+}
