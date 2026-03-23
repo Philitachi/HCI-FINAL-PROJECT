@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import TopNavigationBar from '../components/TopNavigationBar';
 import '../styles/HomePage.css';
-import backgroundImage from '../assets/backgroundImage.svg';
+import backgroundImage from '../assets/backgroundImage.png';
 import AboutFSIS from './AboutFSIS';
 import HowItWorks from './HowItWorks';
 import FeaturePage from './FeaturePage';
