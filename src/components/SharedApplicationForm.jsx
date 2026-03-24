@@ -91,8 +91,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
     representativeName: '',
     tradeName: '',
     occupancyType: '',
-    establishmentType: '',
-    customEstablishmentType: '',
+
     totalBuildArea: '',
     numberOfOccupant: '',
     address: '',
@@ -120,8 +119,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
     ownerName: useRef(null),
     representativeName: useRef(null),
     occupancyType: useRef(null),
-    establishmentType: useRef(null),
-    customEstablishmentType: useRef(null),
+
     totalBuildArea: useRef(null),
     numberOfOccupant: useRef(null),
     region: useRef(null),
@@ -173,18 +171,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
 
   const occupancyOptions = ['Residential', 'Commercial', 'Industrial', 'Institutional', 'Assembly', 'Educational', 'Storage', 'Mixed Occupancy'];
 
-  const establishmentTypeMap = {
-    'Residential': ['Single Detached House', 'Apartment', 'Condominium', 'Boarding House', 'Dormitory', 'Townhouse', 'Others'],
-    'Commercial': ['Restaurant / Fast Food', 'Café', 'Retail Store / Shop', 'Supermarket / Grocery', 'Mall', 'Bank', 'Office', 'Internet Café', 'Salon / Barbershop', 'Others'],
-    'Industrial': ['Factory', 'Warehouse', 'Manufacturing Plant', 'Processing Facility', 'Storage Facility', 'Others'],
-    'Educational': ['School (Elementary / High School)', 'College / University', 'Training Center', 'Review Center', 'Others'],
-    'Assembly': ['Church', 'Theater / Cinema', 'Gymnasium', 'Convention Center', 'Auditorium', 'Event Hall', 'Others'],
-    'Institutional': ['Hospital', 'Clinic', 'Nursing Home', 'Jail / Prison', 'Orphanage', 'Others'],
-    'Storage': ['Warehouse', 'Storage Facility', 'Others'],
-    'Mixed Occupancy': ['Others'],
-  };
 
-  const establishmentTypeOptions = formData.occupancyType ? (establishmentTypeMap[formData.occupancyType] || ['Others']) : [];
 
   // PSGC address options
   const regionOptions = useMemo(() => regionsData.map(r => r.name), []);
@@ -253,15 +240,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
         ...prev,
         [name]: type === 'checkbox' ? checked : value
       };
-      // Reset establishment type when occupancy changes
-      if (name === 'occupancyType') {
-        updated.establishmentType = '';
-        updated.customEstablishmentType = '';
-      }
-      // Clear custom input when switching away from "Others"
-      if (name === 'establishmentType' && value !== 'Others') {
-        updated.customEstablishmentType = '';
-      }
+
       // Cascading address resets + code lookup
       if (name === 'region') {
         updated.regionCode = regionCodeMap[value] || '';
@@ -305,7 +284,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
       const errors = {};
       const requiredFields = [
         'establishmentName', 'ownerName', 'representativeName',
-        'occupancyType', 'establishmentType', 'totalBuildArea', 'numberOfOccupant',
+        'occupancyType', 'totalBuildArea', 'numberOfOccupant',
         'region', 'province', 'city', 'barangay', 'fireStation', 'mobile'
       ];
 
@@ -318,11 +297,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
         }
       });
 
-      // Special check for custom establishment type if "Others" is selected
-      if (formData.establishmentType === 'Others' && !formData.customEstablishmentType) {
-        errors.customEstablishmentType = true;
-        if (!firstInvalidField) firstInvalidField = 'customEstablishmentType';
-      }
+
 
       if (Object.keys(errors).length > 0) {
         setFieldErrors(errors);
@@ -588,58 +563,29 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
                 />
               </div>
 
-              <div className="form-group full-width form-grid-three">
-                <div className="form-group">
-                  <label className="form-label">Trade Name</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Enter trade name"
-                    name="tradeName"
-                    value={formData.tradeName}
+              <div className="form-group">
+                <label className="form-label">Trade Name</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  placeholder="Enter trade name"
+                  name="tradeName"
+                  value={formData.tradeName}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Type Of Occupancy <span className="required-asterisk">*</span></label>
+                <div ref={refs.occupancyType}>
+                  <CustomSelect
+                    name="occupancyType"
+                    value={formData.occupancyType}
+                    options={occupancyOptions}
                     onChange={handleInputChange}
+                    placeholder="Select type of occupancy"
+                    error={fieldErrors.occupancyType}
                   />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Type Of Occupancy <span className="required-asterisk">*</span></label>
-                  <div ref={refs.occupancyType}>
-                    <CustomSelect
-                      name="occupancyType"
-                      value={formData.occupancyType}
-                      options={occupancyOptions}
-                      onChange={handleInputChange}
-                      placeholder="Select type of occupancy"
-                      error={fieldErrors.occupancyType}
-                    />
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Type Of Establishment <span className="required-asterisk">*</span></label>
-                  <div ref={refs.establishmentType}>
-                    <CustomSelect
-                      name="establishmentType"
-                      value={formData.establishmentType}
-                      options={establishmentTypeOptions}
-                      onChange={handleInputChange}
-                      placeholder={formData.occupancyType ? "Select type of establishment" : "Select occupancy first"}
-                      disabled={!formData.occupancyType}
-                      error={fieldErrors.establishmentType}
-                    />
-                  </div>
-                  {formData.establishmentType === 'Others' && (
-                    <input
-                      ref={refs.customEstablishmentType}
-                      type="text"
-                      className={`form-input ${fieldErrors.customEstablishmentType ? 'input-error' : ''}`}
-                      placeholder="Enter custom establishment type"
-                      name="customEstablishmentType"
-                      value={formData.customEstablishmentType}
-                      onChange={handleInputChange}
-                      style={{ marginTop: '0.75rem' }}
-                    />
-                  )}
                 </div>
               </div>
 
@@ -1104,10 +1050,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
                 <span className="detail-label">PEZA Establishment</span>
                 <span className="detail-value">{formData.isPeza ? 'Yes' : 'No'}</span>
               </div>
-              <div className="confirm-detail-item">
-                <span className="detail-label">Type of Establishment</span>
-                <span className="detail-value">{formData.establishmentType === 'Others' ? (formData.customEstablishmentType || 'Others') : (formData.establishmentType || '---')}</span>
-              </div>
+
             </div>
 
             {/* Contact Information */}
