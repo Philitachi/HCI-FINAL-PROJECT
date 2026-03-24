@@ -110,7 +110,7 @@ const OngoingApplicationsIssuance = () => {
                   </div>
 
                   <div className="app-card-actions">
-                    <button className="btn-continue">Access full details</button>
+                    <button className="btn-continue" onClick={() => navigate(`/applications/${app.id}`)}>Access full details</button>
                   </div>
                 </div>
               ))}

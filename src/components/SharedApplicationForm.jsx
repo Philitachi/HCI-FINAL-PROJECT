@@ -171,6 +171,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
   const uploadedCount = Object.keys(uploadedFiles).length;
 
   const occupancyOptions = ['Residential', 'Commercial', 'Industrial', 'Institutional', 'Assembly', 'Educational', 'Storage', 'Mixed Occupancy'];
+  const buildingOptions = ['High Rise', 'Mid Rise', 'Low Rise', 'Single Detached', 'Rowhouse', 'Apartment', 'Condominium', 'Warehouse', 'Other'];
 
 
 
@@ -564,7 +565,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
                     />
                   </div>
 
-                  <div className="form-group">
+                  <div className="form-group full-width">
                     <label className="form-label">Trade Name</label>
                     <input
                       type="text"
@@ -586,6 +587,19 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
                         onChange={handleInputChange}
                         placeholder="Select type of occupancy"
                         error={fieldErrors.occupancyType}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Type Of Building</label>
+                    <div ref={refs.buildingType}>
+                      <CustomSelect
+                        name="buildingType"
+                        value={formData.buildingType || ''}
+                        options={buildingOptions}
+                        onChange={handleInputChange}
+                        placeholder="Select type of building"
                       />
                     </div>
                   </div>
@@ -1032,6 +1046,10 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
               <div className="confirm-detail-item">
                 <span className="detail-label">Type of Occupancy</span>
                 <span className="detail-value">{formData.occupancyType || '---'}</span>
+              </div>
+              <div className="confirm-detail-item">
+                <span className="detail-label">Type of Building</span>
+                <span className="detail-value">{formData.buildingType || '---'}</span>
               </div>
               <div className="confirm-detail-item">
                 <span className="detail-label">PEZA Establishment</span>

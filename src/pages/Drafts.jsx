@@ -106,6 +106,7 @@ const Drafts = () => {
 
                   <div className="draft-card-actions">
                     <button className="btn-draft-continue">Continue on this application</button>
+                    <button className="btn-draft-delete">Delete this application</button>
                   </div>
                 </div>
               ))}

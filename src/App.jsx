@@ -26,6 +26,7 @@ import OngoingApplicationsIssuance from './pages/myapplication/OngoingApplicatio
 import CompletedApplications from './pages/myapplication/CompletedApplications';
 import Payment from './pages/Payment';
 import CancelledApplications from './pages/myapplication/CancelledApplications';
+import FullDetails from './pages/FullDetails';
 import ResetPassword from './pages/ResetPassword';
 import CreateNewPassword from './pages/CreateNewPassword';
 import PasswordResetSuccess from './pages/PasswordResetSuccess';
@@ -140,6 +141,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CompletedApplications />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/applications/:id" 
+          element={
+            <ProtectedRoute>
+              <FullDetails />
             </ProtectedRoute>
           } 
         />
