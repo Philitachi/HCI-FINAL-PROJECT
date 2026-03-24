@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { collection, query, where, onSnapshot, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../../firebase';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import MyApplicationsNav from '../../components/MyApplicationsNav';
@@ -8,51 +11,74 @@ import './CancelledApplications.css';
 import '../Dashboard/dashboard.css';
 
 const CancelledApplications = () => {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState('cancelled');
+  const [allApps, setAllApps] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const cancelledApplications = [
-    {
-      id: "APP-2026-0423",
-      title: "Santos Hardware & Construction",
-      date: "2026-01-28 2:15 PM",
-      type: "FSIC - Business Permit (Renewal)",
-      location: "BUTUAN CITY FIRE STN/AMPAYON/LIBERTAD SUB STN",
-      status: "Application Cancelled",
-      refNo: "REF-0003281945",
-    },
-    {
-      id: "APP-2026-0387",
-      title: "Garcia Auto Parts Center",
-      date: "2026-01-15 11:42 AM",
-      type: "FSIC - Occupancy Permit (New)",
-      location: "BUTUAN CITY FIRE STN/BAAN/RIVERSIDE SUB STN",
-      status: "Application Cancelled",
-      refNo: "REF-0003108276",
-    },
-  ];
+  useEffect(() => {
+    const session = JSON.parse(localStorage.getItem('userSession') || '{}');
+    const userEmail = session.email;
 
-  const declinedApplications = [
-    {
-      id: "APP-2026-0512",
-      title: "Acierto Sari-Sari Store",
-      date: "2026-02-11 7:32 AM",
-      type: "FSIC - Business Permit (New)",
-      location: "BUTUAN CITY FIRE STN/AMPAYON/LIBERTAD SUB STN",
-      status: "Application Declined",
-      refNo: "REF-0002421372",
-    },
-    {
-      id: "APP-2026-0498",
-      title: "Reyes Bakeshop & Café",
-      date: "2026-02-05 3:18 PM",
-      type: "Fire Safety Evaluation Clearance",
-      location: "BUTUAN CITY FIRE STN/BAAN/RIVERSIDE SUB STN",
-      status: "Application Declined",
-      refNo: "REF-0002309841",
-    },
-  ];
+    if (!userEmail) {
+      setAllApps([]);
+      setLoading(false);
+      return;
+    }
 
-  const applications = filter === 'cancelled' ? cancelledApplications : declinedApplications;
+    const applicationsRef = collection(db, 'applications');
+    const q = query(applicationsRef, where('userEmail', '==', userEmail));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const apps = snapshot.docs
+        .map(docSnap => {
+          const data = docSnap.data();
+          let dateStr = '';
+          let timeStr = '';
+          if (data.createdAt) {
+            const date = data.createdAt.toDate();
+            dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+            timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+          }
+          const locationParts = [data.fireStation, data.barangay, data.city].filter(Boolean);
+          const location = locationParts.join(', ') || data.address || '---';
+
+          return {
+            id: docSnap.id,
+            title: data.establishmentName || '---',
+            date: dateStr,
+            time: timeStr,
+            type: data.applicationType || '---',
+            location: location,
+            status: data.status || '',
+            refNo: data.referenceNumber || '---',
+          };
+        })
+        .filter(app => {
+          const s = app.status.trim().toLowerCase();
+          return s === 'cancelled' || s === 'declined';
+        })
+        .sort((a, b) => {
+          const dateA = a.date || '';
+          const dateB = b.date || '';
+          return dateB.localeCompare(dateA);
+        });
+
+      setAllApps(apps);
+      setLoading(false);
+    }, (error) => {
+      console.error('Error fetching cancelled applications:', error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Filter by selected tab
+  const applications = allApps.filter(app => {
+    const s = app.status.trim().toLowerCase();
+    return filter === 'cancelled' ? s === 'cancelled' : s === 'declined';
+  });
 
   return (
     <div className="dashboard-container">
@@ -100,13 +126,15 @@ const CancelledApplications = () => {
             </div>
           </MyApplicationsNav>
 
-          {applications.length > 0 ? (
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
+          ) : applications.length > 0 ? (
             <div className="applications-list">
               {applications.map((app) => (
                 <div key={app.id} className="app-list-card">
                   <div className="app-icon-container">
                     <div className="app-icon-circle">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1c64f2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
                         <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -134,7 +162,7 @@ const CancelledApplications = () => {
                             </>
                           )}
                         </svg>
-                        {app.status}
+                        {filter === 'declined' ? 'Application Declined' : 'Application Cancelled'}
                       </div>
                     </div>
 
@@ -163,7 +191,7 @@ const CancelledApplications = () => {
                             <line x1="8" y1="2" x2="8" y2="6"></line>
                             <line x1="3" y1="10" x2="21" y2="10"></line>
                           </svg>
-                          {app.date}
+                          {app.date} {app.time}
                         </span>
                         <span className="app-ref-bottom">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -177,7 +205,15 @@ const CancelledApplications = () => {
                   </div>
 
                   <div className="app-card-actions">
-                    <button className="btn-reattempt">
+                    <button className="btn-continue" onClick={() => navigate(`/applications/${app.id}`)}>Access full details</button>
+                    <button className="btn-reattempt" onClick={async () => {
+                      try {
+                        await updateDoc(doc(db, 'applications', app.id), { status: 'Completeness Check', updatedAt: serverTimestamp() });
+                      } catch (err) {
+                        console.error('Error reattempting:', err);
+                        alert('Failed to reattempt. Please try again.');
+                      }
+                    }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="23 4 23 10 17 10"></polyline>
                         <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>

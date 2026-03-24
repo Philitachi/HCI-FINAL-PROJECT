@@ -1,31 +1,109 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { collection, query, where, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import EmptyState from '../components/EmptyState';
 import '../styles/Drafts.css';
+import '../styles/ConfirmModal.css';
 import './Dashboard/dashboard.css';
 
 const Drafts = () => {
-  const draftsList = [
-    {
-      id: "APP-2026-0955",
-      title: "Coastal Roasters Expansion",
-      date: "Oct 12, 2026",
-      type: "Fire Safety Evaluation Clearance",
-      location: "124 Harbor Blvd, West District",
-      status: "Draft",
-      refNo: "REF-9928-A1"
-    },
-    {
-      id: "APP-2026-0941",
-      title: "Vertex Tower Modifications",
-      date: "Oct 08, 2026",
-      type: "Fire Safety Inspection Certificate",
-      location: "450 Peak Street, Upper East",
-      status: "Draft",
-      refNo: "REF-4491-B7"
+  const navigate = useNavigate();
+  const [draftsList, setDraftsList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [deleteConfirm, setDeleteConfirm] = useState(null); // { id, title }
+
+  useEffect(() => {
+    const session = JSON.parse(localStorage.getItem('userSession') || '{}');
+    const userEmail = session.email;
+
+    if (!userEmail) {
+      setDraftsList([]);
+      setLoading(false);
+      return;
     }
-  ];
+
+    const applicationsRef = collection(db, 'applications');
+    const q = query(applicationsRef, where('userEmail', '==', userEmail));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const drafts = snapshot.docs
+        .map(docSnap => {
+          const data = docSnap.data();
+          let dateStr = '';
+          let timeStr = '';
+          if (data.updatedAt) {
+            const date = data.updatedAt.toDate();
+            dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+            timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+          } else if (data.createdAt) {
+            const date = data.createdAt.toDate();
+            dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+            timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+          }
+          const locationParts = [data.fireStation, data.barangay, data.city].filter(Boolean);
+          const location = locationParts.join(', ') || data.address || '---';
+
+          return {
+            id: docSnap.id,
+            title: data.establishmentName || '---',
+            date: dateStr,
+            time: timeStr,
+            type: data.applicationType || '---',
+            location: location,
+            status: data.status || '',
+            refNo: data.referenceNumber || '---',
+            rawData: data
+          };
+        })
+        .filter(app => app.status.trim().toLowerCase() === 'draft')
+        .sort((a, b) => b.date.localeCompare(a.date));
+
+      setDraftsList(drafts);
+      setLoading(false);
+    }, (error) => {
+      console.error('Error fetching drafts:', error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleDeleteDraft = async (draftId) => {
+    try {
+      await deleteDoc(doc(db, 'applications', draftId));
+      setDeleteConfirm(null);
+    } catch (error) {
+      console.error('Error deleting draft:', error);
+      alert('Failed to delete draft. Please try again.');
+    }
+  };
+
+  const handleContinueDraft = (draft) => {
+    const type = (draft.type || '').toUpperCase();
+    let route = '/new-application/evaluation'; // default
+
+    // Map application type to route
+    if (type.includes('FSIC') && type.includes('OCCUPANCY')) {
+      route = '/new-application/occupancy';
+    } else if (type.includes('FSIC') || type.includes('CERTIFICATE') || type.includes('INSPECTION')) {
+      route = '/new-application/certificate';
+    } else if (type.includes('EVALUATION') || type.includes('FSEC')) {
+      route = '/new-application/evaluation';
+    } else {
+      route = '/new-application/clearance';
+    }
+
+    navigate(route, {
+      state: {
+        draftId: draft.id,
+        draftData: draft.rawData,
+        applicationType: draft.type
+      }
+    });
+  };
 
   return (
     <div className="dashboard-container">
@@ -38,7 +116,9 @@ const Drafts = () => {
               <p className="drafts-subtitle">Pick up right where you left off. These applications are securely saved but not yet submitted.</p>
             </div>
 
-          {draftsList.length > 0 ? (
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading drafts...</div>
+          ) : draftsList.length > 0 ? (
             <div className="drafts-list">
               {draftsList.map((app) => (
                 <div key={app.id} className="draft-list-card">
@@ -62,7 +142,7 @@ const Drafts = () => {
                           <circle cx="12" cy="12" r="10"></circle>
                           <polyline points="12 6 12 12 16 14"></polyline>
                         </svg>
-                        {app.status}
+                        Draft
                       </div>
                     </div>
 
@@ -91,7 +171,7 @@ const Drafts = () => {
                             <line x1="8" y1="2" x2="8" y2="6"></line>
                             <line x1="3" y1="10" x2="21" y2="10"></line>
                           </svg>
-                          Last edited: {app.date} 10:30 AM
+                          Last edited: {app.date} {app.time}
                         </span>
                         <span className="draft-ref-bottom">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -105,8 +185,8 @@ const Drafts = () => {
                   </div>
 
                   <div className="draft-card-actions">
-                    <button className="btn-draft-continue">Continue on this application</button>
-                    <button className="btn-draft-delete">Delete this application</button>
+                    <button className="btn-draft-continue" onClick={() => handleContinueDraft(app)}>Continue on this application</button>
+                    <button className="btn-draft-delete" onClick={() => setDeleteConfirm({ id: app.id, title: app.title })}>Delete this application</button>
                   </div>
                 </div>
               ))}
@@ -117,8 +197,32 @@ const Drafts = () => {
 
         </main>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="delete-confirm-overlay" onClick={() => setDeleteConfirm(null)}>
+          <div className="delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="delete-confirm-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+            </div>
+            <h3 className="delete-confirm-title">Delete Draft?</h3>
+            <p className="delete-confirm-text">
+              Are you sure you want to delete the draft for <strong>"{deleteConfirm.title}"</strong>? This action cannot be undone.
+            </p>
+            <div className="delete-confirm-actions">
+              <button className="btn-confirm-no" onClick={() => setDeleteConfirm(null)}>No, Keep it</button>
+              <button className="btn-confirm-yes" onClick={() => handleDeleteDraft(deleteConfirm.id)}>Yes, Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Drafts;
+

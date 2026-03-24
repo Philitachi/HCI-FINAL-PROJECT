@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { collection, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
 import '../styles/NewApplication.css';
 import '../styles/Complaint.css';
 import EmailVerifiedSVG from '../assets/EmailVerified.svg';
@@ -52,7 +54,7 @@ export const CustomSelect = ({ name, value, options, onChange, placeholder, disa
   );
 };
 
-const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
+const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftData }) => {
   const navigate = useNavigate();
   // We'll map the previous steps 2,3,4 to 1,2,3 for this shared component
   const [step, setStep] = useState(1);
@@ -134,6 +136,108 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [dragActiveId, setDragActiveId] = useState(null);
   const [showPezaModal, setShowPezaModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [submittedRef, setSubmittedRef] = useState('');
+  const [successType, setSuccessType] = useState('Submit'); // 'Submit', 'Draft', or 'Error'
+
+  // Pre-fill form data from draft if provided
+  useEffect(() => {
+    if (draftData) {
+      setFormData(prev => ({
+        ...prev,
+        establishmentName: draftData.establishmentName || '',
+        ownerName: draftData.ownerName || '',
+        representativeName: draftData.representativeName || '',
+        tradeName: draftData.tradeName || '',
+        occupancyType: draftData.occupancyType || '',
+        totalBuildArea: draftData.totalBuildArea || '',
+        numberOfOccupant: draftData.numberOfOccupant || '',
+        address: draftData.address || '',
+        region: draftData.region || '',
+        regionCode: draftData.regionCode || '',
+        province: draftData.province || '',
+        provinceCode: draftData.provinceCode || '',
+        city: draftData.city || '',
+        cityCode: draftData.cityCode || '',
+        barangay: draftData.barangay || '',
+        barangayCode: draftData.barangayCode || '',
+        fireStation: draftData.fireStation || '',
+        isPeza: draftData.isPeza || false,
+        landline: draftData.landline || '',
+        mobile: draftData.mobile || '',
+      }));
+    }
+  }, [draftData]);
+
+  // Generate a random reference number
+  const generateRefNumber = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const nums = Math.floor(1000 + Math.random() * 9000);
+    const suffix = chars[Math.floor(Math.random() * chars.length)] + Math.floor(1 + Math.random() * 9);
+    return `REF-${nums}-${suffix}`;
+  };
+
+  // Save application data to Firestore
+  const handleSubmitToFirebase = async (status = 'Completeness Check') => {
+    setIsSubmitting(true);
+    try {
+      const session = JSON.parse(localStorage.getItem('userSession') || '{}');
+      const refNumber = draftId ? (draftData?.referenceNumber || generateRefNumber()) : generateRefNumber();
+
+      const applicationData = {
+        // Form data
+        establishmentName: formData.establishmentName,
+        ownerName: formData.ownerName,
+        representativeName: formData.representativeName,
+        tradeName: formData.tradeName,
+        occupancyType: formData.occupancyType,
+        buildingType: formData.buildingType || '',
+        totalBuildArea: formData.totalBuildArea,
+        numberOfOccupant: formData.numberOfOccupant,
+        address: formData.address,
+        region: formData.region,
+        province: formData.province,
+        city: formData.city,
+        barangay: formData.barangay,
+        fireStation: formData.fireStation,
+        isPeza: formData.isPeza,
+        landline: formData.landline,
+        mobile: formData.mobile,
+        // Meta data
+        applicationType: selectedCategoryTitle,
+        status: status,
+        referenceNumber: refNumber,
+        userEmail: session.email || '',
+        userName: `${session.firstName || ''} ${session.lastName || ''}`.trim(),
+        updatedAt: serverTimestamp(),
+      };
+
+      if (draftId) {
+        // Update existing draft document
+        await updateDoc(doc(db, 'applications', draftId), applicationData);
+      } else {
+        // Create new document
+        applicationData.createdAt = serverTimestamp();
+        await addDoc(collection(db, 'applications'), applicationData);
+      }
+
+      if (status === 'Draft') {
+        setSuccessType('Draft');
+        setShowSuccessModal(true);
+      } else {
+        setSuccessType('Submit');
+        setSubmittedRef(refNumber);
+        setShowSuccessModal(true);
+      }
+    } catch (error) {
+      console.error('Error saving application:', error);
+      setSuccessType('Error');
+      setShowSuccessModal(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const getRequirements = (title) => {
     if (!title) return [];
@@ -325,36 +429,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
         return; // Prevent advancing
       }
     } else if (step === 2) {
-      if (requiredDocuments.length > 0) {
-        const errors = {};
-        let firstInvalidReq = null;
-
-        requiredDocuments.forEach((req, idx) => {
-          if (!uploadedFiles[idx]) {
-            errors[idx] = true;
-            if (firstInvalidReq === null) firstInvalidReq = idx;
-          }
-        });
-
-        if (Object.keys(errors).length > 0) {
-          setReqErrors(errors);
-
-          if (firstInvalidReq !== null && reqRefs.current[firstInvalidReq]) {
-            const refElem = reqRefs.current[firstInvalidReq];
-            refElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            // Add pulse to the drop zone
-            const dropZone = refElem.querySelector('.req-drop-zone');
-            if (dropZone) {
-              dropZone.classList.add('error-pulse');
-              setTimeout(() => {
-                if (dropZone) dropZone.classList.remove('error-pulse');
-              }, 1000);
-            }
-          }
-          return; // Prevent advancing
-        }
-      }
+      // Document upload validation is skipped for now
     }
 
     setStep(step + 1);
@@ -808,7 +883,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
                 </button>
 
                 <div className="app-form-actions-right">
-                  <button type="button" className="btn-draft" onClick={() => alert('Saved to drafts!')}>
+                  <button type="button" className="btn-draft" onClick={() => handleSubmitToFirebase('Draft')} disabled={isSubmitting}>
                     Save to draft
                   </button>
 
@@ -962,7 +1037,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
             </button>
 
             <div className="app-form-actions-right">
-              <button type="button" className="btn-draft" onClick={() => alert('Saved to drafts!')}>
+              <button type="button" className="btn-draft" onClick={() => handleSubmitToFirebase('Draft')} disabled={isSubmitting}>
                 Save to draft
               </button>
               <button type="button" className="btn-submit" onClick={handleNextStep}>
@@ -1105,14 +1180,63 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
             </button>
 
             <div className="app-form-actions-right">
-              <button type="button" className="btn-draft" onClick={() => alert('Saved to drafts!')}>
+              <button type="button" className="btn-draft" onClick={() => handleSubmitToFirebase('Draft')} disabled={isSubmitting}>
                 Save to draft
               </button>
-              <button type="button" className="btn-submit" onClick={() => { alert('Application successfully submitted!'); navigate('/dashboard'); }}>
+              <button type="button" className="btn-submit" onClick={() => handleSubmitToFirebase()} disabled={isSubmitting}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 Submit Application
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="success-modal-overlay">
+          <div className="success-modal">
+            <div className="success-modal-icon">
+              <div className={`success-icon-circle ${successType === 'Error' ? 'error-icon' : ''}`}>
+                {successType === 'Error' ? (
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                  </svg>
+                ) : (
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                )}
+              </div>
+            </div>
+            <h2 className="success-modal-title">
+              {successType === 'Draft' ? 'Draft Saved Successfully!' : 
+               successType === 'Error' ? 'Submission Failed' : 'Application Submitted!'}
+            </h2>
+            <p className="success-modal-message">
+              {successType === 'Draft' 
+                ? 'Your application has been saved to your drafts. You can continue it anytime.' 
+                : successType === 'Error'
+                ? 'Something went wrong while saving your application. Please try again later.'
+                : 'You have successfully submitted your application. Kindly check it on your ongoing applications.'}
+            </p>
+            {successType === 'Submit' && submittedRef && (
+              <div className="success-ref-box">
+                <span className="success-ref-label">Reference Number:</span>
+                <span className="success-ref-value">{submittedRef}</span>
+              </div>
+            )}
+            <button className={`btn-success-close ${successType === 'Error' ? 'btn-error-retry' : ''}`} onClick={() => {
+              setShowSuccessModal(false);
+              if (successType !== 'Error') {
+                navigate(successType === 'Draft' ? '/drafts' : '/dashboard');
+              }
+            }}>
+              {successType === 'Error' ? 'Try Again' : `Go to ${successType === 'Draft' ? 'Drafts' : 'Dashboard'}`}
+            </button>
           </div>
         </div>
       )}

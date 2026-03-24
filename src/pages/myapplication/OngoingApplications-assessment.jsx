@@ -1,26 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import MyApplicationsNav from '../../components/MyApplicationsNav';
 import Pagination from '../../components/Pagination';
 import EmptyState from '../../components/EmptyState';
+import useApplications from '../../hooks/useApplications';
 import './OngoingApplications-assessment.css';
 import '../Dashboard/dashboard.css';
 
 const OngoingApplicationsAssessment = () => {
-  const applications = [
-    {
-      id: "APP-2026-0845",
-      title: "Meridian Labs Facility",
-      date: "Oct 10, 2026",
-      time: "09:00 AM",
-      type: "Fire Safety Inspection Certificate",
-      location: "890 Tech Park Way, North District",
-      status: "Assessment",
-      refNo: "REF-7734-B2",
-      isActive: false
-    }
-  ];
+  const navigate = useNavigate();
+  const { applications, loading } = useApplications('Assessment');
 
   return (
     <div className="dashboard-container">
@@ -51,7 +42,9 @@ const OngoingApplicationsAssessment = () => {
             </div>
           </MyApplicationsNav>
 
-          {applications.length > 0 ? (
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
+          ) : applications.length > 0 ? (
             <div className="applications-list">
               {applications.map((app) => (
                 <div key={app.id} className={`app-list-card ${app.isActive ? 'active-card' : ''}`}>

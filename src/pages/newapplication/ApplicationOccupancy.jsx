@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import SharedApplicationForm from '../../components/SharedApplicationForm';
@@ -6,11 +7,20 @@ import '../../styles/NewApplication.css';
 import '../Dashboard/dashboard.css';
 
 const ApplicationOccupancy = () => {
+  const location = useLocation();
+  const draftState = location.state || {};
   const [selectedSubOption, setSelectedSubOption] = useState(null);
 
   const subOptions = [
     { id: 'fsic_occ_permit', title: 'FSIC - OCCUPANCY PERMIT', desc: 'Fire Safety Inspection Certificate (FSIC - Occupancy Permit)' }
   ];
+
+  useEffect(() => {
+    if (draftState.draftId && draftState.applicationType) {
+      const match = subOptions.find(s => s.title === draftState.applicationType);
+      setSelectedSubOption(match || subOptions[0]);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="dashboard-container">
@@ -59,6 +69,8 @@ const ApplicationOccupancy = () => {
               <SharedApplicationForm 
                 selectedCategoryTitle={selectedSubOption.title}
                 onBack={() => setSelectedSubOption(null)}
+                draftId={draftState.draftId}
+                draftData={draftState.draftData}
               />
             )}
           </div>

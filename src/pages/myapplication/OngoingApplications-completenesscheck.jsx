@@ -5,25 +5,13 @@ import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import MyApplicationsNav from '../../components/MyApplicationsNav';
 import Pagination from '../../components/Pagination';
 import EmptyState from '../../components/EmptyState';
+import useApplications from '../../hooks/useApplications';
 import './OngoingApplications-completenesscheck.css';
 import '../Dashboard/dashboard.css';
 
 const OngoingApplicationsCompletenessCheck = () => {
   const navigate = useNavigate();
-
-  const applications = [
-    {
-      id: "0002509664",
-      title: "demoForSchoolPurposes",
-      date: "2026-03-20",
-      time: "5:25 PM",
-      type: "Fire Safety Evaluation Clearance",
-      location: "BUTUAN CITY FIRE STN/AMPAYON/LIBERTAD SUB STN",
-      status: "Completeness Check",
-      refNo: "REF-0002509664",
-      isActive: false
-    }
-  ];
+  const { applications, loading } = useApplications('Completeness Check');
 
   return (
     <div className="dashboard-container">
@@ -54,7 +42,9 @@ const OngoingApplicationsCompletenessCheck = () => {
             </div>
           </MyApplicationsNav>
 
-          {applications.length > 0 ? (
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
+          ) : applications.length > 0 ? (
             <div className="applications-list">
               {applications.map((app) => (
                 <div key={app.id} className={`app-list-card ${app.isActive ? 'active-card' : ''}`}>
@@ -78,7 +68,7 @@ const OngoingApplicationsCompletenessCheck = () => {
                           <circle cx="12" cy="12" r="10"></circle>
                           <polyline points="12 6 12 12 16 14"></polyline>
                         </svg>
-                        {app.status}
+                        Completeness Check
                       </div>
                     </div>
 

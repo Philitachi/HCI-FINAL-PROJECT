@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import SharedApplicationForm from '../../components/SharedApplicationForm';
@@ -6,6 +7,8 @@ import '../../styles/NewApplication.css';
 import '../Dashboard/dashboard.css';
 
 const ApplicationCertificate = () => {
+  const location = useLocation();
+  const draftState = location.state || {};
   const [selectedSubOption, setSelectedSubOption] = useState(null);
 
   const subOptions = [
@@ -13,6 +16,13 @@ const ApplicationCertificate = () => {
     { id: 'fsic_bus_new', title: 'FSIC - BUSINESS PERMIT (NEW)', desc: 'Fire Safety Inspection Certificate (FSIC - Business Permit)' },
     { id: 'fsic_bus_new_with_occ', title: 'FSIC - BUSINESS PERMIT (NEW) - WITH THE LAST ISSUANCE OF OCCUPANCY PERMIT', desc: 'Fire Safety Inspection Certificate (FSIC - Business Permit)' }
   ];
+
+  useEffect(() => {
+    if (draftState.draftId && draftState.applicationType) {
+      const match = subOptions.find(s => s.title === draftState.applicationType);
+      setSelectedSubOption(match || subOptions[0]);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="dashboard-container">
@@ -61,6 +71,8 @@ const ApplicationCertificate = () => {
               <SharedApplicationForm 
                 selectedCategoryTitle={selectedSubOption.title}
                 onBack={() => setSelectedSubOption(null)}
+                draftId={draftState.draftId}
+                draftData={draftState.draftData}
               />
             )}
           </div>

@@ -42,6 +42,7 @@
   font-family: inherit;
   box-shadow: 0 3px 8px rgba(59, 130, 246, 0.15);
   white-space: nowrap;
+  margin-top: 0.5rem;
 }
 
 .btn-reattempt:hover {

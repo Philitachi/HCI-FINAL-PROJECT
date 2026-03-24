@@ -5,54 +5,13 @@ import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import MyApplicationsNav from '../../components/MyApplicationsNav';
 import Pagination from '../../components/Pagination';
 import EmptyState from '../../components/EmptyState';
+import useApplications from '../../hooks/useApplications';
 import './OngoingApplications-All.css';
 import '../Dashboard/dashboard.css';
 
 const OngoingApplicationsAll = () => {
   const navigate = useNavigate();
-
-  const applications = [
-    {
-      id: "APP-2026-0892",
-      title: "Coastal Roasters Expansion",
-      date: "Oct 12, 2026",
-      type: "Fire Safety Evaluation Clearance",
-      location: "124 Harbor Blvd, West District",
-      status: "Pending Review",
-      refNo: "REF-9928-A1",
-      isActive: false
-    },
-    {
-      id: "APP-2026-0845",
-      title: "Meridian Labs Facility",
-      date: "Oct 10, 2026",
-      type: "Fire Safety Inspection Certificate",
-      location: "890 Tech Park Way, North District",
-      status: "Assessment",
-      refNo: "REF-7734-B2",
-      isActive: false
-    },
-    {
-      id: "APP-2026-0811",
-      title: "Elm & Oak Furniture Showroom",
-      date: "Oct 08, 2026",
-      type: "Annual Renewal",
-      location: "455 Artisan Ave, Central District",
-      status: "Completeness Check",
-      refNo: "REF-5512-C3",
-      isActive: false
-    },
-    {
-      id: "APP-2026-0798",
-      title: "Nexus Logistics Hub",
-      date: "Oct 05, 2026",
-      type: "Fire Safety Evaluation Clearance",
-      location: "200 Industrial Pkwy, South District",
-      status: "Issuance",
-      refNo: "REF-3390-D4",
-      isActive: false
-    }
-  ];
+  const { applications, loading } = useApplications('all');
 
   return (
     <div className="dashboard-container">
@@ -83,7 +42,9 @@ const OngoingApplicationsAll = () => {
             </div>
           </MyApplicationsNav>
 
-          {applications.length > 0 ? (
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
+          ) : applications.length > 0 ? (
             <div className="applications-list">
               {applications.map((app) => (
                 <div key={app.id} className={`app-list-card ${app.isActive ? 'active-card' : ''}`}>
@@ -136,7 +97,7 @@ const OngoingApplicationsAll = () => {
                             <line x1="8" y1="2" x2="8" y2="6"></line>
                             <line x1="3" y1="10" x2="21" y2="10"></line>
                           </svg>
-                          {app.date} 10:30 AM
+                          {app.date} {app.time || ''}
                         </span>
                         <span className="app-ref-bottom">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

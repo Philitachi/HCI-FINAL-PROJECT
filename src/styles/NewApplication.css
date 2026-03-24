@@ -2047,3 +2047,131 @@
 :root.light-mode .renewal-info-banner p {
   color: #475569;
 }
+/* SUCCESS MODAL */
+.success-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+.success-modal {
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  width: 440px;
+  max-width: 90vw;
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.success-modal-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.success-icon-circle {
+  width: 90px;
+  height: 90px;
+  background: rgba(20, 184, 166, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(20, 184, 166, 0.2);
+}
+
+.success-modal-title {
+  color: var(--text-primary-color, #f8fafc);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.success-modal-message {
+  color: var(--text-secondary-color, #94a3b8);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+}
+
+.success-ref-box {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.success-ref-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary-color, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.success-ref-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #14b8a6;
+  font-family: monospace;
+}
+
+.btn-success-close {
+  width: 100%;
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.3);
+}
+
+.btn-success-close:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(20, 184, 166, 0.4);
+  filter: brightness(1.1);
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Light Mode Overrides for Success Modal */
+:root.light-mode .success-modal {
+  background-color: white;
+  border-color: #e2e8f0;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+}
+
+:root.light-mode .success-modal-title {
+  color: #0f172a;
+}
+
+:root.light-mode .success-modal-message {
+  color: #64748b;
+}
+
+:root.light-mode .success-ref-box {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}

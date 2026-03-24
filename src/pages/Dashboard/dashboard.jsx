@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
@@ -19,6 +19,12 @@ const Dashboard = () => {
       }
     } catch (e) { }
     return '';
+  });
+  const [metrics, setMetrics] = useState({
+    active: 0,
+    certificates: 0,
+    establishments: 0,
+    drafts: 0
   });
 
   useEffect(() => {
@@ -62,7 +68,39 @@ const Dashboard = () => {
       }
     };
 
+    const fetchMetrics = () => {
+      const sessionData = localStorage.getItem('userSession');
+      if (sessionData) {
+        const session = JSON.parse(sessionData);
+        if (session.email) {
+          const appsRef = collection(db, 'applications');
+          const q = query(appsRef, where('userEmail', '==', session.email));
+          return onSnapshot(q, (snapshot) => {
+            const apps = snapshot.docs.map(doc => doc.data());
+            const draftCount = apps.filter(a => (a.status || '').toLowerCase() === 'draft').length;
+            const completedCount = apps.filter(a => (a.status || '').toLowerCase() === 'completed').length;
+            const establishmentCount = apps.length;
+            const activeCount = apps.filter(a => {
+              const s = (a.status || '').toLowerCase();
+              return s && !['draft', 'cancelled', 'declined'].includes(s);
+            }).length;
+
+            setMetrics({
+              active: activeCount,
+              certificates: 0,
+              establishments: establishmentCount,
+              drafts: draftCount
+            });
+          });
+        }
+      }
+    };
+
+    const unsubscribeMetrics = fetchMetrics();
     fetchUserName();
+    return () => {
+      if (unsubscribeMetrics) unsubscribeMetrics();
+    };
   }, []);
 
   return (
@@ -93,40 +131,40 @@ const Dashboard = () => {
             </div>
 
             <div className="hero-metrics-col">
-              <div className="metric-card">
+            <div className="metric-card" onClick={() => navigate('/applications/all')} style={{ cursor: 'pointer' }}>
                 <div className="metric-icon blue">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                 </div>
                 <div className="metric-info">
-                  <span className="metric-value">3</span>
+                  <span className="metric-value">{metrics.active}</span>
                   <span className="metric-label">Active<br/>Applications</span>
                 </div>
               </div>
-              <div className="metric-card">
+              <div className="metric-card" onClick={() => navigate('/applications/completed')} style={{ cursor: 'pointer' }}>
                 <div className="metric-icon green">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                 </div>
                 <div className="metric-info">
-                  <span className="metric-value">1</span>
+                  <span className="metric-value">{metrics.certificates}</span>
                   <span className="metric-label">Valid<br/>Certificates</span>
                 </div>
               </div>
-              <div className="metric-card">
+              <div className="metric-card" onClick={() => navigate('/establishments')} style={{ cursor: 'pointer' }}>
                 <div className="metric-icon purple">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 </div>
                 <div className="metric-info">
-                  <span className="metric-value">2</span>
+                  <span className="metric-value">{metrics.establishments}</span>
                   <span className="metric-label">Registered<br/>Establishments</span>
                 </div>
               </div>
-              <div className="metric-card">
+              <div className="metric-card" onClick={() => navigate('/drafts')} style={{ cursor: 'pointer' }}>
                 <div className="metric-icon orange">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v8"></path><path d="M12 22h6a2 2 0 0 0 2-2V8l-6-6"></path><path d="M14 2v6h6"></path><circle cx="7" cy="17" r="5"></circle><polyline points="7 14.5 7 17 8.5 18.5"></polyline></svg>
                 </div>
                 <div className="metric-info">
-                  <span className="metric-value">1</span>
-                  <span className="metric-label">Saved<br/>Draft</span>
+                  <span className="metric-value">{metrics.drafts}</span>
+                  <span className="metric-label">Saved<br/>Drafts</span>
                 </div>
               </div>
             </div>

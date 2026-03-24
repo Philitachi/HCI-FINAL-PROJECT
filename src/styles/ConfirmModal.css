@@ -1,0 +1,135 @@
+/* ConfirmModal.css */
+.delete-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+.delete-confirm-modal {
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 440px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.delete-confirm-icon {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.delete-confirm-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary-color, #f8fafc);
+  margin: 0 0 1rem 0;
+}
+
+.delete-confirm-text {
+  color: var(--text-secondary-color, #94a3b8);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+}
+
+.delete-confirm-text strong {
+  color: var(--text-primary-color, #f1f5f9);
+  font-weight: 600;
+}
+
+.delete-confirm-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn-confirm-no {
+  flex: 1;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  background: transparent;
+  color: var(--text-primary-color, #f8fafc);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-confirm-no:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-confirm-yes {
+  flex: 1;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+.btn-confirm-yes:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
+  filter: brightness(1.1);
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Light mode overrides */
+:root.light-mode .delete-confirm-modal {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+}
+
+:root.light-mode .delete-confirm-title {
+  color: #0f172a;
+}
+
+:root.light-mode .delete-confirm-text {
+  color: #64748b;
+}
+
+:root.light-mode .delete-confirm-text strong {
+  color: #1e293b;
+}
+
+:root.light-mode .btn-confirm-no {
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+:root.light-mode .btn-confirm-no:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #0f172a;
+}

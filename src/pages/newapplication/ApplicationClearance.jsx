@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import SharedApplicationForm from '../../components/SharedApplicationForm';
@@ -7,6 +8,8 @@ import '../../styles/NewApplication.css';
 import '../Dashboard/dashboard.css';
 
 const ApplicationClearance = () => {
+  const location = useLocation();
+  const draftState = location.state || {};
   const [selectedSubOption, setSelectedSubOption] = useState(null);
   const [showClearanceModal, setShowClearanceModal] = useState(false);
   const [clearanceSearch, setClearanceSearch] = useState('');
@@ -28,6 +31,18 @@ const ApplicationClearance = () => {
     { id: 'clr_standpipe', title: 'INSTALLATION OF STANDPIPE', desc: 'Clearance' },
     { id: 'clr_fdas', title: 'FIRE DETECTION, ALARM & COMMUNICATION SYSTEMS', desc: 'Clearance' }
   ];
+
+  // Auto-select and skip modal if coming from a draft
+  useEffect(() => {
+    if (draftState.draftId && draftState.applicationType) {
+      const match = subOptions.find(s => s.title === draftState.applicationType);
+      setSelectedSubOption(match || subOptions[0]);
+      setShowForm(true);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+
 
   return (
     <div className="dashboard-container">
@@ -82,6 +97,8 @@ const ApplicationClearance = () => {
                   setShowForm(false);
                   setSelectedSubOption(null);
                 }}
+                draftId={draftState.draftId}
+                draftData={draftState.draftData}
               />
             )}
           </div>

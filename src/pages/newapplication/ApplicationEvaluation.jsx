@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import SharedApplicationForm from '../../components/SharedApplicationForm';
@@ -6,11 +7,26 @@ import '../../styles/NewApplication.css';
 import '../Dashboard/dashboard.css';
 
 const ApplicationEvaluation = () => {
+  const location = useLocation();
+  const draftState = location.state || {};
   const [selectedSubOption, setSelectedSubOption] = useState(null);
 
   const subOptions = [
     { id: 'fsec_eval', title: 'FIRE SAFETY EVALUATION CLEARANCE', desc: 'Fire Safety Evaluation Clearance (FSEC)' }
   ];
+
+  // Auto-select sub-option if coming from a draft
+  useEffect(() => {
+    if (draftState.draftId && draftState.applicationType) {
+      const match = subOptions.find(s => s.title === draftState.applicationType);
+      if (match) {
+        setSelectedSubOption(match);
+      } else {
+        // Default to first sub-option if no exact match
+        setSelectedSubOption(subOptions[0]);
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="dashboard-container">
@@ -59,6 +75,8 @@ const ApplicationEvaluation = () => {
               <SharedApplicationForm 
                 selectedCategoryTitle={selectedSubOption.title}
                 onBack={() => setSelectedSubOption(null)}
+                draftId={draftState.draftId}
+                draftData={draftState.draftData}
               />
             )}
           </div>
@@ -69,3 +87,4 @@ const ApplicationEvaluation = () => {
 };
 
 export default ApplicationEvaluation;
+

@@ -5,14 +5,14 @@ import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import MyApplicationsNav from '../../components/MyApplicationsNav';
 import Pagination from '../../components/Pagination';
 import EmptyState from '../../components/EmptyState';
+import useApplications from '../../hooks/useApplications';
 import './OngoingApplications-issuance.css';
 import '../Dashboard/dashboard.css';
 
 const OngoingApplicationsIssuance = () => {
   const navigate = useNavigate();
   const [selectedApp, setSelectedApp] = useState(null);
-
-  const applications = [];
+  const { applications, loading } = useApplications('Issuance');
 
   return (
     <div className="dashboard-container">
@@ -43,7 +43,9 @@ const OngoingApplicationsIssuance = () => {
             </div>
           </MyApplicationsNav>
 
-          {applications.length > 0 ? (
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
+          ) : applications.length > 0 ? (
             <div className="applications-list">
               {applications.map((app) => (
                 <div key={app.id} className={`app-list-card ${app.isActive ? 'active-card' : ''}`} onClick={() => setSelectedApp(app)}>

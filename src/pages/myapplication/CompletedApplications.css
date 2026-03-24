@@ -29,3 +29,111 @@
   border-color: #e2e8f0;
   color: #0f172a;
 }
+
+/* Date Range Picker */
+.date-range-picker-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.date-range-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.date-range-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary-color, #9ca3af);
+}
+
+.date-range-label svg {
+  color: #14b8a6;
+}
+
+.date-range-input {
+  background-color: var(--sidebar-bg-color, #0f172a);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  color: var(--text-primary-color, #e2e8f0);
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  cursor: pointer;
+}
+
+.date-range-input:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.15);
+}
+
+.date-range-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+
+.date-range-separator {
+  color: var(--text-secondary-color, #64748b);
+  font-size: 1.2rem;
+  font-weight: 300;
+  padding-top: 1.2rem;
+}
+
+.date-range-clear {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  color: #ef4444;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  margin-top: 1.1rem;
+  white-space: nowrap;
+}
+
+.date-range-clear:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* Light Mode */
+:root.light-mode .date-range-picker-bar {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+}
+
+:root.light-mode .date-range-input {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}
+
+:root.light-mode .date-range-input::-webkit-calendar-picker-indicator {
+  filter: none;
+}
+
+:root.light-mode .date-range-separator {
+  color: #94a3b8;
+}
+

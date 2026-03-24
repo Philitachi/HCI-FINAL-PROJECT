@@ -230,3 +230,5 @@
 :root:not(.light-mode) .drafts-subtitle {
   color: #94a3b8;
 }
+
+/* The confirmation modal styles have been moved to src/styles/ConfirmModal.css to be shared by multiple pages */

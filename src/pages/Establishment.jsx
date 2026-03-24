@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import Pagination from '../components/Pagination';
+import EmptyState from '../components/EmptyState';
 import '../styles/Establishment.css';
 import './Dashboard/dashboard.css';
 
@@ -9,109 +12,63 @@ const Establishment = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTopTab, setActiveTopTab] = useState('already-applied');
+  const [allApps, setAllApps] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const filters = ['All', 'Residential', 'Commercial', 'Industrial', 'Institutional', 'Assembly', 'Educational'];
 
-  const establishments = [
-    {
-      id: "EST-2026-0101",
-      name: "Sunrise Residences Tower A",
-      occupancyType: "Residential",
-      location: "45 Mahogany Lane, Brgy. San Jose",
-      fireStation: "BUTUAN CITY FIRE STN / AMPAYON / LIBERTAD SUB STN",
-      date: "Mar 21, 2026"
-    },
-    {
-      id: "EST-2026-0102",
-      name: "Palm Vista Condominiums",
-      occupancyType: "Residential",
-      location: "220 Coconut Drive, Brgy. Doongan",
-      fireStation: "BUTUAN CITY FIRE STN / DOONGAN SUB STN",
-      date: "Mar 18, 2026"
-    },
-    {
-      id: "EST-2026-0201",
-      name: "Metro Central Mall",
-      occupancyType: "Commercial",
-      location: "88 Commerce Ave, Downtown District",
-      fireStation: "BUTUAN CITY FIRE STN / CENTRAL SUB STN",
-      date: "Mar 15, 2026"
-    },
-    {
-      id: "EST-2026-0202",
-      name: "Coastal Roasters Café",
-      occupancyType: "Commercial",
-      location: "124 Harbor Blvd, West District",
-      fireStation: "BUTUAN CITY FIRE STN / WEST SUB STN",
-      date: "Mar 12, 2026"
-    },
-    {
-      id: "EST-2026-0301",
-      name: "Vertex Manufacturing Plant",
-      occupancyType: "Industrial",
-      location: "500 Industrial Pkwy, South Zone",
-      fireStation: "BUTUAN CITY FIRE STN / SOUTH INDUSTRIAL SUB STN",
-      date: "Mar 10, 2026"
-    },
-    {
-      id: "EST-2026-0302",
-      name: "Nexus Logistics Warehouse",
-      occupancyType: "Industrial",
-      location: "200 Freight Road, South Zone",
-      fireStation: "BUTUAN CITY FIRE STN / SOUTH INDUSTRIAL SUB STN",
-      date: "Mar 08, 2026"
-    },
-    {
-      id: "EST-2026-0401",
-      name: "St. Luke's Medical Center",
-      occupancyType: "Institutional",
-      location: "12 Health Blvd, Upper East",
-      fireStation: "BUTUAN CITY FIRE STN / EAST SUB STN",
-      date: "Mar 05, 2026"
-    },
-    {
-      id: "EST-2026-0402",
-      name: "City Government Complex",
-      occupancyType: "Institutional",
-      location: "1 Civic Center, Brgy. Rizal",
-      fireStation: "BUTUAN CITY FIRE STN / CENTRAL SUB STN",
-      date: "Feb 28, 2026"
-    },
-    {
-      id: "EST-2026-0501",
-      name: "Grand Convention Center",
-      occupancyType: "Assembly",
-      location: "75 Events Road, Central District",
-      fireStation: "BUTUAN CITY FIRE STN / CENTRAL SUB STN",
-      date: "Feb 25, 2026"
-    },
-    {
-      id: "EST-2026-0502",
-      name: "Riverside Sports Arena",
-      occupancyType: "Assembly",
-      location: "300 Stadium Way, North District",
-      fireStation: "BUTUAN CITY FIRE STN / NORTH SUB STN",
-      date: "Feb 20, 2026"
-    },
-    {
-      id: "EST-2026-0601",
-      name: "Philippine Science Academy",
-      occupancyType: "Educational",
-      location: "90 Academic Lane, Brgy. Limaha",
-      fireStation: "BUTUAN CITY FIRE STN / AMPAYON / LIBERTAD SUB STN",
-      date: "Feb 15, 2026"
-    },
-    {
-      id: "EST-2026-0602",
-      name: "Caraga State University Annex",
-      occupancyType: "Educational",
-      location: "Ampayon, Butuan City",
-      fireStation: "BUTUAN CITY FIRE STN / AMPAYON / LIBERTAD SUB STN",
-      date: "Feb 10, 2026"
-    }
-  ];
+  useEffect(() => {
+    const session = JSON.parse(localStorage.getItem('userSession') || '{}');
+    const userEmail = session.email;
 
-  const filteredEstablishments = establishments.filter((est) => {
+    if (!userEmail) {
+      setAllApps([]);
+      setLoading(false);
+      return;
+    }
+
+    const applicationsRef = collection(db, 'applications');
+    const q = query(applicationsRef, where('userEmail', '==', userEmail));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const apps = snapshot.docs.map(docSnap => {
+        const data = docSnap.data();
+        let dateStr = '';
+        if (data.createdAt) {
+          const date = data.createdAt.toDate();
+          dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+        }
+
+        return {
+          id: docSnap.id,
+          name: data.establishmentName || '---',
+          occupancyType: data.occupancyType || '---',
+          fireStation: data.fireStation || data.address || '---',
+          date: dateStr,
+          refNo: data.referenceNumber || '---',
+          status: (data.status || '').trim().toLowerCase(),
+        };
+      });
+
+      setAllApps(apps);
+      setLoading(false);
+    }, (error) => {
+      console.error('Error fetching establishments:', error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Split into tabs
+  const draftStatuses = ['draft'];
+  const newlyTagged = allApps.filter(app => draftStatuses.includes(app.status));
+  const alreadyApplied = allApps.filter(app => !draftStatuses.includes(app.status));
+
+  const currentList = activeTopTab === 'newly-tagged' ? newlyTagged : alreadyApplied;
+
+  // Apply occupancy filter and search
+  const filteredEstablishments = currentList.filter((est) => {
     const matchesFilter = activeFilter === 'All' || est.occupancyType === activeFilter;
     const matchesSearch = est.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
@@ -196,77 +153,86 @@ const Establishment = () => {
             </div>
           </div>
 
-          <div className="establishment-list">
-            {filteredEstablishments.map((est) => (
-              <div key={est.id} className="est-list-card">
-                <div className="est-icon-container">
-                  <div className="est-icon-circle" style={{ backgroundColor: `${occupancyIconColors[est.occupancyType]}15` }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={occupancyIconColors[est.occupancyType]} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M3 21h18"></path>
-                      <path d="M5 21V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14"></path>
-                      <path d="M9 9h6"></path>
-                      <path d="M9 13h6"></path>
-                      <path d="M9 17h6"></path>
-                    </svg>
-                  </div>
-                </div>
-
-                <div className="est-card-content">
-                  <div className="est-title-row">
-                    <h3 className="est-card-title">{est.name}</h3>
-                  </div>
-
-                  <div className="est-details-col">
-                    <div className="est-detail-text">
-                      <svg className="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 21h18"></path>
-                        <path d="M5 21V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14"></path>
-                        <path d="M9 9h6"></path>
-                        <path d="M9 13h6"></path>
-                      </svg>
-                      {est.occupancyType} Occupancy
-                    </div>
-
-                    <div className="est-detail-text">
-                      <svg className="detail-icon outline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                      </svg>
-                      {est.fireStation}
-                    </div>
-
-                    <div className="est-bottom-info">
-                      <span className="est-date-time">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                          <line x1="16" y1="2" x2="16" y2="6"></line>
-                          <line x1="8" y1="2" x2="8" y2="6"></line>
-                          <line x1="3" y1="10" x2="21" y2="10"></line>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading establishments...</div>
+          ) : filteredEstablishments.length > 0 ? (
+            <div className="establishment-list">
+              {filteredEstablishments.map((est) => {
+                const iconColor = occupancyIconColors[est.occupancyType] || '#64748b';
+                return (
+                  <div key={est.id} className="est-list-card">
+                    <div className="est-icon-container">
+                      <div className="est-icon-circle" style={{ backgroundColor: `${iconColor}15` }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={iconColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M3 21h18"></path>
+                          <path d="M5 21V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14"></path>
+                          <path d="M9 9h6"></path>
+                          <path d="M9 13h6"></path>
+                          <path d="M9 17h6"></path>
                         </svg>
-                        {est.date}
-                      </span>
-                      <span className="est-ref-bottom">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
+                      </div>
+                    </div>
+
+                    <div className="est-card-content">
+                      <div className="est-title-row">
+                        <h3 className="est-card-title">{est.name}</h3>
+                      </div>
+
+                      <div className="est-details-col">
+                        <div className="est-detail-text">
+                          <svg className="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M3 21h18"></path>
+                            <path d="M5 21V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14"></path>
+                            <path d="M9 9h6"></path>
+                            <path d="M9 13h6"></path>
+                          </svg>
+                          {est.occupancyType} Occupancy
+                        </div>
+
+                        <div className="est-detail-text">
+                          <svg className="detail-icon outline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                          </svg>
+                          {est.fireStation}
+                        </div>
+
+                        <div className="est-bottom-info">
+                          <span className="est-date-time">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                              <line x1="16" y1="2" x2="16" y2="6"></line>
+                              <line x1="8" y1="2" x2="8" y2="6"></line>
+                              <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            {est.date || '---'}
+                          </span>
+                          <span className="est-ref-bottom">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                              <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            {est.refNo}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="est-card-actions">
+                      <span className="est-no-action">
+                        No action required
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
-                        {est.id}
                       </span>
                     </div>
                   </div>
-                </div>
-
-                <div className="est-card-actions">
-                  <span className="est-no-action">
-                    No action required
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          ) : (
+            <EmptyState />
+          )}
 
           <Pagination />
         </main>
