@@ -1,0 +1,171 @@
+/* PezaModal.css */
+.peza-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000; /* Super high z-index to guarantee it overlays nav and sidebar */
+  animation: fadeIn 0.2s ease;
+}
+
+.peza-modal {
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  width: 480px;
+  max-width: 90vw;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.25s ease;
+  overflow: hidden;
+}
+
+.peza-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+.peza-modal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(20, 184, 166, 0.05) 100%);
+  color: #14b8a6;
+}
+
+.peza-modal-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary-color, white);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.peza-modal-close {
+  position: absolute;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.peza-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: rotate(90deg);
+}
+
+.peza-modal-body {
+  padding: 1.75rem;
+}
+
+.peza-modal-body p {
+  font-size: 0.95rem;
+  color: var(--text-secondary-color, #94a3b8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.peza-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.25rem 1.75rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.peza-btn-cancel {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.peza-btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.peza-btn-confirm {
+  padding: 0.75rem 1.5rem;
+  background: #14b8a6;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
+}
+
+.peza-btn-confirm:hover {
+  background: #0d9488;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(20, 184, 166, 0.3);
+}
+
+/* Light mode overrides for PEZA modal */
+:root.light-mode .peza-modal {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+}
+
+:root.light-mode .peza-modal-header {
+  border-bottom-color: #f1f5f9;
+}
+
+:root.light-mode .peza-modal-header h3 {
+  color: #0f172a;
+}
+
+:root.light-mode .peza-modal-close:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+:root.light-mode .peza-modal-body p {
+  color: #475569;
+}
+
+:root.light-mode .peza-modal-actions {
+  background-color: #f8fafc;
+  border-top-color: #e2e8f0;
+}
+
+:root.light-mode .peza-btn-cancel {
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+:root.light-mode .peza-btn-cancel:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}

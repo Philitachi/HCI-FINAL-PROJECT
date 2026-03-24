@@ -4,6 +4,7 @@ import '../styles/NewApplication.css';
 import '../styles/Complaint.css';
 import EmailVerifiedSVG from '../assets/EmailVerified.svg';
 import ExitButton from './exitButton';
+import PezaModal from './PezaModal';
 import regionsData from '../data/regions.json';
 import provincesData from '../data/provinces.json';
 import citiesData from '../data/cities.json';
@@ -336,11 +337,11 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
 
         if (Object.keys(errors).length > 0) {
           setReqErrors(errors);
-          
+
           if (firstInvalidReq !== null && reqRefs.current[firstInvalidReq]) {
             const refElem = reqRefs.current[firstInvalidReq];
             refElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
+
             // Add pulse to the drop zone
             const dropZone = refElem.querySelector('.req-drop-zone');
             if (dropZone) {
@@ -516,307 +517,293 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
           ) : (
             /* ===== NON-RENEWAL: Original Form ===== */
             <>
-          {/* General Information Section */}
-          <h3 className="app-form-title">General Information</h3>
-          <p className="form-block-subtitle">Type in the required information about the establishment</p>
+              {/* General Information Section */}
+              <h3 className="app-form-title">General Information</h3>
+              <p className="form-block-subtitle">Type in the required information about the establishment</p>
 
-          <div className="app-form-section">
-            <div className="app-form-section-header">Establishment Information</div>
+              <div className="app-form-section">
+                <div className="app-form-section-header">Establishment Information</div>
 
-            <div className="form-grid">
-              <div className="form-group full-width">
-                <label className="form-label">Name Of Establishment <span className="required-asterisk">*</span></label>
-                <input
-                  ref={refs.establishmentName}
-                  type="text"
-                  className={`form-input ${fieldErrors.establishmentName ? 'input-error' : ''}`}
-                  placeholder="Enter establishment name"
-                  name="establishmentName"
-                  value={formData.establishmentName}
-                  onChange={handleInputChange}
-                />
-              </div>
+                <div className="form-grid">
+                  <div className="form-group full-width">
+                    <label className="form-label">Name Of Establishment <span className="required-asterisk">*</span></label>
+                    <input
+                      ref={refs.establishmentName}
+                      type="text"
+                      className={`form-input ${fieldErrors.establishmentName ? 'input-error' : ''}`}
+                      placeholder="Enter establishment name"
+                      name="establishmentName"
+                      value={formData.establishmentName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
 
-              <div className="form-group">
-                <label className="form-label">Name Of Owner <span className="required-asterisk">*</span></label>
-                <input
-                  ref={refs.ownerName}
-                  type="text"
-                  className={`form-input ${fieldErrors.ownerName ? 'input-error' : ''}`}
-                  placeholder="Enter owner name"
-                  name="ownerName"
-                  value={formData.ownerName}
-                  onChange={handleInputChange}
-                />
-              </div>
+                  <div className="form-group">
+                    <label className="form-label">Name Of Owner <span className="required-asterisk">*</span></label>
+                    <input
+                      ref={refs.ownerName}
+                      type="text"
+                      className={`form-input ${fieldErrors.ownerName ? 'input-error' : ''}`}
+                      placeholder="Enter owner name"
+                      name="ownerName"
+                      value={formData.ownerName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
 
-              <div className="form-group">
-                <label className="form-label">Name Of Representative <span className="required-asterisk">*</span></label>
-                <input
-                  ref={refs.representativeName}
-                  type="text"
-                  className={`form-input ${fieldErrors.representativeName ? 'input-error' : ''}`}
-                  placeholder="Enter representative name"
-                  name="representativeName"
-                  value={formData.representativeName}
-                  onChange={handleInputChange}
-                />
-              </div>
+                  <div className="form-group">
+                    <label className="form-label">Name Of Representative <span className="required-asterisk">*</span></label>
+                    <input
+                      ref={refs.representativeName}
+                      type="text"
+                      className={`form-input ${fieldErrors.representativeName ? 'input-error' : ''}`}
+                      placeholder="Enter representative name"
+                      name="representativeName"
+                      value={formData.representativeName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
 
-              <div className="form-group">
-                <label className="form-label">Trade Name</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="Enter trade name"
-                  name="tradeName"
-                  value={formData.tradeName}
-                  onChange={handleInputChange}
-                />
-              </div>
+                  <div className="form-group">
+                    <label className="form-label">Trade Name</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="Enter trade name"
+                      name="tradeName"
+                      value={formData.tradeName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
 
-              <div className="form-group">
-                <label className="form-label">Type Of Occupancy <span className="required-asterisk">*</span></label>
-                <div ref={refs.occupancyType}>
-                  <CustomSelect
-                    name="occupancyType"
-                    value={formData.occupancyType}
-                    options={occupancyOptions}
-                    onChange={handleInputChange}
-                    placeholder="Select type of occupancy"
-                    error={fieldErrors.occupancyType}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Total Build Area <span className="required-asterisk">*</span></label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    ref={refs.totalBuildArea}
-                    type="number"
-                    className={`form-input ${fieldErrors.totalBuildArea ? 'input-error' : ''}`}
-                    placeholder="Enter total build area"
-                    name="totalBuildArea"
-                    value={formData.totalBuildArea}
-                    onChange={handleInputChange}
-                    style={{ paddingRight: '4rem' }}
-                  />
-                  <span className="input-suffix">sqm</span>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Number Of Occupant <span className="required-asterisk">*</span></label>
-                <input
-                  ref={refs.numberOfOccupant}
-                  type="number"
-                  className={`form-input ${fieldErrors.numberOfOccupant ? 'input-error' : ''}`}
-                  placeholder="Enter number of occupant"
-                  name="numberOfOccupant"
-                  value={formData.numberOfOccupant}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Address Information Section */}
-          <h3 className="app-form-title" style={{ marginTop: '3.5rem' }}>Address</h3>
-          <p className="form-block-subtitle">Type in the address of the establishment</p>
-
-          <div className="app-form-section">
-            <div className="app-form-section-header">Address Information</div>
-
-            <div className="form-grid">
-              <div className="form-group full-width">
-                <label className="form-label">Unit No., Block No. / Building Name / Street Name</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="Enter address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Region <span className="required-asterisk">*</span></label>
-                <div ref={refs.region}>
-                  <CustomSelect
-                    name="region"
-                    value={formData.region}
-                    options={regionOptions}
-                    onChange={handleInputChange}
-                    placeholder="Select region"
-                    error={fieldErrors.region}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Province <span className="required-asterisk">*</span></label>
-                <div ref={refs.province}>
-                  <CustomSelect
-                    name="province"
-                    value={formData.province}
-                    options={provinceOptions}
-                    onChange={handleInputChange}
-                    placeholder="Select province"
-                    disabled={!formData.region}
-                    error={fieldErrors.province}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">City <span className="text-muted" style={{ fontWeight: 'normal', color: 'var(--text-primary-color, #0284c7)' }}>(List of station(s) will be based on your selected city)</span> <span className="required-asterisk">*</span></label>
-                <div ref={refs.city}>
-                  <CustomSelect
-                    name="city"
-                    value={formData.city}
-                    options={cityOptions}
-                    onChange={handleInputChange}
-                    placeholder="Select city"
-                    disabled={!formData.province}
-                    error={fieldErrors.city}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Barangay <span className="required-asterisk">*</span></label>
-                <div ref={refs.barangay}>
-                  <CustomSelect
-                    name="barangay"
-                    value={formData.barangay}
-                    options={barangayOptions}
-                    onChange={handleInputChange}
-                    placeholder="Select barangay"
-                    disabled={!formData.city}
-                    error={fieldErrors.barangay}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Fire Station & Contact Information Section */}
-          <h3 className="app-form-title" style={{ marginTop: '3.5rem' }}>Fire Station</h3>
-          <p className="form-block-subtitle">The selected fire station will receive your application for processing</p>
-
-          <div className="form-group full-width" style={{ marginBottom: '2.5rem' }}>
-            <label className="form-label">Fire Station <span className="required-asterisk">*</span></label>
-            <div ref={refs.fireStation}>
-              <CustomSelect
-                name="fireStation"
-                value={formData.fireStation}
-                options={stationOptions}
-                onChange={handleInputChange}
-                placeholder={formData.city ? "Select a fire station" : "Select a city to view stations"}
-                disabled={!formData.city}
-                error={fieldErrors.fireStation}
-              />
-            </div>
-          </div>
-
-          <div className="form-group full-width" style={{ marginBottom: '4rem' }}>
-            <label className="form-label" style={{ marginBottom: '1rem', fontWeight: 500 }}>Is it within Philippine Economic Zone Authority (PEZA)?</label>
-            <button
-              type="button"
-              className="ieza-button"
-              onClick={() => formData.isPeza ? setFormData(prev => ({ ...prev, isPeza: false })) : setShowPezaModal(true)}
-              style={{
-                opacity: formData.isPeza ? 1 : 0.7,
-                filter: formData.isPeza ? 'none' : 'grayscale(0.3)'
-              }}
-            >
-              {formData.isPeza ? "✓ PEZA ESTABLISHMENT" : "CLICK IF PEZA ESTABLISHMENT"}
-            </button>
-
-            {/* PEZA Modal */}
-            {showPezaModal && (
-              <div className="peza-modal-overlay" onClick={() => setShowPezaModal(false)}>
-                <div className="peza-modal" onClick={(e) => e.stopPropagation()}>
-                  <div className="peza-modal-header">
-                    <div className="peza-modal-icon">
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                      </svg>
+                  <div className="form-group">
+                    <label className="form-label">Type Of Occupancy <span className="required-asterisk">*</span></label>
+                    <div ref={refs.occupancyType}>
+                      <CustomSelect
+                        name="occupancyType"
+                        value={formData.occupancyType}
+                        options={occupancyOptions}
+                        onChange={handleInputChange}
+                        placeholder="Select type of occupancy"
+                        error={fieldErrors.occupancyType}
+                      />
                     </div>
-                    <h3>PEZA</h3>
-                    <ExitButton onClick={() => setShowPezaModal(false)} />
                   </div>
-                  <div className="peza-modal-body">
-                    <p>The Philippine Economic Zone Authority (PEZA) is a government agency tasked with promoting investments, extending assistance, registering, granting incentives to, and facilitating the business operations of investors in export-oriented manufacturing and service facilities inside selected areas throughout the country proclaimed by the President of the Philippines as PEZA Special Economic Zones.</p>
+
+                  <div className="form-group">
+                    <label className="form-label">Total Build Area <span className="required-asterisk">*</span></label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        ref={refs.totalBuildArea}
+                        type="number"
+                        className={`form-input ${fieldErrors.totalBuildArea ? 'input-error' : ''}`}
+                        placeholder="Enter total build area"
+                        name="totalBuildArea"
+                        value={formData.totalBuildArea}
+                        onChange={handleInputChange}
+                        style={{ paddingRight: '4rem' }}
+                      />
+                      <span className="input-suffix">sqm</span>
+                    </div>
                   </div>
-                  <div className="peza-modal-actions">
-                    <button type="button" className="peza-btn-cancel" onClick={() => setShowPezaModal(false)}>CANCEL</button>
-                    <button type="button" className="peza-btn-confirm" onClick={() => { setFormData(prev => ({ ...prev, isPeza: true })); setShowPezaModal(false); }}>YES, THIS IS PEZA</button>
+
+                  <div className="form-group">
+                    <label className="form-label">Number Of Occupant <span className="required-asterisk">*</span></label>
+                    <input
+                      ref={refs.numberOfOccupant}
+                      type="number"
+                      className={`form-input ${fieldErrors.numberOfOccupant ? 'input-error' : ''}`}
+                      placeholder="Enter number of occupant"
+                      name="numberOfOccupant"
+                      value={formData.numberOfOccupant}
+                      onChange={handleInputChange}
+                    />
                   </div>
                 </div>
               </div>
-            )}
-          </div>
 
-          <h3 className="app-form-title">Contact Information</h3>
-          <p className="form-block-subtitle">Type in the owner / representative or your contact information</p>
+              {/* Address Information Section */}
+              <h3 className="app-form-title" style={{ marginTop: '3.5rem' }}>Address</h3>
+              <p className="form-block-subtitle">Type in the address of the establishment</p>
 
-          <div className="app-form-section">
-            <div className="form-grid">
-              <div className="form-group">
-                <label className="form-label">Landline</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="Enter landline number"
-                  name="landline"
-                  value={formData.landline}
-                  onChange={handleInputChange}
-                />
+              <div className="app-form-section">
+                <div className="app-form-section-header">Address Information</div>
+
+                <div className="form-grid">
+                  <div className="form-group full-width">
+                    <label className="form-label">Unit No., Block No. / Building Name / Street Name</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="Enter address"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Region <span className="required-asterisk">*</span></label>
+                    <div ref={refs.region}>
+                      <CustomSelect
+                        name="region"
+                        value={formData.region}
+                        options={regionOptions}
+                        onChange={handleInputChange}
+                        placeholder="Select region"
+                        error={fieldErrors.region}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Province <span className="required-asterisk">*</span></label>
+                    <div ref={refs.province}>
+                      <CustomSelect
+                        name="province"
+                        value={formData.province}
+                        options={provinceOptions}
+                        onChange={handleInputChange}
+                        placeholder="Select province"
+                        disabled={!formData.region}
+                        error={fieldErrors.province}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">City <span className="text-muted" style={{ fontWeight: 'normal', color: 'var(--text-primary-color, #0284c7)' }}>(List of station(s) will be based on your selected city)</span> <span className="required-asterisk">*</span></label>
+                    <div ref={refs.city}>
+                      <CustomSelect
+                        name="city"
+                        value={formData.city}
+                        options={cityOptions}
+                        onChange={handleInputChange}
+                        placeholder="Select city"
+                        disabled={!formData.province}
+                        error={fieldErrors.city}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Barangay <span className="required-asterisk">*</span></label>
+                    <div ref={refs.barangay}>
+                      <CustomSelect
+                        name="barangay"
+                        value={formData.barangay}
+                        options={barangayOptions}
+                        onChange={handleInputChange}
+                        placeholder="Select barangay"
+                        disabled={!formData.city}
+                        error={fieldErrors.barangay}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Mobile <span className="required-asterisk">*</span></label>
-                <div style={{ position: 'relative' }}>
-                  <span className="input-prefix">+63</span>
-                  <input
-                    ref={refs.mobile}
-                    type="text"
-                    className={`form-input input-with-prefix ${fieldErrors.mobile ? 'input-error' : ''}`}
-                    placeholder="Enter mobile number"
-                    name="mobile"
-                    value={formData.mobile}
+              {/* Fire Station & Contact Information Section */}
+              <h3 className="app-form-title" style={{ marginTop: '3.5rem' }}>Fire Station</h3>
+              <p className="form-block-subtitle">The selected fire station will receive your application for processing</p>
+
+              <div className="form-group full-width" style={{ marginBottom: '2.5rem' }}>
+                <label className="form-label">Fire Station <span className="required-asterisk">*</span></label>
+                <div ref={refs.fireStation}>
+                  <CustomSelect
+                    name="fireStation"
+                    value={formData.fireStation}
+                    options={stationOptions}
                     onChange={handleInputChange}
+                    placeholder={formData.city ? "Select a fire station" : "Select a city to view stations"}
+                    disabled={!formData.city}
+                    error={fieldErrors.fireStation}
                   />
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '1rem 0' }}>
-            <span className="app-form-confirm-text">Are the details above correct?</span>
-          </div>
+              <div className="form-group full-width" style={{ marginBottom: '4rem' }}>
+                <label className="form-label" style={{ marginBottom: '1rem', fontWeight: 500 }}>Is it within Philippine Economic Zone Authority (PEZA)?</label>
+                <button
+                  type="button"
+                  className="ieza-button"
+                  onClick={() => formData.isPeza ? setFormData(prev => ({ ...prev, isPeza: false })) : setShowPezaModal(true)}
+                  style={{
+                    opacity: formData.isPeza ? 1 : 0.7,
+                    filter: formData.isPeza ? 'none' : 'grayscale(0.3)'
+                  }}
+                >
+                  {formData.isPeza ? "✓ PEZA ESTABLISHMENT" : "CLICK IF PEZA ESTABLISHMENT"}
+                </button>
 
-          <div className="app-form-actions">
-            <button type="button" className="btn-back" onClick={onBack}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-              Back
-            </button>
+                {/* PEZA Modal */}
+                {showPezaModal && (
+                  <PezaModal 
+                    onClose={() => setShowPezaModal(false)}
+                    onConfirm={() => {
+                      setFormData(prev => ({ ...prev, isPeza: true }));
+                      setShowPezaModal(false);
+                    }}
+                  />
+                )}
+              </div>
 
-            <div className="app-form-actions-right">
-              <button type="button" className="btn-draft" onClick={() => alert('Saved to drafts!')}>
-                Save to draft
-              </button>
+              <h3 className="app-form-title">Contact Information</h3>
+              <p className="form-block-subtitle">Type in the owner / representative or your contact information</p>
 
-              <button type="button" className="btn-submit" onClick={handleNextStep}>
-                Next Step
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-              </button>
-            </div>
-          </div>
+              <div className="app-form-section">
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label className="form-label">Landline</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="Enter landline number"
+                      name="landline"
+                      value={formData.landline}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Mobile <span className="required-asterisk">*</span></label>
+                    <div style={{ position: 'relative' }}>
+                      <span className="input-prefix">+63</span>
+                      <input
+                        ref={refs.mobile}
+                        type="text"
+                        className={`form-input input-with-prefix ${fieldErrors.mobile ? 'input-error' : ''}`}
+                        placeholder="Enter mobile number"
+                        name="mobile"
+                        value={formData.mobile}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '1rem 0' }}>
+                <span className="app-form-confirm-text">Are the details above correct?</span>
+              </div>
+
+              <div className="app-form-actions">
+                <button type="button" className="btn-back" onClick={onBack}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                  Back
+                </button>
+
+                <div className="app-form-actions-right">
+                  <button type="button" className="btn-draft" onClick={() => alert('Saved to drafts!')}>
+                    Save to draft
+                  </button>
+
+                  <button type="button" className="btn-submit" onClick={handleNextStep}>
+                    Next Step
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  </button>
+                </div>
+              </div>
             </>
           )}
         </div>
@@ -853,8 +840,8 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack }) => {
 
               <div className="upload-req-list">
                 {requiredDocuments.map((doc, idx) => (
-                  <div 
-                    key={idx} 
+                  <div
+                    key={idx}
                     className="upload-req-card"
                     ref={(el) => reqRefs.current[idx] = el}
                   >
