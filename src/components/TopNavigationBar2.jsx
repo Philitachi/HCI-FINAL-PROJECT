@@ -4,6 +4,7 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import logo from '../assets/Logo.svg';
 import './TopNavigationBar2.css';
+import '../styles/ConfirmModal.css';
 
 const TopNavigationBar2 = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const TopNavigationBar2 = () => {
     return localStorage.getItem('theme') !== 'light';
   });
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
   const [userInitial, setUserInitial] = useState(() => {
     try {
       const sessionData = localStorage.getItem('userSession');
@@ -68,7 +70,12 @@ const TopNavigationBar2 = () => {
     fetchUserInitial();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
+    setDropdownOpen(false);
+    setShowSignOutModal(true);
+  };
+
+  const confirmSignOut = () => {
     localStorage.removeItem('userSession');
     navigate('/signin');
   };
@@ -125,14 +132,51 @@ const TopNavigationBar2 = () => {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                 Settings
               </button>
-              <button className="topnav2-dropdown-item" onClick={handleLogout}>
+              <button className="topnav2-dropdown-item" onClick={handleLogoutClick}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                Logout
+                Sign Out
               </button>
             </div>
           )}
         </div>
       </div>
+
+      {showSignOutModal && (
+        <div className="delete-confirm-overlay">
+          <div className="delete-confirm-modal">
+            <div className="delete-confirm-icon">
+              <div style={{ 
+                width: '64px', 
+                height: '64px', 
+                borderRadius: '50%', 
+                background: 'rgba(239, 68, 68, 0.1)', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                color: '#ef4444'
+              }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+              </div>
+            </div>
+            <h2 className="delete-confirm-title">Sign Out Confirmation</h2>
+            <p className="delete-confirm-text">
+              Are you sure you want to sign out?
+            </p>
+            <div className="delete-confirm-actions">
+              <button className="btn-confirm-no" onClick={() => setShowSignOutModal(false)}>
+                No, Stay
+              </button>
+              <button className="btn-confirm-yes" onClick={confirmSignOut}>
+                Yes, Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
