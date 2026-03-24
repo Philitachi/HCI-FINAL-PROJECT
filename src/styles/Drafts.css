@@ -197,20 +197,25 @@
 :root.light-mode .drafts-content {
   color: #0f172a;
 }
+
 :root.light-mode .draft-list-card {
   background-color: #ffffff;
   border-color: #e2e8f0;
 }
+
 :root.light-mode .draft-list-card:hover {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
 }
+
 :root.light-mode .draft-title {
   color: #0f172a;
 }
+
 :root.light-mode .status-badge.draft {
   background-color: #f1f5f9;
   color: #475569;
 }
+
 :root.light-mode .draft-detail-text,
 :root.light-mode .draft-date-time,
 :root.light-mode .draft-ref-bottom,
@@ -221,6 +226,7 @@
 :root:not(.light-mode) .drafts-title {
   color: #ffffff;
 }
+
 :root:not(.light-mode) .drafts-subtitle {
   color: #94a3b8;
 }
