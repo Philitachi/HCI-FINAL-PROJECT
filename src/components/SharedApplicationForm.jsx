@@ -224,6 +224,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
 
       if (status === 'Draft') {
         setSuccessType('Draft');
+        setSubmittedRef(refNumber);
         setShowSuccessModal(true);
       } else {
         setSuccessType('Submit');
@@ -1213,17 +1214,17 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
               </div>
             </div>
             <h2 className="success-modal-title">
-              {successType === 'Draft' ? 'Draft Saved Successfully!' : 
+              {successType === 'Draft' ? 'Application Saved to Draft!' : 
                successType === 'Error' ? 'Submission Failed' : 'Application Submitted!'}
             </h2>
             <p className="success-modal-message">
               {successType === 'Draft' 
-                ? 'Your application has been saved to your drafts. You can continue it anytime.' 
+                ? 'Your application has been successfully saved to your drafts. Kindly check it on your drafts.' 
                 : successType === 'Error'
                 ? 'Something went wrong while saving your application. Please try again later.'
                 : 'You have successfully submitted your application. Kindly check it on your ongoing applications.'}
             </p>
-            {successType === 'Submit' && submittedRef && (
+            {(successType === 'Submit' || successType === 'Draft') && submittedRef && (
               <div className="success-ref-box">
                 <span className="success-ref-label">Reference Number:</span>
                 <span className="success-ref-value">{submittedRef}</span>
@@ -1232,10 +1233,10 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
             <button className={`btn-success-close ${successType === 'Error' ? 'btn-error-retry' : ''}`} onClick={() => {
               setShowSuccessModal(false);
               if (successType !== 'Error') {
-                navigate(successType === 'Draft' ? '/drafts' : '/dashboard');
+                navigate('/dashboard');
               }
             }}>
-              {successType === 'Error' ? 'Try Again' : `Go to ${successType === 'Draft' ? 'Drafts' : 'Dashboard'}`}
+              {successType === 'Error' ? 'Try Again' : 'Go to Dashboard'}
             </button>
           </div>
         </div>
