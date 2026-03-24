@@ -77,23 +77,38 @@ const Dashboard = () => {
           const q = query(appsRef, where('userEmail', '==', session.email));
           return onSnapshot(q, (snapshot) => {
             const apps = snapshot.docs.map(doc => doc.data());
-            const draftCount = apps.filter(a => (a.status || '').toLowerCase() === 'draft').length;
-            const completedCount = apps.filter(a => (a.status || '').toLowerCase() === 'completed').length;
-            const establishmentCount = apps.length;
+            
+            // Normalized status helper
+            const getStatus = (a) => (a.status || '').trim().toLowerCase();
+
+            // Drafts are anything with status 'draft'
+            const draftCount = apps.filter(a => getStatus(a) === 'draft').length;
+            
+            // Active applications are anything non-draft, non-cancelled, non-declined
             const activeCount = apps.filter(a => {
-              const s = (a.status || '').toLowerCase();
+              const s = getStatus(a);
               return s && !['draft', 'cancelled', 'declined'].includes(s);
+            }).length;
+
+            // Registered Establishments = (All non-drafts) + (Drafts with name & occupancy)
+            // This matches the logic in Establishment.jsx
+            const establishmentCount = apps.filter(a => {
+              const s = getStatus(a);
+              if (s !== 'draft') return true;
+              return a.establishmentName && a.occupancyType && 
+                     a.establishmentName !== '---' && a.occupancyType !== '---';
             }).length;
 
             setMetrics({
               active: activeCount,
-              certificates: 0,
+              certificates: 0, // Per user request (Hardcoded to 0)
               establishments: establishmentCount,
               drafts: draftCount
             });
           });
         }
       }
+      return undefined; // Return undefined if no session or email, so unsubscribeMetrics doesn't error
     };
 
     const unsubscribeMetrics = fetchMetrics();
@@ -149,7 +164,7 @@ const Dashboard = () => {
                   <span className="metric-label">Valid<br/>Certificates</span>
                 </div>
               </div>
-              <div className="metric-card" onClick={() => navigate('/establishments')} style={{ cursor: 'pointer' }}>
+              <div className="metric-card" onClick={() => navigate('/establishment')} style={{ cursor: 'pointer' }}>
                 <div className="metric-icon purple">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 </div>

@@ -62,7 +62,11 @@ const Establishment = () => {
 
   // Split into tabs
   const draftStatuses = ['draft'];
-  const newlyTagged = allApps.filter(app => draftStatuses.includes(app.status));
+  const newlyTagged = allApps.filter(app => 
+    draftStatuses.includes(app.status) && 
+    app.name && app.name !== '---' && 
+    app.occupancyType && app.occupancyType !== '---'
+  );
   const alreadyApplied = allApps.filter(app => !draftStatuses.includes(app.status));
 
   const currentList = activeTopTab === 'newly-tagged' ? newlyTagged : alreadyApplied;
