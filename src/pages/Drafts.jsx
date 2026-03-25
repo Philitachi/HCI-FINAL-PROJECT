@@ -13,7 +13,8 @@ const Drafts = () => {
   const navigate = useNavigate();
   const [draftsList, setDraftsList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deleteConfirm, setDeleteConfirm] = useState(null); // { id, title }
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const session = JSON.parse(localStorage.getItem('userSession') || '{}');
@@ -132,11 +133,31 @@ const Drafts = () => {
               <p className="drafts-subtitle">Pick up right where you left off. These applications are securely saved but not yet submitted.</p>
             </div>
 
-          {loading ? (
+          <div className="drafts-search-bar">
+            <div className="drafts-search-wrapper">
+              <svg className="drafts-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                type="text"
+                placeholder="Search list by establishment name"
+                className="drafts-search-input"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {(() => {
+            const filteredDrafts = draftsList.filter(app =>
+              app.title.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            return loading ? (
             <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading drafts...</div>
-          ) : draftsList.length > 0 ? (
+          ) : filteredDrafts.length > 0 ? (
             <div className="drafts-list">
-              {draftsList.map((app) => (
+              {filteredDrafts.map((app) => (
                 <div key={app.id} className="draft-list-card">
                   <div className="draft-icon-container">
                     <div className="draft-icon-circle">
@@ -209,7 +230,8 @@ const Drafts = () => {
             </div>
           ) : (
             <EmptyState />
-          )}
+          );
+          })()}
 
         </main>
       </div>
