@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, query, where, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, deleteDoc, doc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
@@ -73,7 +73,22 @@ const Drafts = () => {
 
   const handleDeleteDraft = async (draftId) => {
     try {
+      // Capture draft info before deleting
+      const draftInfo = draftsList.find(d => d.id === draftId);
+      
       await deleteDoc(doc(db, 'applications', draftId));
+
+      // Log activity
+      const session = JSON.parse(localStorage.getItem('userSession') || '{}');
+      await addDoc(collection(db, 'activityLogs'), {
+        userEmail: session.email || '',
+        action: 'Deleted Draft',
+        referenceNumber: draftInfo?.refNo || '---',
+        establishmentName: draftInfo?.title || '---',
+        applicationType: draftInfo?.type || '---',
+        timestamp: serverTimestamp()
+      });
+
       setDeleteConfirm(null);
     } catch (error) {
       console.error('Error deleting draft:', error);

@@ -222,6 +222,16 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
         await addDoc(collection(db, 'applications'), applicationData);
       }
 
+      // Log activity
+      await addDoc(collection(db, 'activityLogs'), {
+        userEmail: session.email || '',
+        action: status === 'Draft' ? 'Saved Draft' : 'Submitted Application',
+        referenceNumber: refNumber,
+        establishmentName: formData.establishmentName || '---',
+        applicationType: selectedCategoryTitle,
+        timestamp: serverTimestamp()
+      });
+
       if (status === 'Draft') {
         setSuccessType('Draft');
         setSubmittedRef(refNumber);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, getDocs, onSnapshot, orderBy, limit } from 'firebase/firestore';
 import { db } from '../../firebase';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
@@ -26,6 +26,8 @@ const Dashboard = () => {
     establishments: 0,
     drafts: 0
   });
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(10);
 
   useEffect(() => {
     const isDarkMode = localStorage.getItem('theme') !== 'light';
@@ -113,8 +115,53 @@ const Dashboard = () => {
 
     const unsubscribeMetrics = fetchMetrics();
     fetchUserName();
+
+    // Fetch recent activity logs
+    let unsubscribeActivity;
+    const sessionData2 = localStorage.getItem('userSession');
+    if (sessionData2) {
+      const session2 = JSON.parse(sessionData2);
+      if (session2.email) {
+        const logsRef = collection(db, 'activityLogs');
+        const logsQuery = query(
+          logsRef,
+          where('userEmail', '==', session2.email),
+          orderBy('timestamp', 'desc'),
+          limit(50)
+        );
+        unsubscribeActivity = onSnapshot(logsQuery, (snapshot) => {
+          const logs = snapshot.docs.map(docSnap => {
+            const data = docSnap.data();
+            let timeAgo = '';
+            if (data.timestamp) {
+              const date = data.timestamp.toDate();
+              const now = new Date();
+              const diffMs = now - date;
+              const diffMins = Math.floor(diffMs / 60000);
+              const diffHrs = Math.floor(diffMs / 3600000);
+              const diffDays = Math.floor(diffMs / 86400000);
+              if (diffMins < 1) timeAgo = 'Just now';
+              else if (diffMins < 60) timeAgo = `${diffMins}m ago`;
+              else if (diffHrs < 24) timeAgo = `${diffHrs}h ago`;
+              else if (diffDays < 7) timeAgo = `${diffDays}d ago`;
+              else timeAgo = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            }
+            return {
+              id: docSnap.id,
+              action: data.action || '',
+              referenceNumber: data.referenceNumber || '---',
+              establishmentName: data.establishmentName || '---',
+              timeAgo: timeAgo
+            };
+          });
+          setRecentActivity(logs);
+        });
+      }
+    }
+
     return () => {
       if (unsubscribeMetrics) unsubscribeMetrics();
+      if (unsubscribeActivity) unsubscribeActivity();
     };
   }, []);
 
@@ -186,17 +233,64 @@ const Dashboard = () => {
           </div>
 
           <div className="recent-activity">
-            <h2>Recent Activity</h2>
+            <div className="recent-activity-header">
+              <h2>Recent Activity</h2>
+            </div>
             <div className="activity-list">
-              <div className="activity-item">
-                <span className="activity-text">Application #12345 - <span className="text-muted">Submitted</span></span>
-              </div>
-              <div className="activity-item">
-                <span className="activity-text">Payment Received - <span className="text-muted">Receipt #9876</span></span>
-              </div>
-              <div className="activity-item">
-                <span className="activity-text">Inspection Scheduled - <span className="text-muted">Building A</span></span>
-              </div>
+              {recentActivity.length > 0 ? (
+                <>
+                {recentActivity.slice(0, visibleCount).map((log) => {
+                  let iconColor = '#3b82f6';
+                  let iconBg = 'rgba(59, 130, 246, 0.1)';
+                  let IconSvg;
+                  if (log.action === 'Submitted Application') {
+                    iconColor = '#10b981'; iconBg = 'rgba(16, 185, 129, 0.1)';
+                    IconSvg = <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={iconColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>;
+                  } else if (log.action === 'Saved Draft') {
+                    iconColor = '#f59e0b'; iconBg = 'rgba(245, 158, 11, 0.1)';
+                    IconSvg = <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={iconColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>;
+                  } else if (log.action === 'Cancelled Application') {
+                    iconColor = '#ef4444'; iconBg = 'rgba(239, 68, 68, 0.1)';
+                    IconSvg = <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={iconColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>;
+                  } else if (log.action === 'Deleted Draft') {
+                    iconColor = '#64748b'; iconBg = 'rgba(100, 116, 139, 0.1)';
+                    IconSvg = <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={iconColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>;
+                  } else {
+                    IconSvg = <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={iconColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>;
+                  }
+                  return (
+                    <div key={log.id} className="activity-item">
+                      <div className="activity-icon" style={{ backgroundColor: iconBg, color: iconColor }}>
+                        {IconSvg}
+                      </div>
+                      <div className="activity-info">
+                        <span className="activity-action">{log.action}</span>
+                        <span className="activity-details">
+                          {log.referenceNumber} &bull; {log.establishmentName}
+                        </span>
+                      </div>
+                      <span className="activity-time">{log.timeAgo}</span>
+                    </div>
+                  );
+                })}
+                {visibleCount < recentActivity.length && (
+                  <button className="see-more-btn" onClick={() => setVisibleCount(prev => prev + 10)}>
+                    See More
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
+                )}
+                </>
+              ) : (
+                <div className="activity-empty">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.3 }}>
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                  <p>No recent activity yet. Start by submitting an application!</p>
+                </div>
+              )}
             </div>
           </div>
         </main>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
@@ -135,8 +135,19 @@ const FullDetails = () => {
         status: 'Cancelled',
         updatedAt: serverTimestamp()
       });
+
+      // Log activity
+      const session = JSON.parse(localStorage.getItem('userSession') || '{}');
+      await addDoc(collection(db, 'activityLogs'), {
+        userEmail: session.email || '',
+        action: 'Cancelled Application',
+        referenceNumber: appData.referenceNumber || '---',
+        establishmentName: appData.establishmentName || '---',
+        applicationType: appData.applicationType || '---',
+        timestamp: serverTimestamp()
+      });
+
       setCancelConfirm(false);
-      alert('Application has been cancelled.');
       navigate('/applications/all');
     } catch (error) {
       console.error('Error cancelling application:', error);
