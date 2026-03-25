@@ -85,14 +85,15 @@ const Drafts = () => {
     const type = (draft.type || '').toUpperCase();
     let route = '/new-application/evaluation'; // default
 
-    // Map application type to route
-    if (type.includes('FSIC') && type.includes('OCCUPANCY')) {
+    // Map application type to correct route based on title keywords
+    if (type.includes('OCCUPANCY')) {
       route = '/new-application/occupancy';
-    } else if (type.includes('FSIC') || type.includes('CERTIFICATE') || type.includes('INSPECTION')) {
+    } else if (type.includes('BUSINESS PERMIT')) {
       route = '/new-application/certificate';
     } else if (type.includes('EVALUATION') || type.includes('FSEC')) {
       route = '/new-application/evaluation';
     } else {
+      // Default fallback is Clearance for everything else (Hot work, Fire Drill, etc.)
       route = '/new-application/clearance';
     }
 
