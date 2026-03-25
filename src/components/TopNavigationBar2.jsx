@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, onSnapshot, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 import logo from '../assets/Logo.svg';
 import './TopNavigationBar2.css';
@@ -18,13 +18,17 @@ const TopNavigationBar2 = () => {
       const sessionData = localStorage.getItem('userSession');
       if (sessionData) {
         const session = JSON.parse(sessionData);
-        if (session.firstName) {
-          return session.firstName.charAt(0).toUpperCase();
-        }
+        const first = session.firstName ? session.firstName.charAt(0).toUpperCase() : '';
+        const last = session.lastName ? session.lastName.charAt(0).toUpperCase() : '';
+        return first + last || 'U';
       }
     } catch (e) {}
     return 'U';
   });
+
+  const [notifications, setNotifications] = useState([]);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -49,10 +53,12 @@ const TopNavigationBar2 = () => {
             if (!querySnapshot.empty) {
               const userData = querySnapshot.docs[0].data();
               if (userData.firstName) {
-                setUserInitial(userData.firstName.charAt(0).toUpperCase());
+                const first = userData.firstName.charAt(0).toUpperCase();
+                const last = (userData.lastName || '').charAt(0).toUpperCase();
+                setUserInitial(first + last);
                 
                 // Silently patch the session if missing
-                if (!session.firstName) {
+                if (!session.firstName || !session.lastName) {
                   session.firstName = userData.firstName;
                   session.lastName = userData.lastName;
                   localStorage.setItem('userSession', JSON.stringify(session));
@@ -68,7 +74,98 @@ const TopNavigationBar2 = () => {
       }
     };
     fetchUserInitial();
+
+    // Listen for profile updates from Settings page
+    const handleProfileUpdate = () => {
+      try {
+        const sessionData = localStorage.getItem('userSession');
+        if (sessionData) {
+          const session = JSON.parse(sessionData);
+          const first = session.firstName ? session.firstName.charAt(0).toUpperCase() : '';
+          const last = session.lastName ? session.lastName.charAt(0).toUpperCase() : '';
+          setUserInitial(first + last || 'U');
+        }
+      } catch (e) {}
+    };
+
+    window.addEventListener('userProfileUpdated', handleProfileUpdate);
+    
+    // Real-time notifications listener
+    let unsubscribeNotifs;
+    const sessionData3 = localStorage.getItem('userSession');
+    
+    // Ref to store previous statuses to detect CHANGES
+    const previousStatuses = { current: {} };
+    let isInitialLoad = true;
+
+    if (sessionData3) {
+      const session = JSON.parse(sessionData3);
+      if (session.email) {
+        const appsRef = collection(db, 'applications');
+        const q = query(appsRef, where('userEmail', '==', session.email));
+
+        unsubscribeNotifs = onSnapshot(q, (snapshot) => {
+          const validStatuses = ['completeness check', 'assessment', 'pending review', 'declined'];
+          const currentApps = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          
+          const newNotifications = [];
+          
+          currentApps.forEach(app => {
+            const appId = app.id;
+            const currentStatus = (app.status || '').toLowerCase().trim();
+            const prevStatus = previousStatuses.current[appId];
+
+            // If status changed to a valid notification status
+            if (!isInitialLoad && currentStatus !== prevStatus && validStatuses.includes(currentStatus)) {
+              newNotifications.push(app);
+            }
+            
+            // Update tracking
+            previousStatuses.current[appId] = currentStatus;
+          });
+
+          if (isInitialLoad) {
+            isInitialLoad = false;
+            console.log('Notifications: Initial load complete, now watching for changes...');
+          } else if (newNotifications.length > 0) {
+            console.log(`Notifications: Detected ${newNotifications.length} status change(s)!`);
+            setNotifications(prev => {
+              // Add new ones to the top and keep only 5
+              const updated = [...newNotifications, ...prev].slice(0, 5);
+              return updated;
+            });
+            setUnreadCount(prev => prev + newNotifications.length);
+          }
+        });
+      }
+    }
+
+    return () => {
+      window.removeEventListener('userProfileUpdated', handleProfileUpdate);
+      if (unsubscribeNotifs) unsubscribeNotifs();
+    };
   }, []);
+
+  const handleNotifClick = () => {
+    setNotifOpen(!notifOpen);
+    setDropdownOpen(false);
+    if (!notifOpen && notifications.length > 0) {
+      // Mark as read
+      const latestTime = Math.max(...notifications.map(n => n.updatedAt?.toMillis() || 0));
+      localStorage.setItem('lastReadNotif', latestTime.toString());
+      setUnreadCount(0);
+    }
+  };
+
+  const handleNotifItemClick = (notif) => {
+    setNotifOpen(false);
+    const status = (notif.status || '').toLowerCase();
+    if (status === 'declined') {
+      navigate('/applications/cancelled');
+    } else {
+      navigate('/applications/all');
+    }
+  };
 
   const handleLogoutClick = () => {
     setDropdownOpen(false);
@@ -112,12 +209,51 @@ const TopNavigationBar2 = () => {
           </svg>
         </button>
 
-        <button className="topnav2-notification-btn" aria-label="Notifications">
+        <button 
+          className={`topnav2-notification-btn ${notifOpen ? 'active' : ''} ${unreadCount > 0 ? 'has-unread' : ''}`} 
+          aria-label="Notifications"
+          onClick={handleNotifClick}
+        >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="bell-icon">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
             <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
           </svg>
-          <span className="notification-badge"></span>
+          {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
+
+          {notifOpen && (
+            <div className="notif-dropdown" onClick={(e) => e.stopPropagation()}>
+              <div className="notif-dropdown-header">
+                <h3>Notifications</h3>
+                {unreadCount > 0 && <span className="unread-label">{unreadCount} new</span>}
+              </div>
+              <div className="notif-list">
+                {notifications.length > 0 ? (
+                  notifications.map(notif => (
+                    <div key={notif.id} className="notif-item" onClick={() => handleNotifItemClick(notif)}>
+                      <div className={`notif-status-indicator ${(notif.status || '').toLowerCase().replace(' ', '-')}`}></div>
+                      <div className="notif-info">
+                        <div className="notif-title">
+                          <span className="notif-status">{(notif.status || '').toUpperCase()}</span>
+                          <span className="notif-time">
+                            {notif.updatedAt?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        </div>
+                        <p className="notif-establishment">{notif.establishmentName}</p>
+                        <p className="notif-ref">{notif.referenceNumber}</p>
+                        {(notif.status || '').toLowerCase() === 'declined' && (
+                          <p className="notif-declined-msg">Please go to your email for full detail why the application is declined.</p>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="notif-empty">
+                    <p>No notifications yet</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </button>
 
         <div className="topnav2-user-profile" onClick={() => setDropdownOpen(!dropdownOpen)}>
@@ -128,7 +264,7 @@ const TopNavigationBar2 = () => {
           
           {dropdownOpen && (
             <div className="topnav2-user-dropdown">
-              <button className="topnav2-dropdown-item">
+              <button className="topnav2-dropdown-item" onClick={() => { setDropdownOpen(false); navigate('/settings'); }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                 Settings
               </button>

@@ -18,6 +18,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import EmailVerification from './pages/emailVerification';
 import EmailVerified from './pages/emailVerified';
 import Dashboard from './pages/Dashboard/dashboard';
+import Settings from './pages/Settings';
 import OngoingApplicationsAll from './pages/myapplication/OngoingApplications-All';
 import OngoingApplicationsCompletenessCheck from './pages/myapplication/OngoingApplications-completenesscheck';
 import OngoingApplicationsAssessment from './pages/myapplication/OngoingApplications-assessment';
@@ -240,6 +241,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ApplicationClearance />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/settings" 
+          element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           } 
         />

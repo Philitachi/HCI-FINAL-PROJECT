@@ -213,7 +213,7 @@ const Dashboard = () => {
               </div>
               <div className="metric-card" onClick={() => navigate('/establishment')} style={{ cursor: 'pointer' }}>
                 <div className="metric-icon purple">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 21H3"></path><path d="M18 21V7a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"></path><line x1="10" y1="9" x2="14" y2="9"></line><line x1="10" y1="13" x2="14" y2="13"></line><line x1="10" y1="17" x2="14" y2="17"></line></svg>
                 </div>
                 <div className="metric-info">
                   <span className="metric-value">{metrics.establishments}</span>
