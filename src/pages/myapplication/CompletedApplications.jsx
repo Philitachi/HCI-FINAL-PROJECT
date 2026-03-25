@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
@@ -23,6 +23,21 @@ const CompletedApplications = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [selectedType, setSelectedType] = useState('All Types');
+  const [isTypeMenuOpen, setIsTypeMenuOpen] = useState(false);
+  const typeMenuRef = useRef(null);
+
+  const occupancyOptions = ['All Types', 'Residential', 'Commercial', 'Industrial', 'Institutional', 'Assembly', 'Educational', 'Storage', 'Mixed Occupancy'];
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (typeMenuRef.current && !typeMenuRef.current.contains(event.target)) {
+        setIsTypeMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const session = JSON.parse(localStorage.getItem('userSession') || '{}');
@@ -61,6 +76,7 @@ const CompletedApplications = () => {
             location: location,
             status: data.status || '',
             refNo: data.referenceNumber || '---',
+            occupancyType: data.occupancyType || '---',
             createdDate: createdDate,
             rawData: data
           };
@@ -92,21 +108,27 @@ const CompletedApplications = () => {
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
         return allApplications.filter(app => app.createdDate && app.createdDate >= startOfMonth);
       }
+      case 'lastmonth': {
+        // Last month
+        const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
+        return allApplications.filter(app => app.createdDate && app.createdDate >= startOfLastMonth && app.createdDate <= endOfLastMonth);
+      }
       case 'year': {
         // This year
         const startOfYear = new Date(now.getFullYear(), 0, 1);
         return allApplications.filter(app => app.createdDate && app.createdDate >= startOfYear);
       }
       case '30days': {
-        const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        const thirtyDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30, 0, 0, 0, 0);
         return allApplications.filter(app => app.createdDate && app.createdDate >= thirtyDaysAgo);
       }
       case '90days': {
-        const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+        const ninetyDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 90, 0, 0, 0, 0);
         return allApplications.filter(app => app.createdDate && app.createdDate >= ninetyDaysAgo);
       }
       case '6months': {
-        const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate());
+        const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate(), 0, 0, 0, 0);
         return allApplications.filter(app => app.createdDate && app.createdDate >= sixMonthsAgo);
       }
       case 'range': {
@@ -115,12 +137,19 @@ const CompletedApplications = () => {
         return allApplications.filter(app => {
           if (!app.createdDate) return false;
           const appDate = app.createdDate;
-          if (dateFrom && appDate < new Date(dateFrom)) return false;
-          if (dateTo) {
-            const endDate = new Date(dateTo);
-            endDate.setHours(23, 59, 59, 999);
-            if (appDate > endDate) return false;
+          
+          if (dateFrom) {
+            const [y, m, d] = dateFrom.split('-').map(Number);
+            const fromDate = new Date(y, m - 1, d, 0, 0, 0, 0);
+            if (appDate < fromDate) return false;
           }
+          
+          if (dateTo) {
+            const [y, m, d] = dateTo.split('-').map(Number);
+            const toDate = new Date(y, m - 1, d, 23, 59, 59, 999);
+            if (appDate > toDate) return false;
+          }
+          
           return true;
         });
       }
@@ -129,17 +158,19 @@ const CompletedApplications = () => {
     }
   }, [allApplications, activeSubTab, dateFrom, dateTo]);
 
-  // Apply search filter
+  // Apply search and occupancy type filter
   const filteredApplications = useMemo(() => {
-    return dateFilteredApplications.filter(app => 
-      app.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [dateFilteredApplications, searchQuery]);
+    return dateFilteredApplications.filter(app => {
+      const matchesSearch = app.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesType = selectedType === 'All Types' || app.occupancyType === selectedType;
+      return matchesSearch && matchesType;
+    });
+  }, [dateFilteredApplications, searchQuery, selectedType]);
 
   // Reset to first page when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, activeSubTab, dateFrom, dateTo]);
+  }, [searchQuery, selectedType, activeSubTab, dateFrom, dateTo]);
 
   // Apply pagination
   const currentApplications = useMemo(() => {
@@ -219,16 +250,35 @@ const CompletedApplications = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <div className="type-filter-wrapper">
-                <button className="type-filter-btn">
+              <div className="type-filter-wrapper" ref={typeMenuRef}>
+                <button 
+                  className={`type-filter-btn ${isTypeMenuOpen ? 'open' : ''}`}
+                  onClick={() => setIsTypeMenuOpen(!isTypeMenuOpen)}
+                >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                   </svg>
-                  All Types
+                  {selectedType}
                   <svg className="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
                 </button>
+                {isTypeMenuOpen && (
+                  <div className="type-filter-menu">
+                    {occupancyOptions.map((option) => (
+                      <div 
+                        key={option} 
+                        className={`type-filter-item ${selectedType === option ? 'active' : ''}`}
+                        onClick={() => {
+                          setSelectedType(option);
+                          setIsTypeMenuOpen(false);
+                        }}
+                      >
+                        {option === 'All Types' ? 'All Types' : `${option} Occupancy`}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </MyApplicationsNav>

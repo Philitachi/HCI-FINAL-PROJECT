@@ -2,13 +2,24 @@ import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import EmptyState from '../components/EmptyState';
+import Pagination from '../components/Pagination';
 import '../styles/Payment.css';
 import './Dashboard/dashboard.css';
 
 const Payment = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedRange, setSelectedRange] = useState('This year'); // Default selection
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const dropdownRef = useRef(null);
+  
+  // Mock data for payments (until real data is integrated)
+  const allPayments = []; 
+  const filteredPayments = allPayments; // Add filtering logic here if needed
+  
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentPayments = filteredPayments.slice(indexOfFirstItem, indexOfLastItem);
 
   const options = ['This year', 'Last Year', 'Search a range of dates'];
 
@@ -29,6 +40,7 @@ const Payment = () => {
   const handleSelect = (option) => {
     setSelectedRange(option);
     setDropdownOpen(false);
+    setCurrentPage(1); // Reset to first page when filter changes
   };
 
   return (
@@ -88,6 +100,14 @@ const Payment = () => {
           <div className="payment-empty-container">
             <EmptyState />
           </div>
+
+          <Pagination 
+            totalItems={filteredPayments.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            onItemsPerPageChange={setItemsPerPage}
+          />
         </main>
       </div>
     </div>

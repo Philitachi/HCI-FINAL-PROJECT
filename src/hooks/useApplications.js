@@ -55,6 +55,7 @@ const useApplications = (statusFilter = null) => {
           location: location,
           status: data.status || 'Completeness Check',
           refNo: data.referenceNumber || '---',
+          occupancyType: data.occupancyType || '---',
           isActive: false,
           rawData: data
         };

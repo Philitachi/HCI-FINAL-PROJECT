@@ -59,6 +59,108 @@
   cursor: pointer;
   font-size: 0.95rem;
   font-family: inherit;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.type-filter-btn.open {
+  border-color: #14b8a6;
+}
+
+.type-filter-btn .chevron-icon {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.type-filter-btn.open .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.type-filter-wrapper {
+  position: relative;
+  z-index: 100;
+}
+
+.type-filter-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 220px;
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 10px;
+  box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  overflow-y: auto;
+  max-height: 250px;
+  padding: 0.5rem;
+  animation: dropdownFade 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: top right;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color, rgba(255, 255, 255, 0.1)) transparent;
+}
+
+.type-filter-menu::-webkit-scrollbar {
+  width: 5px;
+}
+
+.type-filter-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.type-filter-menu::-webkit-scrollbar-thumb {
+  background-color: var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 10px;
+}
+
+:root.light-mode .type-filter-menu {
+  scrollbar-color: #e2e8f0 transparent;
+}
+
+:root.light-mode .type-filter-menu::-webkit-scrollbar-thumb {
+  background-color: #e2e8f0;
+}
+
+@keyframes dropdownFade {
+  from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.type-filter-item {
+  padding: 0.7rem 1rem;
+  color: var(--text-secondary-color, #9ca3af);
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.type-filter-item:hover {
+  background-color: var(--hover-bg-color, rgba(255, 255, 255, 0.05));
+  color: var(--text-primary-color, white);
+}
+
+.type-filter-item.active {
+  background-color: rgba(20, 184, 166, 0.1);
+  color: #14b8a6;
+  font-weight: 500;
+}
+
+/* Light Mode Overrides for Menu */
+:root.light-mode .type-filter-menu {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.1);
+}
+
+:root.light-mode .type-filter-item:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+:root.light-mode .type-filter-item.active {
+  background-color: #f0fdfa;
+  color: #0d9488;
 }
 
 .type-filter-btn svg:first-child {

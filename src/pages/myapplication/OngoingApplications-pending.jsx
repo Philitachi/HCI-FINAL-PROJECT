@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
@@ -15,15 +15,32 @@ const OngoingApplicationsPending = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [selectedType, setSelectedType] = useState('All Types');
+  const [isTypeMenuOpen, setIsTypeMenuOpen] = useState(false);
+  const typeMenuRef = useRef(null);
 
-  const filteredApplications = allApplications.filter(app =>
-    app.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const occupancyOptions = ['All Types', 'Residential', 'Commercial', 'Industrial', 'Institutional', 'Assembly', 'Educational', 'Storage', 'Mixed Occupancy'];
 
-  // Reset to first page when searching
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (typeMenuRef.current && !typeMenuRef.current.contains(event.target)) {
+        setIsTypeMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const filteredApplications = allApplications.filter(app => {
+    const matchesSearch = app.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesType = selectedType === 'All Types' || app.occupancyType === selectedType;
+    return matchesSearch && matchesType;
+  });
+
+  // Reset to first page when searching or filtering
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery]);
+  }, [searchQuery, selectedType]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -50,16 +67,35 @@ const OngoingApplicationsPending = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <div className="type-filter-wrapper">
-                <button className="type-filter-btn">
+              <div className="type-filter-wrapper" ref={typeMenuRef}>
+                <button 
+                  className={`type-filter-btn ${isTypeMenuOpen ? 'open' : ''}`}
+                  onClick={() => setIsTypeMenuOpen(!isTypeMenuOpen)}
+                >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                   </svg>
-                  All Types
+                  {selectedType}
                   <svg className="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
                 </button>
+                {isTypeMenuOpen && (
+                  <div className="type-filter-menu">
+                    {occupancyOptions.map((option) => (
+                      <div 
+                        key={option} 
+                        className={`type-filter-item ${selectedType === option ? 'active' : ''}`}
+                        onClick={() => {
+                          setSelectedType(option);
+                          setIsTypeMenuOpen(false);
+                        }}
+                      >
+                        {option === 'All Types' ? 'All Types' : `${option} Occupancy`}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </MyApplicationsNav>

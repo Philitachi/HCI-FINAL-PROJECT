@@ -65,6 +65,7 @@ const MyApplicationsNav = ({ activeMainTab, activeSubTab, children }) => {
           <div className="segmented-control">
             <button className={`segment-btn ${activeSubTab === 'range' ? 'active' : ''}`} onClick={() => navigate('/applications/completed/range')}>Range Filter</button>
             <button className={`segment-btn ${activeSubTab === 'month' ? 'active' : ''}`} onClick={() => navigate('/applications/completed/month')}>This Month</button>
+            <button className={`segment-btn ${activeSubTab === 'lastmonth' ? 'active' : ''}`} onClick={() => navigate('/applications/completed/lastmonth')}>Last Month</button>
             <button className={`segment-btn ${activeSubTab === 'year' ? 'active' : ''}`} onClick={() => navigate('/applications/completed/year')}>This Year</button>
             <button className={`segment-btn ${activeSubTab === '30days' ? 'active' : ''}`} onClick={() => navigate('/applications/completed/30days')}>Last 30 Days</button>
             <button className={`segment-btn ${activeSubTab === '90days' ? 'active' : ''}`} onClick={() => navigate('/applications/completed/90days')}>Last 90 Days</button>
