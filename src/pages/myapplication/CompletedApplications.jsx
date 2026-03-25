@@ -20,6 +20,9 @@ const CompletedApplications = () => {
   // Range date picker state
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     const session = JSON.parse(localStorage.getItem('userSession') || '{}');
@@ -80,7 +83,7 @@ const CompletedApplications = () => {
   }, []);
 
   // Filter applications based on active sub-tab
-  const applications = useMemo(() => {
+  const dateFilteredApplications = useMemo(() => {
     const now = new Date();
 
     switch (activeSubTab) {
@@ -125,6 +128,25 @@ const CompletedApplications = () => {
         return allApplications;
     }
   }, [allApplications, activeSubTab, dateFrom, dateTo]);
+
+  // Apply search filter
+  const filteredApplications = useMemo(() => {
+    return dateFilteredApplications.filter(app => 
+      app.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [dateFilteredApplications, searchQuery]);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, activeSubTab, dateFrom, dateTo]);
+
+  // Apply pagination
+  const currentApplications = useMemo(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    return filteredApplications.slice(indexOfFirstItem, indexOfLastItem);
+  }, [filteredApplications, currentPage, itemsPerPage]);
 
   return (
     <div className="dashboard-container">
@@ -189,7 +211,13 @@ const CompletedApplications = () => {
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" placeholder="Search list by establishment name" className="search-input" />
+                <input 
+                  type="text" 
+                  placeholder="Search list by establishment name" 
+                  className="search-input" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
               <div className="type-filter-wrapper">
                 <button className="type-filter-btn">
@@ -207,9 +235,9 @@ const CompletedApplications = () => {
 
           {loading ? (
             <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
-          ) : applications.length > 0 ? (
+          ) : currentApplications.length > 0 ? (
             <div className="applications-list">
-              {applications.map((app) => (
+              {currentApplications.map((app) => (
                 <div key={app.id} className="app-list-card">
                   <div className="app-icon-container">
                     <div className="app-icon-circle">
@@ -282,7 +310,13 @@ const CompletedApplications = () => {
             <EmptyState />
           )}
 
-          <Pagination />
+          <Pagination 
+            totalItems={filteredApplications.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            onItemsPerPageChange={setItemsPerPage}
+          />
         </main>
       </div>
     </div>

@@ -15,6 +15,9 @@ const CancelledApplications = () => {
   const [filter, setFilter] = useState('cancelled');
   const [allApps, setAllApps] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     const session = JSON.parse(localStorage.getItem('userSession') || '{}');
@@ -74,11 +77,23 @@ const CancelledApplications = () => {
     return () => unsubscribe();
   }, []);
 
-  // Filter by selected tab
-  const applications = allApps.filter(app => {
+  // Filter by selected tab and search query
+  const filteredApplications = allApps.filter(app => {
     const s = app.status.trim().toLowerCase();
-    return filter === 'cancelled' ? s === 'cancelled' : s === 'declined';
+    const matchesTab = filter === 'cancelled' ? s === 'cancelled' : s === 'declined';
+    const matchesSearch = app.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesTab && matchesSearch;
   });
+
+  // Reset to first page when filtering or searching
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filter]);
+
+  // Apply pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentApplications = filteredApplications.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className="dashboard-container">
@@ -110,7 +125,13 @@ const CancelledApplications = () => {
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" placeholder="Search list by establishment name" className="search-input" />
+                <input 
+                  type="text" 
+                  placeholder="Search list by establishment name" 
+                  className="search-input" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
               <div className="type-filter-wrapper">
                 <button className="type-filter-btn">
@@ -128,9 +149,9 @@ const CancelledApplications = () => {
 
           {loading ? (
             <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
-          ) : applications.length > 0 ? (
+          ) : currentApplications.length > 0 ? (
             <div className="applications-list">
-              {applications.map((app) => (
+              {currentApplications.map((app) => (
                 <div key={app.id} className="app-list-card">
                   <div className="app-icon-container">
                     <div className="app-icon-circle">
@@ -228,7 +249,13 @@ const CancelledApplications = () => {
             <EmptyState />
           )}
 
-          <Pagination />
+          <Pagination 
+            totalItems={filteredApplications.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            onItemsPerPageChange={setItemsPerPage}
+          />
         </main>
       </div>
     </div>

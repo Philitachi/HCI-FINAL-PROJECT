@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
@@ -12,7 +12,23 @@ import '../Dashboard/dashboard.css';
 const OngoingApplicationsIssuance = () => {
   const navigate = useNavigate();
   const [selectedApp, setSelectedApp] = useState(null);
-  const { applications, loading } = useApplications('Issuance');
+  const { applications: allApplications, loading } = useApplications('Issuance');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const filteredApplications = allApplications.filter(app =>
+    app.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Reset to first page when searching
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentApplications = filteredApplications.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className="dashboard-container">
@@ -27,7 +43,13 @@ const OngoingApplicationsIssuance = () => {
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" placeholder="Search list by establishment name" className="search-input" />
+                <input 
+                  type="text" 
+                  placeholder="Search list by establishment name" 
+                  className="search-input" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
               <div className="type-filter-wrapper">
                 <button className="type-filter-btn">
@@ -45,9 +67,9 @@ const OngoingApplicationsIssuance = () => {
 
           {loading ? (
             <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
-          ) : applications.length > 0 ? (
+          ) : currentApplications.length > 0 ? (
             <div className="applications-list">
-              {applications.map((app) => (
+              {currentApplications.map((app) => (
                 <div key={app.id} className={`app-list-card ${app.isActive ? 'active-card' : ''}`} onClick={() => setSelectedApp(app)}>
                   <div className="app-icon-container">
                     <div className="app-icon-circle">
@@ -121,7 +143,13 @@ const OngoingApplicationsIssuance = () => {
             <EmptyState />
           )}
 
-          <Pagination />
+          <Pagination 
+            totalItems={filteredApplications.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            onItemsPerPageChange={setItemsPerPage}
+          />
 
           {/* Details Modal */}
           {selectedApp && (

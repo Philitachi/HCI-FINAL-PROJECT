@@ -208,7 +208,7 @@ const Dashboard = () => {
                 </div>
                 <div className="metric-info">
                   <span className="metric-value">{metrics.certificates}</span>
-                  <span className="metric-label">Valid<br/>Certificates</span>
+                  <span className="metric-label">Valid<br/>Certificates/Clearances</span>
                 </div>
               </div>
               <div className="metric-card" onClick={() => navigate('/establishment')} style={{ cursor: 'pointer' }}>

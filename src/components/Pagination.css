@@ -25,7 +25,17 @@
   border-radius: 6px;
   cursor: pointer;
   font-family: inherit;
+  transition: all 0.2s ease;
 }
+
+.rows-dropdown .chevron-icon {
+  transition: transform 0.3s ease;
+}
+
+.rows-dropdown.open .chevron-icon {
+  transform: rotate(180deg);
+}
+
 
 .pagination-controls {
   display: flex;
@@ -73,3 +83,74 @@
   color: var(--text-secondary-color, #9ca3af);
   padding: 0 0.5rem;
 }
+
+/* Rows Menu */
+.rows-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  padding: 0.5rem;
+  z-index: 10;
+  min-width: 100%;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.row-option {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  color: var(--text-primary-color, white);
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.row-option:hover {
+  background-color: var(--hover-bg-color, rgba(255, 255, 255, 0.05));
+}
+
+.row-option.active {
+  color: #14b8a6;
+  font-weight: 600;
+}
+
+/* Light Mode Overrides */
+.light-mode .rows-dropdown,
+.light-mode .page-btn.nav-btn {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+  color: #1e293b;
+}
+
+.light-mode .rows-menu {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .row-option {
+  color: #1e293b;
+}
+
+.light-mode .row-option:hover {
+  background-color: #f1f5f9;
+}
+
+.light-mode .page-btn:hover:not(.active) {
+  background-color: #f1f5f9;
+  color: #1e293b;
+}
+
+.light-mode .page-ellipsis {
+  color: #64748b;
+}
+
+
