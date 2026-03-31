@@ -284,9 +284,18 @@ const TopNavigationBar2 = () => {
 
   return (
     <header className="topnav2-header">
-      <div className="topnav2-brand">
-        <img src={logo} alt="Fire Safety Inspection System Logo" className="topnav2-logo" />
-        <span className="topnav2-title">Fire Safety Inspection System</span>
+      <div className="topnav2-left">
+        <button className="topnav2-hamburger" aria-label="Toggle sidebar" onClick={() => window.dispatchEvent(new CustomEvent('toggleMobileSidebar'))}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div className="topnav2-brand">
+          <img src={logo} alt="Fire Safety Inspection System Logo" className="topnav2-logo" />
+          <span className="topnav2-title">Fire Safety Inspection System</span>
+        </div>
       </div>
       <div className="topnav2-right">
         <button className="topnav2-theme-toggle" aria-label="Toggle dark mode" onClick={() => setIsDarkMode(!isDarkMode)}>

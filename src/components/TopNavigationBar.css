@@ -34,7 +34,7 @@
   font-size: 1.125rem;
   font-weight: 500;
   letter-spacing: 0.5px;
-  color: white; /* Ensure text is visible if inherited color is different */
+  color: white;
 }
 
 .navbar-controls {
@@ -55,8 +55,6 @@
 .navbar-controls .nav-link:hover {
   color: #06B6D4;
 }
-
-
 
 .divider {
   color: rgba(255, 255, 255, 0.3);
@@ -114,7 +112,7 @@
 /* Light mode hover effect */
 :root.light-mode .navbar-controls .nav-link:hover,
 :root.light-mode .btn-signin:hover {
-  color: #0369A1; /* Dark blue hover */
+  color: #0369A1;
 }
 
 :root.light-mode .divider {
@@ -141,7 +139,7 @@
 }
 
 .btn-signup {
-  background-color: #06B6D4; /* Cyan/Teal color */
+  background-color: #06B6D4;
   color: white;
   border: none;
   border-radius: 9999px;
@@ -160,9 +158,198 @@
   box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.3), 0 4px 6px -2px rgba(6, 182, 212, 0.15);
 }
 
-/* Responsive adjustments */
+/* ========== MOBILE NAV CONTROLS ========== */
+.mobile-nav-controls {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Hamburger Button */
+.hamburger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.hamburger-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: white;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.hamburger-btn.open .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-btn.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-btn.open .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile Drawer */
+.mobile-drawer {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(17, 24, 39, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.5rem 1rem 1rem;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s ease,
+              padding 0.3s ease;
+}
+
+.mobile-drawer.open {
+  max-height: 400px;
+  opacity: 1;
+  padding: 0.75rem 1rem 1.25rem;
+}
+
+.mobile-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.mobile-drawer-link:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.mobile-drawer-link.active {
+  background-color: rgba(6, 182, 212, 0.12);
+  color: #06B6D4;
+}
+
+.mobile-drawer-link.signup {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: white;
+  font-weight: 600;
+  justify-content: center;
+  margin-top: 0.25rem;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+}
+
+.mobile-drawer-link.signup:hover {
+  background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+}
+
+.mobile-drawer-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+  margin: 0.5rem 0.5rem;
+}
+
+/* Mobile Overlay */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: -1;
+}
+
+/* ========== LIGHT MODE MOBILE ========== */
+:root.light-mode .hamburger-line {
+  background-color: #111827;
+}
+
+:root.light-mode .hamburger-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+:root.light-mode .mobile-drawer {
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+:root.light-mode .mobile-drawer-link {
+  color: #374151;
+}
+
+:root.light-mode .mobile-drawer-link:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+:root.light-mode .mobile-drawer-link.active {
+  background-color: rgba(3, 105, 161, 0.1);
+  color: #0369A1;
+}
+
+:root.light-mode .mobile-drawer-link.signup {
+  color: white;
+}
+
+:root.light-mode .mobile-drawer-divider {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
-  .navbar-controls {
-    display: none; /* In a real app, this would be a hamburger menu */
+  .navbar {
+    padding: 0.875rem 4%;
+  }
+
+  .brand-text {
+    display: none;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-nav-controls {
+    display: flex;
+  }
+
+  .mobile-drawer {
+    display: flex;
+  }
+
+  .mobile-overlay {
+    display: block;
   }
 }

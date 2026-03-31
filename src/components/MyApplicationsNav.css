@@ -236,3 +236,68 @@ html:not(.light-mode) .segment-btn.active {
 .filter-chip:hover:not(.active) {
   color: var(--text-primary-color, white);
 }
+
+/* ========== MOBILE RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .applications-tabs-container {
+    top: 60px;
+    margin-top: -1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .main-tabs {
+    gap: 1.25rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: relative;
+    /* Fade scroll indicator on right side */
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  }
+
+  .main-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-btn {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .segmented-control-wrapper {
+    margin-bottom: 1.25rem;
+  }
+
+  .segmented-control {
+    width: 100%;
+  }
+
+  .segment-btn {
+    flex: 1;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.5rem;
+    text-align: center;
+  }
+
+  .filter-tabs {
+    gap: 0.5rem;
+    scrollbar-width: none;
+    /* Fade scroll indicator on right side */
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  }
+
+  .filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-chip {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 0.35rem 0.65rem;
+  }
+}
+

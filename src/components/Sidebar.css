@@ -271,3 +271,69 @@
   background-color: #fef08a;
   /* Soft warning/orange */
 }
+
+/* ========== MOBILE SIDEBAR OVERLAY ========== */
+.sidebar-mobile-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    z-index: 200;
+    width: 280px;
+    height: calc(100vh - 60px);
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+  }
+
+  .sidebar.collapsed {
+    width: 280px;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .sidebar.mobile-open.collapsed {
+    width: 280px;
+  }
+
+  /* Force expanded on mobile */
+  .sidebar.mobile-open .sidebar-text {
+    opacity: 1;
+    width: auto;
+    overflow: visible;
+    height: auto;
+  }
+
+  .sidebar.mobile-open .sidebar-link {
+    padding: 0.875rem 1.5rem;
+    justify-content: flex-start;
+  }
+
+  .sidebar-header {
+    display: none;
+  }
+
+  .sidebar-mobile-overlay {
+    display: block;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 199;
+    animation: fade-in 0.2s ease;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}

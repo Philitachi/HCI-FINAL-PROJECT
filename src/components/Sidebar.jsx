@@ -5,6 +5,7 @@ import './Sidebar.css';
 const Sidebar = () => {
   const location = useLocation();
   const sidebarRef = useRef(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const savedScrollPos = sessionStorage.getItem('sidebarScrollPos');
@@ -70,6 +71,18 @@ const Sidebar = () => {
         return { ...prev, 'New Application': true };
       });
     }
+  }, [location.pathname]);
+
+  // Listen for mobile sidebar toggle from TopNavigationBar2
+  useEffect(() => {
+    const handleToggle = () => setMobileOpen(prev => !prev);
+    window.addEventListener('toggleMobileSidebar', handleToggle);
+    return () => window.removeEventListener('toggleMobileSidebar', handleToggle);
+  }, []);
+
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setMobileOpen(false);
   }, [location.pathname]);
 
   const toggleMenu = (name, e) => {
@@ -226,11 +239,14 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside 
-      className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}
-      ref={sidebarRef}
-      onScroll={handleScroll}
-    >
+    <>
+      {/* Mobile backdrop overlay */}
+      {mobileOpen && <div className="sidebar-mobile-overlay" onClick={() => setMobileOpen(false)}></div>}
+      <aside 
+        className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${mobileOpen ? 'mobile-open' : ''}`}
+        ref={sidebarRef}
+        onScroll={handleScroll}
+      >
       <div className="sidebar-header" onClick={() => setIsCollapsed(!isCollapsed)}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="toggle-sidebar-icon">
           <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -289,6 +305,7 @@ const Sidebar = () => {
         ))}
       </nav>
     </aside>
+    </>
   );
 };
 

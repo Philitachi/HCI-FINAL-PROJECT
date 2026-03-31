@@ -141,4 +141,13 @@
     flex-direction: column;
     gap: 2.5rem;
   }
+
+  .contact-section {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .footer-logo h2 {
+    font-size: 1.5rem;
+  }
 }

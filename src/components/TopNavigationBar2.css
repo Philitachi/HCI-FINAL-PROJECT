@@ -463,3 +463,68 @@
   border: 1px solid #e2e8f0;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
+
+/* TopNav2 Layout helpers */
+.topnav2-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topnav2-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary-color, white);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.topnav2-hamburger:hover {
+  background-color: var(--hover-bg-color, rgba(255, 255, 255, 0.1));
+}
+
+:root.light-mode .topnav2-hamburger {
+  color: #0f172a;
+}
+
+:root.light-mode .topnav2-hamburger:hover {
+  background-color: #f1f5f9;
+}
+
+/* ========== MOBILE RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .topnav2-header {
+    padding: 0.75rem 1rem;
+    height: 60px;
+  }
+
+  .topnav2-title {
+    display: none;
+  }
+
+  .topnav2-hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .topnav2-right {
+    gap: 0.75rem;
+  }
+
+  .topnav2-chevron-icon {
+    display: none;
+  }
+
+  .notif-dropdown {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0 0 12px 12px;
+  }
+}
