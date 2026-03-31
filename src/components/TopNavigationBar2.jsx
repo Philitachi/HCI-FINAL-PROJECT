@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, query, where, getDocs, onSnapshot, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -29,6 +29,25 @@ const TopNavigationBar2 = () => {
   const [notifications, setNotifications] = useState([]);
   const [notifOpen, setNotifOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [visibleNotifsCount, setVisibleNotifsCount] = useState(10);
+  
+  const notifRef = useRef(null);
+  const userMenuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // If clicking outside the notification ref, close it
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setNotifOpen(false);
+      }
+      // If clicking outside the user menu ref, close it
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -96,45 +115,83 @@ const TopNavigationBar2 = () => {
     
     // Ref to store previous statuses to detect CHANGES
     const previousStatuses = { current: {} };
-    let isInitialLoad = true;
 
     if (sessionData3) {
       const session = JSON.parse(sessionData3);
       if (session.email) {
+        // Load initial state from localStorage
+        const emailSafe = session.email.replace(/[@.]/g, '_');
+        const notifsKey = `notifs_${emailSafe}`;
+        const countKey = `notifs_count_${emailSafe}`;
+        const statusKey = `notifs_status_${emailSafe}`;
+
+        try {
+          const savedNotifs = JSON.parse(localStorage.getItem(notifsKey) || '[]');
+          const savedCount = parseInt(localStorage.getItem(countKey) || '0', 10);
+          const savedStatuses = JSON.parse(localStorage.getItem(statusKey) || '{}');
+          
+          setNotifications(savedNotifs);
+          setUnreadCount(savedCount);
+          previousStatuses.current = savedStatuses;
+        } catch (e) {
+          console.error("Error loading notifications from local storage", e);
+        }
+
         const appsRef = collection(db, 'applications');
         const q = query(appsRef, where('userEmail', '==', session.email));
 
         unsubscribeNotifs = onSnapshot(q, (snapshot) => {
-          const validStatuses = ['completeness check', 'assessment', 'pending review', 'declined'];
+          const validStatuses = ['completeness check', 'assessment', 'pending review', 'declined', 'approved'];
           const currentApps = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
           
-          const newNotifications = [];
-          
+          const newNotifs = [];
+          const currentStatusMap = { ...previousStatuses.current };
+          let changed = false;
+
           currentApps.forEach(app => {
             const appId = app.id;
             const currentStatus = (app.status || '').toLowerCase().trim();
             const prevStatus = previousStatuses.current[appId];
 
             // If status changed to a valid notification status
-            if (!isInitialLoad && currentStatus !== prevStatus && validStatuses.includes(currentStatus)) {
-              newNotifications.push(app);
+            // Exclude it if prevStatus is undefined (i.e. brand new application or empty cache)
+            if (prevStatus && currentStatus !== prevStatus && validStatuses.includes(currentStatus)) {
+              newNotifs.push({
+                id: appId + '_' + Date.now(), // Unique key for react
+                appId: appId,
+                status: app.status,
+                establishmentName: app.establishmentName,
+                referenceNumber: app.referenceNumber,
+                notifDate: Date.now()
+              });
+            }
+            
+            if (prevStatus !== currentStatus) {
+              changed = true;
             }
             
             // Update tracking
-            previousStatuses.current[appId] = currentStatus;
+            currentStatusMap[appId] = currentStatus;
           });
 
-          if (isInitialLoad) {
-            isInitialLoad = false;
-            console.log('Notifications: Initial load complete, now watching for changes...');
-          } else if (newNotifications.length > 0) {
-            console.log(`Notifications: Detected ${newNotifications.length} status change(s)!`);
+          if (changed) {
+            previousStatuses.current = currentStatusMap;
+            localStorage.setItem(statusKey, JSON.stringify(currentStatusMap));
+          }
+
+          if (newNotifs.length > 0) {
             setNotifications(prev => {
-              // Add new ones to the top and keep only 5
-              const updated = [...newNotifications, ...prev].slice(0, 5);
+              const updated = [...newNotifs, ...prev]
+                .sort((a, b) => b.notifDate - a.notifDate)
+                .slice(0, 50); // Keep max 50 for history
+              localStorage.setItem(notifsKey, JSON.stringify(updated));
               return updated;
             });
-            setUnreadCount(prev => prev + newNotifications.length);
+            setUnreadCount(prev => {
+              const newCount = prev + newNotifs.length;
+              localStorage.setItem(countKey, newCount.toString());
+              return newCount;
+            });
           }
         });
       }
@@ -149,21 +206,69 @@ const TopNavigationBar2 = () => {
   const handleNotifClick = () => {
     setNotifOpen(!notifOpen);
     setDropdownOpen(false);
-    if (!notifOpen && notifications.length > 0) {
-      // Mark as read
-      const latestTime = Math.max(...notifications.map(n => n.updatedAt?.toMillis() || 0));
-      localStorage.setItem('lastReadNotif', latestTime.toString());
+    if (!notifOpen) {
+      setVisibleNotifsCount(10); // Reset to 10 when opening
+    }
+    if (!notifOpen && unreadCount > 0) {
       setUnreadCount(0);
+      try {
+        const sessionData = localStorage.getItem('userSession');
+        if (sessionData) {
+          const session = JSON.parse(sessionData);
+          if (session.email) {
+            const emailSafe = session.email.replace(/[@.]/g, '_');
+            localStorage.setItem(`notifs_count_${emailSafe}`, '0');
+          }
+        }
+      } catch (e) {}
     }
   };
 
   const handleNotifItemClick = (notif) => {
+    // Mark as read individually
+    const updatedNotifs = notifications.map(n => 
+      n.id === notif.id ? { ...n, isRead: true } : n
+    );
+    setNotifications(updatedNotifs);
+    
+    // Save to localStorage
+    try {
+      const sessionData = localStorage.getItem('userSession');
+      if (sessionData) {
+        const session = JSON.parse(sessionData);
+        if (session.email) {
+          const emailSafe = session.email.replace(/[@.]/g, '_');
+          localStorage.setItem(`notifs_${emailSafe}`, JSON.stringify(updatedNotifs));
+        }
+      }
+    } catch (e) {}
+
     setNotifOpen(false);
     const status = (notif.status || '').toLowerCase();
-    if (status === 'declined') {
-      navigate('/applications/cancelled');
-    } else {
-      navigate('/applications/all');
+    
+    switch(status) {
+      case 'completeness check':
+        navigate('/applications/completeness');
+        break;
+      case 'assessment':
+        navigate('/applications/assessment');
+        break;
+      case 'pending review':
+        navigate('/applications/pending');
+        break;
+      case 'approved':
+      case 'issuance':
+        navigate('/applications/issuance');
+        break;
+      case 'declined':
+      case 'cancelled':
+        navigate('/applications/cancelled');
+        break;
+      case 'completed':
+        navigate('/applications/completed');
+        break;
+      default:
+        navigate('/applications/all');
     }
   };
 
@@ -210,6 +315,7 @@ const TopNavigationBar2 = () => {
         </button>
 
         <button 
+          ref={notifRef}
           className={`topnav2-notification-btn ${notifOpen ? 'active' : ''} ${unreadCount > 0 ? 'has-unread' : ''}`} 
           aria-label="Notifications"
           onClick={handleNotifClick}
@@ -228,24 +334,50 @@ const TopNavigationBar2 = () => {
               </div>
               <div className="notif-list">
                 {notifications.length > 0 ? (
-                  notifications.map(notif => (
-                    <div key={notif.id} className="notif-item" onClick={() => handleNotifItemClick(notif)}>
-                      <div className={`notif-status-indicator ${(notif.status || '').toLowerCase().replace(' ', '-')}`}></div>
-                      <div className="notif-info">
-                        <div className="notif-title">
-                          <span className="notif-status">{(notif.status || '').toUpperCase()}</span>
-                          <span className="notif-time">
-                            {notif.updatedAt?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </span>
+                  <>
+                    {notifications.slice(0, visibleNotifsCount).map(notif => (
+                      <div key={notif.id} className={`notif-item ${notif.isRead ? 'read' : 'unread'}`} onClick={() => handleNotifItemClick(notif)}>
+                        <div className={`notif-status-indicator ${(notif.status || '').toLowerCase().replace(' ', '-')}`}></div>
+                        <div className="notif-info">
+                          <div className="notif-title">
+                            <span className="notif-status">{(notif.status || '').toUpperCase()}</span>
+                            <span className="notif-time">
+                              {notif.notifDate ? new Date(notif.notifDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                            </span>
+                          </div>
+                          <p className="notif-establishment">{notif.establishmentName}</p>
+                          <p className="notif-ref">{notif.referenceNumber}</p>
+                          {(notif.status || '').toLowerCase() === 'declined' && (
+                            <p className="notif-declined-msg">Please check your email for full details on why your application was declined.</p>
+                          )}
                         </div>
-                        <p className="notif-establishment">{notif.establishmentName}</p>
-                        <p className="notif-ref">{notif.referenceNumber}</p>
-                        {(notif.status || '').toLowerCase() === 'declined' && (
-                          <p className="notif-declined-msg">Please go to your email for full detail why the application is declined.</p>
-                        )}
                       </div>
+                    ))}
+                    <div className="notif-pagination">
+                      {visibleNotifsCount > 10 && (
+                        <button 
+                          className="notif-show-more-btn" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setVisibleNotifsCount(prev => Math.max(10, prev - 10));
+                          }}
+                        >
+                          See less
+                        </button>
+                      )}
+                      {visibleNotifsCount < notifications.length && (
+                        <button 
+                          className="notif-show-more-btn" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setVisibleNotifsCount(prev => prev + 10);
+                          }}
+                        >
+                          See more
+                        </button>
+                      )}
                     </div>
-                  ))
+                  </>
                 ) : (
                   <div className="notif-empty">
                     <p>No notifications yet</p>
@@ -256,7 +388,7 @@ const TopNavigationBar2 = () => {
           )}
         </button>
 
-        <div className="topnav2-user-profile" onClick={() => setDropdownOpen(!dropdownOpen)}>
+        <div className="topnav2-user-profile" ref={userMenuRef} onClick={() => setDropdownOpen(!dropdownOpen)}>
           <div className="topnav2-avatar">{userInitial}</div>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`topnav2-chevron-icon ${dropdownOpen ? 'open' : ''}`}>
             <polyline points="6 9 12 15 18 9"></polyline>

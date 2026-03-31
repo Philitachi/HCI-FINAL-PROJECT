@@ -1,1 +1,33 @@
 /* Left intentionally blank. See HomePage.css for styling. */
+
+/* Custom Global Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Light mode overrides for scrollbar */
+:root.light-mode ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+:root.light-mode ::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+}
+
+:root.light-mode ::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}

@@ -27,7 +27,7 @@ const Dashboard = () => {
     drafts: 0
   });
   const [recentActivity, setRecentActivity] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(10);
+  const [visibleCount, setVisibleCount] = useState(5);
 
   useEffect(() => {
     const isDarkMode = localStorage.getItem('theme') !== 'light';
@@ -273,14 +273,24 @@ const Dashboard = () => {
                     </div>
                   );
                 })}
-                {visibleCount < recentActivity.length && (
-                  <button className="see-more-btn" onClick={() => setVisibleCount(prev => prev + 10)}>
-                    See More
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                )}
+                <div className="activity-pagination">
+                  {visibleCount > 5 && (
+                    <button className="see-more-btn" onClick={() => setVisibleCount(prev => Math.max(5, prev - 5))}>
+                      See Less
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: 'rotate(180deg)' }}>
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                  )}
+                  {visibleCount < recentActivity.length && (
+                    <button className="see-more-btn" onClick={() => setVisibleCount(prev => prev + 5)}>
+                      See More
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                  )}
+                </div>
                 </>
               ) : (
                 <div className="activity-empty">

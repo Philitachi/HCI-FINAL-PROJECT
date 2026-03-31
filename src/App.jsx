@@ -34,6 +34,8 @@ import PasswordResetSuccess from './pages/PasswordResetSuccess';
 import ProtectedRoute from './components/ProtectedRoute';
 import Requirements from './pages/Requirements';
 import Complaint from './pages/Complaint';
+import PublicComplaint from './pages/PublicComplaint';
+import PublicLayout from './components/PublicLayout';
 import ApplicationEvaluation from './pages/newapplication/ApplicationEvaluation';
 import ApplicationOccupancy from './pages/newapplication/ApplicationOccupancy';
 import ApplicationCertificate from './pages/newapplication/ApplicationCertificate';
@@ -57,11 +59,14 @@ function App() {
     <Router>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<HomePage />} />
+          <Route path="/submit-complaint" element={<PublicComplaint />} />
+        </Route>
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/terms" element={<TermsAndConditions />} />
-        <Route path="/about" element={<HomePage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/email-verified" element={<EmailVerified />} />

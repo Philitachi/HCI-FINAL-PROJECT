@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import TopNavigationBar from '../components/TopNavigationBar';
 import '../styles/HomePage.css';
 import backgroundImage from '../assets/backgroundImage.png';
 import AboutFSIS from './AboutFSIS';
@@ -27,8 +26,6 @@ const HomePage = () => {
 
   return (
     <div className="homepage-container">
-      <TopNavigationBar />
-
       {/* Main Content / Hero Section */}
       <main 
         className="hero-section" 

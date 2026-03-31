@@ -25,19 +25,17 @@ const TopNavigationBar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const aboutEl = document.getElementById('about');
-      if (aboutEl) {
-        // Evaluate if the 'about' component is primarily currently in the viewport
-        const rect = aboutEl.getBoundingClientRect();
+      const complaintEl = document.getElementById('submit-complaint');
+      if (complaintEl) {
+        const rect = complaintEl.getBoundingClientRect();
         if (rect.top <= window.innerHeight / 2) {
-          setActiveSection('about');
+          setActiveSection('submit-complaint');
         } else {
           setActiveSection('home');
         }
       } else {
-        // Fallbacks for other pages like SignIn, SignUp
-        if (location.pathname === '/about' || location.hash === '#about') {
-          setActiveSection('about');
+        if (location.pathname === '/submit-complaint' || location.hash === '#submit-complaint') {
+          setActiveSection('submit-complaint');
         } else {
           setActiveSection('home');
         }
@@ -74,7 +72,7 @@ const TopNavigationBar = () => {
       <nav className="navbar-controls">
         <div ref={navRef} style={{ position: 'relative', display: 'flex', gap: '2rem' }}>
           <a href="#home" className={`nav-link home ${activeSection === 'home' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); navigate('/'); }}>Home</a>
-          <a href="#about" className={`nav-link about ${activeSection === 'about' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); navigate('/#about'); }}>About Us</a>
+          <a href="#submit-complaint" className={`nav-link submit-complaint ${activeSection === 'submit-complaint' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); navigate('/submit-complaint'); }}>Submit a Complaint</a>
           <div className="nav-slider" style={{ ...sliderStyle, position: 'absolute', bottom: '-4px', height: '2px', backgroundColor: isDarkMode ? '#06B6D4' : '#0369A1', transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)' }}></div>
         </div>
         <span className="divider">|</span>
