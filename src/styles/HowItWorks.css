@@ -8,7 +8,7 @@
   padding: 6rem 5%;
   background-color: #0b1120; /* Deepest dark blue to separate from the radial gradient above */
   color: white;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Outfit', sans-serif;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -166,7 +166,7 @@
   }
   
   .hiw-section-subtitle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 }
 

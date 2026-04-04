@@ -6,7 +6,7 @@
   max-width: 1540px;
   margin: 0 auto;
   position: relative;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Outfit', sans-serif;
   color: white;
   /* Rich, premium, deep blue radial gradient background */
   background: radial-gradient(circle at 70% 30%, #17284b 0%, #111a31 40%, #080c18 100%);
@@ -98,7 +98,7 @@
 }
 
 .about-fsis-body {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   line-height: 1.8;
   color: #9CA3AF; /* Softer, highly legible gray */
   font-weight: 400;
@@ -256,7 +256,7 @@
   }
   
   .about-fsis-body {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 }
 

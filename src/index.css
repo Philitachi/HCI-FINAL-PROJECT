@@ -1,5 +1,19 @@
 /* Left intentionally blank. See HomePage.css for styling. */
 
+html {
+  font-size: 103%;
+}
+
+/* Force form elements to inherit font properties globally */
+input, select, textarea, button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+::placeholder {
+  font-family: inherit;
+}
+
 /* Custom Global Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

@@ -8,7 +8,7 @@
   padding: 6rem 5%;
   background-color: #1c2128; /* Very dark rich grayish-blue */
   color: white;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Outfit', sans-serif;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -48,7 +48,7 @@
 }
 
 .features-main-subtitle {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   color: #9ca3af; /* Soft gray */
   line-height: 1.6;
 }

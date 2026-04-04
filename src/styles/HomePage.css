@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 /* Reset and Base Styles */
 * {
@@ -8,7 +8,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Outfit', sans-serif;
 }
 
 .homepage-container {
@@ -54,7 +54,7 @@ body {
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   line-height: 1.6;
   color: #D1D5DB;
   /* Light gray */
@@ -100,7 +100,7 @@ body {
   justify-content: center;
   gap: 10px;
   padding: 12px 28px;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #ffffff;
   background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); /* Premium teal/blue gradient */
