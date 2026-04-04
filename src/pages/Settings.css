@@ -411,3 +411,32 @@
   color: #0f172a;
   border-color: var(--accent-color);
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .settings-main-container {
+    padding: 1rem;
+  }
+
+  .settings-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .settings-title {
+    font-size: 1.75rem;
+  }
+
+  .profile-image-container {
+    width: 120px;
+    height: 120px;
+  }
+
+  .settings-grid {
+    gap: 1.5rem;
+  }
+
+  .profile-card {
+    gap: 1rem;
+  }
+}
+
