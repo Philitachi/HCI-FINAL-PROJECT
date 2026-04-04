@@ -141,8 +141,7 @@
   }
 
   .cta-button {
-    width: 100%;
-    max-width: 320px;
+    white-space: nowrap;
     padding: 14px 28px;
     font-size: 1rem;
   }
