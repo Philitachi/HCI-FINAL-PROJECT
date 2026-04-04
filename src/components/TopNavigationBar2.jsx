@@ -141,6 +141,8 @@ const TopNavigationBar2 = () => {
         const appsRef = collection(db, 'applications');
         const q = query(appsRef, where('userEmail', '==', session.email));
 
+        let isFirstSnapshot = Object.keys(previousStatuses.current).length === 0;
+
         unsubscribeNotifs = onSnapshot(q, (snapshot) => {
           const validStatuses = ['completeness check', 'assessment', 'pending review', 'declined', 'approved'];
           const currentApps = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -154,17 +156,37 @@ const TopNavigationBar2 = () => {
             const currentStatus = (app.status || '').toLowerCase().trim();
             const prevStatus = previousStatuses.current[appId];
 
-            // If status changed to a valid notification status
-            // Exclude it if prevStatus is undefined (i.e. brand new application or empty cache)
-            if (prevStatus && currentStatus !== prevStatus && validStatuses.includes(currentStatus)) {
-              newNotifs.push({
-                id: appId + '_' + Date.now(), // Unique key for react
-                appId: appId,
-                status: app.status,
-                establishmentName: app.establishmentName,
-                referenceNumber: app.referenceNumber,
-                notifDate: Date.now()
-              });
+            if (isFirstSnapshot) {
+              // On first load with empty cache, generate notifications from existing data
+              if (validStatuses.includes(currentStatus)) {
+                let notifDate = Date.now();
+                if (app.updatedAt && app.updatedAt.toDate) {
+                  notifDate = app.updatedAt.toDate().getTime();
+                } else if (app.createdAt && app.createdAt.toDate) {
+                  notifDate = app.createdAt.toDate().getTime();
+                }
+                newNotifs.push({
+                  id: appId + '_' + notifDate,
+                  appId: appId,
+                  status: app.status,
+                  establishmentName: app.establishmentName,
+                  referenceNumber: app.referenceNumber,
+                  notifDate: notifDate,
+                  isRead: true // Mark initial ones as read
+                });
+              }
+            } else {
+              // On subsequent snapshots, only create a notification if status actually changed
+              if (prevStatus && currentStatus !== prevStatus && validStatuses.includes(currentStatus)) {
+                newNotifs.push({
+                  id: appId + '_' + Date.now(),
+                  appId: appId,
+                  status: app.status,
+                  establishmentName: app.establishmentName,
+                  referenceNumber: app.referenceNumber,
+                  notifDate: Date.now()
+                });
+              }
             }
             
             if (prevStatus !== currentStatus) {
@@ -175,25 +197,38 @@ const TopNavigationBar2 = () => {
             currentStatusMap[appId] = currentStatus;
           });
 
-          if (changed) {
+          // Always update statuses after first snapshot
+          if (changed || isFirstSnapshot) {
             previousStatuses.current = currentStatusMap;
             localStorage.setItem(statusKey, JSON.stringify(currentStatusMap));
           }
 
           if (newNotifs.length > 0) {
-            setNotifications(prev => {
-              const updated = [...newNotifs, ...prev]
+            if (isFirstSnapshot) {
+              // On first load, replace saved notifications with fresh data
+              const sorted = newNotifs
                 .sort((a, b) => b.notifDate - a.notifDate)
-                .slice(0, 50); // Keep max 50 for history
-              localStorage.setItem(notifsKey, JSON.stringify(updated));
-              return updated;
-            });
-            setUnreadCount(prev => {
-              const newCount = prev + newNotifs.length;
-              localStorage.setItem(countKey, newCount.toString());
-              return newCount;
-            });
+                .slice(0, 50);
+              setNotifications(sorted);
+              localStorage.setItem(notifsKey, JSON.stringify(sorted));
+              // Don't bump unread for initial historical load
+            } else {
+              setNotifications(prev => {
+                const updated = [...newNotifs, ...prev]
+                  .sort((a, b) => b.notifDate - a.notifDate)
+                  .slice(0, 50);
+                localStorage.setItem(notifsKey, JSON.stringify(updated));
+                return updated;
+              });
+              setUnreadCount(prev => {
+                const newCount = prev + newNotifs.length;
+                localStorage.setItem(countKey, newCount.toString());
+                return newCount;
+              });
+            }
           }
+
+          isFirstSnapshot = false;
         });
       }
     }
