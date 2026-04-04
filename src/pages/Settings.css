@@ -415,41 +415,79 @@
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .settings-main-container {
-    padding: 0.5rem;
+    padding: 0;
+  }
+  
+  .settings-content {
+    width: auto;
+    margin: 1rem;
   }
 
   .settings-card {
-    padding: 1.25rem 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .settings-header {
+    margin-bottom: 1.5rem;
   }
 
   .settings-title {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
   }
   
   .settings-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 
   .profile-image-container {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
+  }
+  
+  .profile-placeholder {
+    font-size: 1.75rem;
+    border-width: 2px;
   }
 
   .settings-grid {
     gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   .profile-card {
-    gap: 1rem;
+    gap: 0.75rem;
+  }
+  
+  .profile-info h3 {
+    font-size: 1.1rem;
+  }
+  
+  .profile-info p {
+    font-size: 0.85rem;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
   }
 
-  .form-group input {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.95rem;
+  .form-group input, 
+  .phone-input-wrapper {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+  }
+  
+  .form-group label {
+    font-size: 0.8rem;
   }
   
   .save-btn {
     width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
   }
 }
 
