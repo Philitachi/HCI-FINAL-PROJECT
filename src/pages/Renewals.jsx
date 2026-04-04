@@ -4,6 +4,7 @@ import TopNavigationBar2 from '../components/TopNavigationBar2';
 import Pagination from '../components/Pagination';
 import EmptyState from '../components/EmptyState';
 import useApplications from '../hooks/useApplications';
+import { Search, FileText } from 'lucide-react';
 import '../styles/Renewals.css';
 import './Dashboard/dashboard.css';
 
@@ -36,10 +37,7 @@ const Renewals = () => {
             <h1 className="renewals-title">Renewals</h1>
             <div className="renewals-search-bar">
               <div className="renewals-search-wrapper">
-                <svg className="renewals-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
+                <Search className="renewals-search-icon" size={20} strokeWidth={2} />
                 <input 
                   type="text" 
                   placeholder="Search list by establishment name" 
@@ -60,13 +58,7 @@ const Renewals = () => {
                   {/* Reuse the same card structure as OngoingApplications */}
                   <div className="app-icon-container">
                     <div className="app-icon-circle">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1c64f2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                      </svg>
+                      <FileText size={24} color="#1c64f2" strokeWidth={2} />
                     </div>
                   </div>
 

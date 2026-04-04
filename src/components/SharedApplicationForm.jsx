@@ -7,6 +7,7 @@ import '../styles/Complaint.css';
 import EmailVerifiedSVG from '../assets/EmailVerified.svg';
 import ExitButton from './exitButton';
 import PezaModal from './PezaModal';
+import { FileText, Home, Check, User, MapPin, Calendar, ChevronRight, Info, ArrowLeft, ArrowRight, FileCheck, Eye, X, UploadCloud, Send, XCircle, CheckCircle } from 'lucide-react';
 import regionsData from '../data/regions.json';
 import provincesData from '../data/provinces.json';
 import citiesData from '../data/cities.json';
@@ -476,12 +477,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
             <div className="renewal-applications-container">
               <div className="renewal-header">
                 <div className="renewal-header-icon">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                  </svg>
+                  <FileText size={28} strokeWidth={2} />
                 </div>
                 <div>
                   <h3 className="renewal-title">Applications</h3>
@@ -498,58 +494,39 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                       onClick={() => setSelectedApplication(app)}
                     >
                       <div className="renewal-app-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                          <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                        </svg>
+                        <Home size={24} strokeWidth={2} />
                       </div>
                       <div className="renewal-app-info">
                         <div className="renewal-app-name-row">
                           <h4 className="renewal-app-name">{app.establishmentName}</h4>
                           <span className="renewal-app-status-badge">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <Check size={12} strokeWidth={2.5} />
                             {app.status}
                           </span>
                         </div>
                         <div className="renewal-app-details">
                           <span className="renewal-app-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                              <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
+                            <User size={14} strokeWidth={2} />
                             {app.owner}
                           </span>
                           <span className="renewal-app-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                              <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
+                            <MapPin size={14} strokeWidth={2} />
                             {app.location}
                           </span>
                         </div>
                         <div className="renewal-app-meta">
                           <span className="renewal-app-meta-item">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                              <line x1="16" y1="2" x2="16" y2="6"></line>
-                              <line x1="8" y1="2" x2="8" y2="6"></line>
-                              <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
+                            <Calendar size={13} strokeWidth={2} />
                             Last Renewed: {app.lastRenewal}
                           </span>
                           <span className="renewal-app-meta-item">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                              <polyline points="14 2 14 8 20 8"></polyline>
-                            </svg>
+                            <FileText size={13} strokeWidth={2} />
                             {app.refNo}
                           </span>
                         </div>
                       </div>
                       <div className="renewal-app-select-indicator">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
+                        <ChevronRight size={20} strokeWidth={2} />
                       </div>
                     </div>
                   ))}
@@ -558,21 +535,14 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                 /* Empty State */
                 <div className="renewal-empty-state">
                   <div className="renewal-empty-icon">
-                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                      <line x1="9" y1="15" x2="15" y2="15"></line>
-                    </svg>
+                    <FileText size={56} strokeWidth={1.2} />
                   </div>
                   <h3 className="renewal-empty-title">No Previous Applications Found</h3>
                   <p className="renewal-empty-subtitle">We couldn't find any previous applications linked to your account.</p>
 
                   <div className="renewal-info-banner">
                     <div className="renewal-info-banner-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                      </svg>
+                      <Info size={20} strokeWidth={2} />
                     </div>
                     <p>If your business establishment is missing, please contact your nearest fire station to have your record linked to your account.</p>
                   </div>
@@ -581,7 +551,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
 
               <div className="app-form-actions">
                 <button type="button" className="btn-back" onClick={onBack}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                  <ArrowLeft size={18} strokeWidth={2} />
                   Back
                 </button>
 
@@ -595,7 +565,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                       style={{ opacity: selectedApplication ? 1 : 0.5, cursor: selectedApplication ? 'pointer' : 'not-allowed' }}
                     >
                       Proceed to Renewal
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                      <ArrowRight size={18} strokeWidth={2} />
                     </button>
                   </div>
                 )}
@@ -953,13 +923,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                     {uploadedFiles[idx] ? (
                       <div className="req-uploaded-file-card">
                         <div className="uploaded-file-info">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                          </svg>
+                          <FileCheck size={24} color="#14b8a6" strokeWidth={2} />
                           <div className="uploaded-file-details">
                             <span className="uploaded-file-name">{uploadedFiles[idx].name}</span>
                             <span className="uploaded-file-size">{(uploadedFiles[idx].size / 1024 / 1024).toFixed(2)} MB</span>
@@ -974,7 +938,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                               window.open(fileURL, '_blank');
                             }}
                           >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            <Eye size={18} strokeWidth={2} />
                             View
                           </button>
                           <button
@@ -986,7 +950,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                               return newFiles;
                             })}
                           >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            <X size={18} strokeWidth={2} />
                           </button>
                         </div>
                       </div>
@@ -1010,9 +974,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                           }
                         }}
                       >
-                        <svg className="drop-zone-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '1rem' }}>
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line>
-                        </svg>
+                        <UploadCloud size={32} strokeWidth={1.5} className="drop-zone-icon" style={{ marginBottom: '1rem' }} />
                         <p className="drop-zone-text">
                           Drag and drop your file here, or click to browse
                         </p>
@@ -1043,7 +1005,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
 
           <div className="app-form-actions" style={{ marginTop: '2rem' }}>
             <button type="button" className="btn-back" onClick={() => setStep(1)}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              <ArrowLeft size={18} strokeWidth={2} />
               Back
             </button>
 
@@ -1053,7 +1015,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
               </button>
               <button type="button" className="btn-submit" onClick={handleNextStep}>
                 Next Step
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <ArrowRight size={18} strokeWidth={2} />
               </button>
             </div>
           </div>
@@ -1068,12 +1030,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
           {/* Application Type Card */}
           <div className="confirm-info-card">
             <div className="confirm-info-icon" style={{ background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05))' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-              </svg>
+              <FileText size={28} color="#ef4444" strokeWidth={2} />
             </div>
             <div className="confirm-info-text">
               <h4>Application for {selectedCategoryTitle}</h4>
@@ -1084,10 +1041,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
           {/* Fire Station Card */}
           <div className="confirm-info-card">
             <div className="confirm-info-icon" style={{ background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05))' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-              </svg>
+              <Home size={28} color="#ef4444" strokeWidth={2} />
             </div>
             <div className="confirm-info-text">
               <h4>{formData.fireStation || '---'}</h4>
@@ -1161,11 +1115,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
           {/* Thank You Notice */}
           <div className="confirm-thankyou-notice">
             <div className="confirm-thankyou-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="16" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12.01" y2="8"></line>
-              </svg>
+              <Info size={20} strokeWidth={2} />
             </div>
             <p><em>Thank you for applying through our online application system, please take note of the important notice.</em></p>
           </div>
@@ -1186,7 +1136,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
           {/* Action Buttons */}
           <div className="app-form-actions" style={{ marginTop: '2rem' }}>
             <button type="button" className="btn-back" onClick={() => setStep(2)}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              <ArrowLeft size={18} strokeWidth={2} />
               Back
             </button>
 
@@ -1195,7 +1145,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                 Save to draft
               </button>
               <button type="button" className="btn-submit" onClick={() => handleSubmitToFirebase()} disabled={isSubmitting}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                <Send size={18} strokeWidth={2} />
                 Submit Application
               </button>
             </div>
@@ -1210,16 +1160,9 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
             <div className="success-modal-icon">
               <div className={`success-icon-circle ${successType === 'Error' ? 'error-icon' : ''}`}>
                 {successType === 'Error' ? (
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="15" y1="9" x2="9" y2="15"></line>
-                    <line x1="9" y1="9" x2="15" y2="15"></line>
-                  </svg>
+                  <XCircle size={48} color="#ef4444" strokeWidth={2.5} />
                 ) : (
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                  </svg>
+                  <CheckCircle size={48} color="#14b8a6" strokeWidth={2.5} />
                 )}
               </div>
             </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
+import { ArrowLeft, ArrowRight, Send } from 'lucide-react';
 import '../styles/Complaint.css';
 import './Dashboard/dashboard.css';
 
@@ -522,7 +523,7 @@ const Complaint = () => {
                 <div className="form-actions">
                   {step > 1 && (
                     <button type="button" className="btn-back" onClick={handleBack}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                      <ArrowLeft size={18} strokeWidth={2} />
                       Back
                     </button>
                   )}
@@ -530,12 +531,12 @@ const Complaint = () => {
                   {step < 3 ? (
                     <button type="button" className="btn-next" onClick={handleNext}>
                       Next Step
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                      <ArrowRight size={18} strokeWidth={2} />
                     </button>
                   ) : (
                     <button type="submit" className="btn-submit" disabled={!formData.consent}>
                       Submit Complaint
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                      <Send size={18} strokeWidth={2} />
                     </button>
                   )}
                 </div>

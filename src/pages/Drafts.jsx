@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import EmptyState from '../components/EmptyState';
 import Pagination from '../components/Pagination';
+import { Search, FileText, User, Building, MapPin, Calendar, Clock, XCircle, CheckCircle, Trash2 } from 'lucide-react';
 import '../styles/Drafts.css';
 import '../styles/ConfirmModal.css';
 import './Dashboard/dashboard.css';
@@ -15,6 +16,7 @@ const Drafts = () => {
   const [draftsList, setDraftsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [deleteSuccess, setDeleteSuccess] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -99,6 +101,8 @@ const Drafts = () => {
       });
 
       setDeleteConfirm(null);
+      setDeleteSuccess(draftInfo?.title || 'Draft');
+      setTimeout(() => setDeleteSuccess(null), 2500);
     } catch (error) {
       console.error('Error deleting draft:', error);
       alert('Failed to delete draft. Please try again.');
@@ -143,10 +147,7 @@ const Drafts = () => {
 
           <div className="drafts-search-bar">
             <div className="drafts-search-wrapper">
-              <svg className="drafts-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
+              <Search className="drafts-search-icon" size={20} strokeWidth={2} />
               <input
                 type="text"
                 placeholder="Search list by establishment name"
@@ -174,16 +175,9 @@ const Drafts = () => {
               <div className="drafts-list">
                 {currentDrafts.map((app) => (
                   <div key={app.id} className="draft-list-card">
-                    {/* ... (rest of card content) */}
                     <div className="draft-icon-container">
                       <div className="draft-icon-circle">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                          <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>
+                        <FileText size={24} color="#64748b" strokeWidth={2} />
                       </div>
                     </div>
 
@@ -191,46 +185,29 @@ const Drafts = () => {
                       <div className="draft-title-row">
                         <h3 className="draft-title">{app.title}</h3>
                         <div className="status-badge draft">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                          </svg>
+                          <Clock size={14} strokeWidth={2} />
                           Draft
                         </div>
                       </div>
 
                       <div className="draft-details-col">
                         <div className="draft-detail-text">
-                          <svg className="detail-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                          </svg>
+                          <FileText className="detail-icon" size={16} strokeWidth={2} />
                           {app.type}
                         </div>
                         
                         <div className="draft-detail-text">
-                          <svg className="detail-icon outline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                          </svg>
+                          <MapPin className="detail-icon outline" size={16} strokeWidth={2} />
                           {app.location}
                         </div>
 
                         <div className="draft-bottom-info">
                           <span className="draft-date-time">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                              <line x1="16" y1="2" x2="16" y2="6"></line>
-                              <line x1="8" y1="2" x2="8" y2="6"></line>
-                              <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
+                            <Calendar size={14} strokeWidth={2} />
                             Last edited: {app.date} {app.time}
                           </span>
                           <span className="draft-ref-bottom">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                              <polyline points="14 2 14 8 20 8"></polyline>
-                            </svg>
+                            <FileText size={14} strokeWidth={2} />
                             {app.refNo}
                           </span>
                         </div>
@@ -265,11 +242,7 @@ const Drafts = () => {
         <div className="delete-confirm-overlay" onClick={() => setDeleteConfirm(null)}>
           <div className="delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
             <div className="delete-confirm-icon">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="15" y1="9" x2="9" y2="15"></line>
-                <line x1="9" y1="9" x2="15" y2="15"></line>
-              </svg>
+              <XCircle size={48} color="#ef4444" strokeWidth={1.5} />
             </div>
             <h3 className="delete-confirm-title">Delete Draft?</h3>
             <p className="delete-confirm-text">
@@ -280,6 +253,32 @@ const Drafts = () => {
               <button className="btn-confirm-yes" onClick={() => handleDeleteDraft(deleteConfirm.id)}>Yes, Delete</button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Delete Success Toast */}
+      {deleteSuccess && (
+        <div style={{
+          position: 'fixed',
+          top: '32px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 10000,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          background: 'var(--card-bg-color, #1e293b)',
+          border: '1px solid var(--card-border-color, #334155)',
+          borderRadius: '12px',
+          padding: '14px 24px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
+          animation: 'fadeInDown 0.3s ease',
+          color: 'var(--text-primary-color, #fff)',
+          fontSize: '0.95rem',
+          fontWeight: 500
+        }}>
+          <CheckCircle size={20} stroke="#10b981" strokeWidth={2} />
+          <span>"{deleteSuccess}" has been deleted successfully.</span>
         </div>
       )}
     </div>

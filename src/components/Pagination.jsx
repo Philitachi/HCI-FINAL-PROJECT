@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Pagination.css';
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Pagination = ({ 
   totalItems = 0, 
@@ -8,7 +9,7 @@ const Pagination = ({
   onPageChange, 
   onItemsPerPageChange 
 }) => {
-  const [showDropdown, setShowDropdown] = React.useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
   
   // Safe page change handler
@@ -51,9 +52,7 @@ const Pagination = ({
         <div className="rows-dropdown-container" style={{ position: 'relative' }}>
           <button className={`rows-dropdown ${showDropdown ? 'open' : ''}`} onClick={() => setShowDropdown(!showDropdown)}>
             {itemsPerPage}
-            <svg className="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <ChevronDown size={14} strokeWidth={2} className="chevron-icon" />
           </button>
           {showDropdown && (
             <div className="rows-menu">
@@ -80,9 +79,7 @@ const Pagination = ({
           disabled={currentPage === 1}
           style={{ opacity: currentPage === 1 ? 0.5 : 1 }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
+          <ChevronLeft size={16} strokeWidth={2} />
         </button>
         
         {getPageNumbers().map((num, idx) => (
@@ -105,9 +102,7 @@ const Pagination = ({
           disabled={currentPage === totalPages}
           style={{ opacity: currentPage === totalPages ? 0.5 : 1 }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
+          <ChevronRight size={16} strokeWidth={2} />
         </button>
       </div>
     </div>

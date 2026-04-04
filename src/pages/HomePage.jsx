@@ -8,6 +8,7 @@ import FeaturePage from './FeaturePage';
 import WatchUsOnYoutube from './watchusonYoutube';
 import CTA from './CTA';
 import Footer from './Footer';
+import { ArrowRight } from 'lucide-react';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -47,10 +48,7 @@ const HomePage = () => {
             <button className="btn-download">Download App</button>
             <button className="btn-start" onClick={() => navigate('/signin')}>
               Start your Application
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="arrow-icon">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
+              <ArrowRight size={20} strokeWidth={2} className="arrow-icon" />
             </button>
           </div>
         </div>

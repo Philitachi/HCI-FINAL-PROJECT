@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Home, ChevronDown, Search, Info, CheckCircle2, Eye } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import '../styles/FAQs.css';
@@ -10,18 +11,12 @@ const FAQItem = ({ question, answer, isActive, onClick }) => {
       <button className="faq-question" onClick={onClick}>
         <div className="faq-question-content">
           <div className="faq-icon-wrapper">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="16" x2="12" y2="12"></line>
-              <line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
+            <Info size={20} strokeWidth={2.5} />
           </div>
           <span>{question}</span>
         </div>
         <div className="faq-chevron-wrapper">
-          <svg className="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+          <ChevronDown className="faq-chevron" size={20} strokeWidth={2.5} />
         </div>
       </button>
       <div className="faq-answer-container">
@@ -96,10 +91,7 @@ const FAQs = () => {
         <main className="dashboard-main-content faqs-content">
           <div className="faqs-hero">
             <div className="faqs-hero-icon-container">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-              </svg>
+              <Home size={32} strokeWidth={2} />
             </div>
             <div className="faqs-hero-text">
               <h1 className="faqs-title">Frequently Asked Questions</h1>
@@ -135,10 +127,7 @@ const FAQs = () => {
             {isSubmitted ? (
               <div className="contact-success-state animate-fade-in">
                 <div className="success-icon-wrapper">
-                  <svg className="success-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                  </svg>
+                  <CheckCircle2 className="success-icon" size={48} strokeWidth={2} />
                 </div>
                 <h4>Message Sent!</h4>
                 <p>We've received your query and will respond via email as soon as possible.</p>

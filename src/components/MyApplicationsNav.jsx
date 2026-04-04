@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MyApplicationsNav.css';
+import { Clock, CheckCircle, XCircle } from 'lucide-react';
 
 const MyApplicationsNav = ({ activeMainTab, activeSubTab, children }) => {
   const navigate = useNavigate();
@@ -19,31 +20,21 @@ const MyApplicationsNav = ({ activeMainTab, activeSubTab, children }) => {
           className={`tab-btn ${activeMainTab === 'ongoing' ? 'active' : ''} ${activeMainTab === 'ongoing' && shouldAnimateMainTab ? 'animate' : ''}`} 
           onClick={() => navigate('/applications/all')}
         >
-          <svg className="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
+          <Clock size={20} strokeWidth={2} className="tab-icon" />
           Ongoing Applications
         </button>
         <button 
           className={`tab-btn ${activeMainTab === 'completed' ? 'active' : ''} ${activeMainTab === 'completed' && shouldAnimateMainTab ? 'animate' : ''}`} 
           onClick={() => navigate('/applications/completed')}
         >
-          <svg className="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
+          <CheckCircle size={20} strokeWidth={2} className="tab-icon" />
           Completed Applications
         </button>
         <button 
           className={`tab-btn ${activeMainTab === 'cancelled' ? 'active' : ''} ${activeMainTab === 'cancelled' && shouldAnimateMainTab ? 'animate' : ''}`} 
           onClick={() => navigate('/applications/cancelled')}
         >
-          <svg className="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="15" y1="9" x2="9" y2="15"></line>
-            <line x1="9" y1="9" x2="15" y2="15"></line>
-          </svg>
+          <XCircle size={20} strokeWidth={2} className="tab-icon" />
           Cancelled/Declined Applications
         </button>
       </div>

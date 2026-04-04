@@ -4,6 +4,7 @@ import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import SharedApplicationForm from '../../components/SharedApplicationForm';
 import ExitButton from '../../components/exitButton';
+import { FileText, Search, Plus } from 'lucide-react';
 import '../../styles/NewApplication.css';
 import '../Dashboard/dashboard.css';
 
@@ -74,12 +75,7 @@ const ApplicationClearance = () => {
                           }}
                         >
                           <div className="sub-category-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                              <polyline points="14 2 14 8 20 8"></polyline>
-                              <line x1="12" y1="18" x2="12" y2="12"></line>
-                              <line x1="9" y1="15" x2="15" y2="15"></line>
-                            </svg>
+                            <FileText size={24} strokeWidth={2} />
                           </div>
                           <div className="category-text">
                             <h3>{sub.title}</h3>
@@ -123,7 +119,7 @@ const ApplicationClearance = () => {
                 <div className="clearance-search-section">
                   <div className="clearance-search-row">
                     <div className="clearance-search-input-wrapper">
-                      <svg className="clearance-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                      <Search className="clearance-search-icon" size={18} strokeWidth={2} />
                       <input
                         type="text"
                         className="clearance-search-input"
@@ -133,7 +129,7 @@ const ApplicationClearance = () => {
                       />
                     </div>
                     <button className="clearance-search-btn">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                      <Search size={16} strokeWidth={2} />
                       SEARCH
                     </button>
                   </div>
@@ -145,7 +141,7 @@ const ApplicationClearance = () => {
 
                 <div className="clearance-new-app-section">
                   <div className="clearance-new-app-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <Plus size={28} strokeWidth={2} />
                   </div>
                   <h3 className="clearance-new-app-title">New Application</h3>
                   <p className="clearance-new-app-desc">Apply <span style={{ color: '#14b8a6', fontWeight: 600 }}>{selectedTitle}</span> for a new establishment</p>
@@ -153,7 +149,7 @@ const ApplicationClearance = () => {
                     setShowClearanceModal(false); 
                     setShowForm(true); 
                   }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <Plus size={16} strokeWidth={2} />
                     START NEW APPLICATION
                   </button>
                 </div>

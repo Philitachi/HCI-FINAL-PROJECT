@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import '../styles/CTA.css';
 
 const CTA = () => {
@@ -50,16 +51,7 @@ const CTA = () => {
             onClick={() => navigate('/signin')}
           >
             Start your Application
-            <svg 
-              className="cta-button-icon" 
-              width="20" height="20" 
-              viewBox="0 0 24 24" fill="none" 
-              stroke="currentColor" strokeWidth="2" 
-              strokeLinecap="round" strokeLinejoin="round"
-            >
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
+            <ArrowRight size={20} strokeWidth={2} className="cta-button-icon" />
           </button>
         </div>
 

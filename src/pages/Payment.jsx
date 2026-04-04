@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import EmptyState from '../components/EmptyState';
 import Pagination from '../components/Pagination';
+import { ChevronDown } from 'lucide-react';
 import '../styles/Payment.css';
 import './Dashboard/dashboard.css';
 
@@ -59,9 +60,7 @@ const Payment = () => {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 <span>{selectedRange}</span>
-                <svg className="payment-dropdown-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
+                <ChevronDown className="payment-dropdown-arrow" size={20} strokeWidth={2.5} />
               </div>
 
               {dropdownOpen && (
