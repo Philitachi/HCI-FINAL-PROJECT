@@ -230,7 +230,7 @@ const PublicComplaint = () => {
   };
 
   return (
-    <div className="public-complaint-wrapper" style={{ backgroundColor: 'var(--dashboard-bg-color, #111827)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="public-complaint-wrapper" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div className="public-complaint-body" style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
         <main className="public-main-content" style={{ width: '100%', maxWidth: '1000px', padding: '8rem 2rem 3rem 2rem' }}>
           <div className="complaint-header">

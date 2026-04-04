@@ -33,6 +33,15 @@
   max-width: 1400px;
 }
 
+/* Wrapper Styles */
+.public-complaint-wrapper {
+  background-color: var(--dashboard-bg-color, #111827);
+}
+
+:root.light-mode .public-complaint-wrapper {
+  background-color: #f1f5f9;
+}
+
 /* Card Style */
 .complaint-card {
   background-color: var(--card-bg-color, #1e293b);
