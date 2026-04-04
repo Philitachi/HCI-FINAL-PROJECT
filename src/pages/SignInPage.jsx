@@ -160,7 +160,7 @@ const SignInPage = () => {
               </button>
             </div>
 
-            <button type="submit" className="btn-submit" disabled={isLoading}>
+            <button type="submit" className="signin-btn-submit" disabled={isLoading}>
               {isLoading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
