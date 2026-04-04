@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
+import { CheckCircle } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import './FullDetails.css';
@@ -15,6 +16,7 @@ const FullDetails = () => {
   const [loading, setLoading] = useState(true);
   const [cancelConfirm, setCancelConfirm] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
+  const [cancelSuccess, setCancelSuccess] = useState(null);
 
   useEffect(() => {
     const fetchApplication = async () => {
@@ -148,7 +150,11 @@ const FullDetails = () => {
       });
 
       setCancelConfirm(false);
-      navigate('/applications/all');
+      setCancelSuccess(appData.establishmentName || 'Application');
+      setTimeout(() => {
+        setCancelSuccess(null);
+        navigate('/applications/all');
+      }, 2500);
     } catch (error) {
       console.error('Error cancelling application:', error);
       alert('Failed to cancel application. Please try again.');
@@ -339,6 +345,31 @@ const FullDetails = () => {
               </button>
             </div>
           </div>
+        </div>
+      )}
+      {/* Cancel Success Toast */}
+      {cancelSuccess && (
+        <div style={{
+          position: 'fixed',
+          top: '32px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 10000,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          background: 'var(--card-bg-color, #1e293b)',
+          border: '1px solid var(--card-border-color, #334155)',
+          borderRadius: '12px',
+          padding: '14px 24px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
+          animation: 'fadeInDown 0.3s ease',
+          color: 'var(--text-primary-color, #fff)',
+          fontSize: '0.95rem',
+          fontWeight: 500
+        }}>
+          <CheckCircle size={20} stroke="#10b981" strokeWidth={2} />
+          <span>"{cancelSuccess}" has been cancelled successfully.</span>
         </div>
       )}
     </div>
