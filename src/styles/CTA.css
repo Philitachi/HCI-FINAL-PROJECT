@@ -139,6 +139,11 @@
   .cta-subtitle {
     font-size: 0.95rem;
   }
+
+  .cta-button {
+    width: 100%;
+    max-width: 320px;
+  }
 }
 
 /* ========== LIGHT MODE OVERRIDES ========== */

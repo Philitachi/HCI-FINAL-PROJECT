@@ -297,9 +297,6 @@
   .youtube-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
     margin-bottom: 3rem;
   }
   .youtube-footer {
