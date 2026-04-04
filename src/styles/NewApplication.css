@@ -422,18 +422,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   background-color: transparent;
   color: #cbd5e1;
   border: 1px dashed rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   height: 46px;
   box-sizing: border-box;
   font-family: inherit;
+  white-space: nowrap;
 }
 
 .btn-draft:hover {

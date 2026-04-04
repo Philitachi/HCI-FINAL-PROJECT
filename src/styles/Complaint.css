@@ -468,16 +468,17 @@
 }
 
 .btn-back {
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1rem;
   background-color: transparent;
   color: var(--text-primary-color, white);
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
   font-family: inherit;
+  white-space: nowrap;
 }
 
 .btn-back:hover {
@@ -485,14 +486,15 @@
 }
 
 .btn-next, .btn-submit {
-  padding: 0.75rem 2rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
   font-family: inherit;
   border: 1px solid transparent;
+  white-space: nowrap;
 }
 
 .btn-next {
