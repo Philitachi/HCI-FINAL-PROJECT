@@ -490,7 +490,7 @@
 /* ========== MOBILE RESPONSIVE ========== */
 @media (max-width: 768px) {
   .applications-content {
-    padding: 1rem 0;
+    padding-top: 1rem;
   }
 
   .search-filter-bar {
