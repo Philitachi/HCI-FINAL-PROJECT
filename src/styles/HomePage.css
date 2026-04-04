@@ -143,16 +143,34 @@ body {
 }
 
 @media (max-width: 768px) {
+  .hero-section {
+    padding-top: 100px;
+  }
+
+  .hero-content {
+    text-align: center;
+    width: 100%;
+  }
+
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 2.1rem;
   }
 
   .hero-subtitle {
-    font-size: 1.125rem;
+    font-size: 1rem;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .hero-actions {
     flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .btn-download, .btn-start {
+    width: 100%;
+    max-width: 320px;
   }
 }
 

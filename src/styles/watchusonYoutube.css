@@ -304,6 +304,15 @@
   }
   .youtube-footer {
     font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .youtube-link {
+    padding-left: 0;
+    word-break: break-all;
+    text-align: center;
   }
   .hidden-mobile {
     display: none;
