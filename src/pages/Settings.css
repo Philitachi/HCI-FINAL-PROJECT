@@ -415,28 +415,41 @@
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .settings-main-container {
-    padding: 1rem;
+    padding: 0.5rem;
   }
 
   .settings-card {
-    padding: 1.5rem 1.25rem;
+    padding: 1.25rem 1rem;
   }
 
   .settings-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+  }
+  
+  .settings-subtitle {
+    font-size: 0.95rem;
   }
 
   .profile-image-container {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
   }
 
   .settings-grid {
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .profile-card {
     gap: 1rem;
+  }
+
+  .form-group input {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+  }
+  
+  .save-btn {
+    width: 100%;
   }
 }
 
