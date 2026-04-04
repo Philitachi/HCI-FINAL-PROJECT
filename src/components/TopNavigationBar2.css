@@ -24,10 +24,18 @@
 }
 
 .topnav2-title {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
   color: var(--text-primary-color, #ffffff);
+}
+
+.topnav2-title-accent {
+  background: linear-gradient(135deg, #06B6D4, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
 }
 
 .topnav2-right {

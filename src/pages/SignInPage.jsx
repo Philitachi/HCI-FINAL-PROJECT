@@ -101,7 +101,7 @@ const SignInPage = () => {
       <div className="signin-content">
         <div className="signin-header">
           <img src={logo} alt="Fire Safety Inspection System Logo" className="signin-logo" />
-          <h1 className="signin-title">Fire Safety Inspection System</h1>
+          <h1 className="signin-title"><span className="signin-title-accent">Fire Safety</span> Inspection System</h1>
           <p className="signin-subtitle">Bureau of Fire Protection</p>
         </div>
 

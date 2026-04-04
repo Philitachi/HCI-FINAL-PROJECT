@@ -96,73 +96,93 @@ const Sidebar = () => {
     }
   };
 
-  const menuItems = [
+  const menuGroups = [
     {
-      name: 'Dashboard',
-      path: '/dashboard',
-      iconColor: '#3b82f6', // Blue
-      icon: <LayoutGrid size={22} strokeWidth={1.75} />
-    },
-    {
-      name: 'New Application',
-      path: '/new-application',
-      isAccordion: true,
-      iconColor: '#ec4899', // Pink
-      icon: <FolderPlus size={22} strokeWidth={1.75} />,
-      children: [
-        { name: 'Apply for evaluation', path: '/new-application/evaluation' },
-        { name: 'Apply for occupancy permit', path: '/new-application/occupancy' },
-        { name: 'Apply for certificate', path: '/new-application/certificate' },
-        { name: 'Apply for other clearance', path: '/new-application/clearance' }
+      label: null,  // No label for the first group
+      items: [
+        {
+          name: 'Dashboard',
+          path: '/dashboard',
+          iconColor: '#3b82f6',
+          icon: <LayoutGrid size={22} strokeWidth={1.75} />
+        },
       ]
     },
     {
-      name: 'My Applications',
-      path: '/applications',
-      iconColor: '#10b981', // Emerald
-      icon: <FileText size={22} strokeWidth={1.75} />
+      label: 'APPLICATIONS',
+      items: [
+        {
+          name: 'New Application',
+          path: '/new-application',
+          isAccordion: true,
+          iconColor: '#ec4899',
+          icon: <FolderPlus size={22} strokeWidth={1.75} />,
+          children: [
+            { name: 'Apply for evaluation', path: '/new-application/evaluation' },
+            { name: 'Apply for occupancy permit', path: '/new-application/occupancy' },
+            { name: 'Apply for certificate', path: '/new-application/certificate' },
+            { name: 'Apply for other clearance', path: '/new-application/clearance' }
+          ]
+        },
+        {
+          name: 'My Applications',
+          path: '/applications',
+          iconColor: '#10b981',
+          icon: <FileText size={22} strokeWidth={1.75} />
+        },
+        {
+          name: 'Drafts',
+          path: '/drafts',
+          iconColor: '#94a3b8',
+          icon: <Archive size={22} strokeWidth={1.75} />
+        },
+        {
+          name: 'Renewals',
+          path: '/renewals',
+          iconColor: '#f59e0b',
+          icon: <RefreshCw size={22} strokeWidth={1.75} />
+        },
+      ]
     },
     {
-      name: 'Renewals',
-      path: '/renewals',
-      iconColor: '#f59e0b', // Amber/Yellow
-      icon: <RefreshCw size={22} strokeWidth={1.75} />
+      label: 'RECORDS',
+      items: [
+        {
+          name: 'Establishment',
+          path: '/establishment',
+          iconColor: '#8b5cf6',
+          icon: <Building size={22} strokeWidth={1.75} />
+        },
+        {
+          name: 'Payment',
+          path: '/payment',
+          iconColor: '#14b8a6',
+          icon: <CreditCard size={22} strokeWidth={1.75} />
+        },
+        {
+          name: 'Requirements',
+          path: '/requirements',
+          iconColor: '#f43f5e',
+          icon: <FileCheck size={22} strokeWidth={1.75} />
+        },
+      ]
     },
     {
-      name: 'Establishment',
-      path: '/establishment',
-      iconColor: '#8b5cf6', // Violet
-      icon: <Building size={22} strokeWidth={1.75} />
-    },
-    {
-      name: 'Payment',
-      path: '/payment',
-      iconColor: '#14b8a6', // Teal
-      icon: <CreditCard size={22} strokeWidth={1.75} />
-    },
-    {
-      name: 'Requirements',
-      path: '/requirements',
-      iconColor: '#f43f5e', // Rose/Pink
-      icon: <FileCheck size={22} strokeWidth={1.75} />
-    },
-    {
-      name: 'Submit a Complaint',
-      path: '/complaint',
-      iconColor: '#ef4444', // Red
-      icon: <AlertCircle size={22} strokeWidth={1.75} />
-    },
-    {
-      name: 'Drafts',
-      path: '/drafts',
-      iconColor: '#94a3b8', // Slate/Gray
-      icon: <Archive size={22} strokeWidth={1.75} />
-    },
-    {
-      name: 'FAQs',
-      path: '/faqs',
-      iconColor: '#a855f7', // Purple
-      icon: <HelpCircle size={22} strokeWidth={1.75} />
+      label: 'SUPPORT',
+      items: [
+        {
+          name: 'Submit a Complaint',
+          path: '/complaint',
+          iconColor: '#ef4444',
+          icon: <AlertCircle size={22} strokeWidth={1.75} />
+        },
+        {
+          name: 'FAQs',
+          path: '/faqs',
+          iconColor: '#a855f7',
+          icon: <HelpCircle size={22} strokeWidth={1.75} />
+        },
+      ]
     }
   ];
 
@@ -179,50 +199,61 @@ const Sidebar = () => {
         <Menu size={24} strokeWidth={2} className="toggle-sidebar-icon" />
       </div>
       <nav className="sidebar-nav">
-        {menuItems.map((item) => (
-          <div key={item.name} className="sidebar-item-container">
-            {item.isAccordion ? (
+        {menuGroups.map((group, groupIdx) => (
+          <div key={group.label || 'main'} className="sidebar-group">
+            {group.label && (
               <>
-                <div 
-                  className={`sidebar-link ${location.pathname.startsWith(item.path) ? 'active' : ''} ${openMenus[item.name] ? 'open' : ''} ${location.pathname.startsWith(item.path) && shouldAnimate ? 'animate' : ''}`}
-                  onClick={(e) => toggleMenu(item.name, e)}
-                  style={{ cursor: 'pointer' }}
-                  title={isCollapsed ? item.name : ''}
-                >
-                  <span className="sidebar-icon" style={{ color: item.iconColor }}>{item.icon}</span>
-                  <span className="sidebar-text">{item.name}</span>
-                  {!isCollapsed && (
-                    <span className="sidebar-accordion-arrow">
-                      <ChevronRight size={16} strokeWidth={2} style={{ transform: openMenus[item.name] ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }} />
-                    </span>
-                  )}
-                </div>
-                {/* Expandable sub-menu */}
-                <div className={`sidebar-submenu ${openMenus[item.name] && !isCollapsed ? 'open' : ''}`}>
-                  {item.children.map(child => {
-                    const isActive = location.pathname === child.path || location.pathname.startsWith(child.path + '/');
-                    return (
-                      <Link
-                        key={child.name}
-                        to={child.path}
-                        className={`sidebar-sublink ${isActive ? 'active' : ''} ${isActive && shouldAnimateSub ? 'animate' : ''}`}
-                      >
-                        {child.name}
-                      </Link>
-                    );
-                  })}
+                <div className="sidebar-group-divider" />
+                <div className="sidebar-group-label">
+                  <span>{group.label}</span>
                 </div>
               </>
-            ) : (
-              <Link
-                to={item.path}
-                className={`sidebar-link ${location.pathname === item.path || location.pathname.startsWith(item.path + '/') ? 'active' : ''} ${(location.pathname === item.path || location.pathname.startsWith(item.path + '/')) && shouldAnimate ? 'animate' : ''}`}
-                title={isCollapsed ? item.name : ''}
-              >
-                <span className="sidebar-icon" style={{ color: item.iconColor }}>{item.icon}</span>
-                <span className="sidebar-text">{item.name}</span>
-              </Link>
             )}
+            {group.items.map((item) => (
+              <div key={item.name} className="sidebar-item-container">
+                {item.isAccordion ? (
+                  <>
+                    <div 
+                      className={`sidebar-link ${location.pathname.startsWith(item.path) ? 'active' : ''} ${openMenus[item.name] ? 'open' : ''} ${location.pathname.startsWith(item.path) && shouldAnimate ? 'animate' : ''}`}
+                      onClick={(e) => toggleMenu(item.name, e)}
+                      style={{ cursor: 'pointer' }}
+                      title={isCollapsed ? item.name : ''}
+                    >
+                      <span className="sidebar-icon" style={{ color: item.iconColor }}>{item.icon}</span>
+                      <span className="sidebar-text">{item.name}</span>
+                      {!isCollapsed && (
+                        <span className="sidebar-accordion-arrow">
+                          <ChevronRight size={16} strokeWidth={2} style={{ transform: openMenus[item.name] ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }} />
+                        </span>
+                      )}
+                    </div>
+                    <div className={`sidebar-submenu ${openMenus[item.name] && !isCollapsed ? 'open' : ''}`}>
+                      {item.children.map(child => {
+                        const isActive = location.pathname === child.path || location.pathname.startsWith(child.path + '/');
+                        return (
+                          <Link
+                            key={child.name}
+                            to={child.path}
+                            className={`sidebar-sublink ${isActive ? 'active' : ''} ${isActive && shouldAnimateSub ? 'animate' : ''}`}
+                          >
+                            {child.name}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <Link
+                    to={item.path}
+                    className={`sidebar-link ${location.pathname === item.path || location.pathname.startsWith(item.path + '/') ? 'active' : ''} ${(location.pathname === item.path || location.pathname.startsWith(item.path + '/')) && shouldAnimate ? 'animate' : ''}`}
+                    title={isCollapsed ? item.name : ''}
+                  >
+                    <span className="sidebar-icon" style={{ color: item.iconColor }}>{item.icon}</span>
+                    <span className="sidebar-text">{item.name}</span>
+                  </Link>
+                )}
+              </div>
+            ))}
           </div>
         ))}
       </nav>

@@ -291,7 +291,9 @@ const TopNavigationBar2 = () => {
         </button>
         <div className="topnav2-brand">
           <img src={logo} alt="Fire Safety Inspection System Logo" className="topnav2-logo" />
-          <span className="topnav2-title">Fire Safety Inspection System</span>
+          <span className="topnav2-title">
+            <span className="topnav2-title-accent">Fire Safety</span> Inspection System
+          </span>
         </div>
       </div>
       <div className="topnav2-right">

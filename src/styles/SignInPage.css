@@ -54,6 +54,14 @@
   letter-spacing: -0.5px;
 }
 
+.signin-title-accent {
+  background: linear-gradient(135deg, #06B6D4, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
 .signin-subtitle {
   font-size: 0.875rem;
   color: #9CA3AF;

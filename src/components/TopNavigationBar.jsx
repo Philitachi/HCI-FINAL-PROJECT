@@ -88,7 +88,9 @@ const TopNavigationBar = () => {
         <div className="logo-placeholder" style={{ backgroundColor: 'transparent', padding: 0 }}>
           <img src={logo} alt="Fire Safety Inspection System Logo" style={{ width: '40px', height: '40px' }} />
         </div>
-        <span className="brand-text">Fire Safety Inspection System</span>
+        <span className="brand-text">
+          <span className="brand-accent">Fire Safety</span> Inspection System
+        </span>
       </div>
       
       {/* Desktop Nav */}

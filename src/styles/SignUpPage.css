@@ -70,6 +70,14 @@
   letter-spacing: -0.5px;
 }
 
+.signup-title-accent {
+  background: linear-gradient(135deg, #06B6D4, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
 /* Card Styles */
 .signup-card {
   background-color: #1F252E;
