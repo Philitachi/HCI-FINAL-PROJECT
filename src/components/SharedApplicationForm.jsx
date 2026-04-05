@@ -441,7 +441,28 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
         return; // Prevent advancing
       }
     } else if (step === 2) {
-      // Document upload validation is skipped for now
+      // Validate all required documents are uploaded
+      if (requiredDocuments.length > 0) {
+        const errors = {};
+        let firstMissingIdx = null;
+
+        requiredDocuments.forEach((_, idx) => {
+          if (!uploadedFiles[idx]) {
+            errors[idx] = true;
+            if (firstMissingIdx === null) firstMissingIdx = idx;
+          }
+        });
+
+        if (Object.keys(errors).length > 0) {
+          setReqErrors(errors);
+
+          // Scroll to the first empty upload slot
+          if (firstMissingIdx !== null && reqRefs.current[firstMissingIdx]) {
+            reqRefs.current[firstMissingIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return; // Prevent advancing
+        }
+      }
     }
 
     setStep(step + 1);

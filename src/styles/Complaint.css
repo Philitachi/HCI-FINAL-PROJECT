@@ -649,7 +649,7 @@
 /* ========== MOBILE RESPONSIVE ========== */
 @media (max-width: 768px) {
   .complaint-card {
-    padding: 1.5rem 1rem;
+    padding: 1.25rem 0.75rem;
   }
 
   .complaint-title {

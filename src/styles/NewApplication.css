@@ -54,6 +54,47 @@
   .form-grid-three {
     grid-template-columns: 1fr;
   }
+
+  .new-app-card {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .app-form-section {
+    padding: 1rem 0.75rem;
+  }
+
+  .category-card {
+    padding: 0.85rem 0.75rem;
+  }
+
+  .sub-categories-wrapper {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0.75rem;
+  }
+
+  .app-form-actions {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .app-form-actions .btn-back {
+    flex: 0 0 auto;
+  }
+
+  .app-form-actions-right {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .app-form-actions-right .btn-draft,
+  .app-form-actions-right .btn-submit {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+    height: 38px;
+  }
 }
 
 /* Progress Steps */
@@ -1031,8 +1072,8 @@
 
 .req-uploaded-file-card {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.75rem;
   background-color: rgba(20, 184, 166, 0.05);
   border: 1px solid rgba(20, 184, 166, 0.2);
   border-radius: 12px;
@@ -1042,24 +1083,25 @@
 
 .uploaded-file-info {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
+  min-width: 0;
 }
 
 .uploaded-file-details {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  min-width: 0;
+  flex: 1;
 }
 
 .uploaded-file-name {
   color: var(--text-primary-color, #f8fafc);
   font-weight: 500;
   font-size: 0.95rem;
-  max-width: 400px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .uploaded-file-size {
