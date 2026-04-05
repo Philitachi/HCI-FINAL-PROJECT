@@ -144,7 +144,7 @@ body {
 
 @media (max-width: 768px) {
   .hero-section {
-    padding-top: 40px;
+    padding-top: 10px;
   }
 
   .hero-content {
@@ -153,11 +153,11 @@ body {
   }
 
   .hero-title {
-    font-size: 2.3rem;
+    font-size: 2.5rem;
   }
 
   .hero-subtitle {
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-left: auto;
     margin-right: auto;
   }

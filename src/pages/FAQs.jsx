@@ -89,14 +89,9 @@ const FAQs = () => {
       <div className="dashboard-body">
         <Sidebar />
         <main className="dashboard-main-content faqs-content">
-          <div className="faqs-hero">
-            <div className="faqs-hero-icon-container">
-              <Home size={32} strokeWidth={2} />
-            </div>
-            <div className="faqs-hero-text">
-              <h1 className="faqs-title">Frequently Asked Questions</h1>
-              <p className="faqs-subtitle">Find answers to common questions about your applications and fire safety compliance.</p>
-            </div>
+          <div className="faqs-header">
+            <h1 className="faqs-title">Frequently Asked Questions</h1>
+            <p className="faqs-subtitle">Find answers to common questions about your applications and fire safety compliance.</p>
           </div>
 
           <div className="faqs-accordion-container">
