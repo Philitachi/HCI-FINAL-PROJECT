@@ -556,6 +556,24 @@
 :root.light-mode .radio-input,
 :root.light-mode .checkbox-input {
   border-color: #94a3b8;
+  background-color: #ffffff;
+}
+
+:root.light-mode .checkbox-input:checked {
+  background-color: #0d9488;
+  border-color: #0d9488;
+}
+
+:root.light-mode .checkbox-input:checked::after {
+  border-color: #ffffff;
+}
+
+:root.light-mode .radio-input:checked {
+  border-color: #0d9488;
+}
+
+:root.light-mode .radio-input:checked::before {
+  background-color: #0d9488;
 }
 :root.light-mode .privacy-consent-card {
   background-color: #f8fafc;
