@@ -10,6 +10,8 @@ import './Dashboard/dashboard.css';
 const Payment = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedRange, setSelectedRange] = useState('This year'); // Default selection
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const dropdownRef = useRef(null);
@@ -83,11 +85,45 @@ const Payment = () => {
               <div className="payment-date-range-container">
                 <div className="payment-date-group">
                   <label className="payment-date-label">Start Date</label>
-                  <input type="date" className="payment-date-input" required />
+                  <div className="date-input-wrapper">
+                    <svg className="calendar-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <input 
+                      type={startDate ? "date" : "text"} 
+                      placeholder="mm/dd/yyyy"
+                      className="payment-date-input" 
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      onFocus={(e) => (e.target.type = "date")}
+                      onBlur={(e) => { if (!e.target.value) e.target.type = "text"; }}
+                      required 
+                    />
+                  </div>
                 </div>
                 <div className="payment-date-group">
                   <label className="payment-date-label">End Date</label>
-                  <input type="date" className="payment-date-input" required />
+                  <div className="date-input-wrapper">
+                    <svg className="calendar-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <input 
+                      type={endDate ? "date" : "text"} 
+                      placeholder="mm/dd/yyyy"
+                      className="payment-date-input" 
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      onFocus={(e) => (e.target.type = "date")}
+                      onBlur={(e) => { if (!e.target.value) e.target.type = "text"; }}
+                      required 
+                    />
+                  </div>
                 </div>
                 <button className="payment-search-btn">
                   Search Dates

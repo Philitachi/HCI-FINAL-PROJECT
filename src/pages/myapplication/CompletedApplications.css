@@ -43,7 +43,16 @@
 }
 
 .date-range-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   flex: 1;
+}
+
+.date-range-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary-color, #9ca3af);
 }
 
 .date-input-wrapper {
@@ -98,7 +107,7 @@
   color: var(--text-secondary-color, #64748b);
   font-size: 1.2rem;
   font-weight: 300;
-  padding-top: 0;
+  padding-top: 1.6rem;
 }
 
 .date-range-clear {
@@ -115,6 +124,7 @@
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+  margin-top: 1.4rem;
 }
 
 .date-range-clear:hover {

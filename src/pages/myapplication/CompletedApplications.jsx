@@ -190,6 +190,7 @@ const CompletedApplications = () => {
             {activeSubTab === 'range' && (
               <div className="date-range-picker-bar">
                 <div className="date-range-field">
+                  <label className="date-range-label">Start Date</label>
                   <div className="date-input-wrapper">
                     <svg className="calendar-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -199,7 +200,7 @@ const CompletedApplications = () => {
                     </svg>
                     <input
                       type={dateFrom ? "date" : "text"}
-                      placeholder="mm/dd/yyyy (From)"
+                      placeholder="mm/dd/yyyy"
                       className="date-range-input"
                       value={dateFrom}
                       onChange={(e) => setDateFrom(e.target.value)}
@@ -210,6 +211,7 @@ const CompletedApplications = () => {
                 </div>
                 <span className="date-range-separator">—</span>
                 <div className="date-range-field">
+                  <label className="date-range-label">End Date</label>
                   <div className="date-input-wrapper">
                     <svg className="calendar-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -219,7 +221,7 @@ const CompletedApplications = () => {
                     </svg>
                     <input
                       type={dateTo ? "date" : "text"}
-                      placeholder="mm/dd/yyyy (To)"
+                      placeholder="mm/dd/yyyy"
                       className="date-range-input"
                       value={dateTo}
                       onChange={(e) => setDateTo(e.target.value)}
