@@ -26,6 +26,7 @@
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  box-sizing: border-box;
 }
 
 .email-verification-icon {
@@ -61,17 +62,21 @@
    6-Digit Code Input
    ============================ */
 .code-input-container {
-  display: flex;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(6px, 2.5vw, 12px);
   justify-content: center;
+  width: 100%;
+  max-width: 396px;
   margin: 10px 0;
 }
 
 .code-input-box {
-  width: 56px;
-  height: 64px;
+  width: 100%;
+  min-width: 0;
+  height: clamp(48px, 14vw, 64px);
   text-align: center;
-  font-size: 1.8rem;
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
   font-weight: 700;
   font-family: 'Outfit', monospace;
   border: 2px solid #334155;
@@ -81,6 +86,7 @@
   outline: none;
   transition: all 0.2s ease;
   caret-color: #6366f1;
+  box-sizing: border-box;
 }
 
 .code-input-box:focus {
@@ -294,4 +300,82 @@
 }
 :root.light-mode .btn-verify-code:hover:not(:disabled) {
     background: linear-gradient(135deg, #6366f1 0%, #4F46E5 100%);
+}
+
+@media (max-width: 768px) {
+  .email-verification-page-container {
+    padding: 16px;
+  }
+
+  .email-verification-box {
+    padding: 40px 32px;
+    gap: 18px;
+  }
+
+  .email-verification-icon {
+    width: 120px;
+  }
+
+  .email-verification-title {
+    font-size: 1.8rem;
+  }
+
+  .email-verification-description {
+    font-size: 1rem;
+  }
+
+  .btn-verify-code {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .email-verification-page-container {
+    min-height: 100vh;
+    padding: 12px;
+  }
+
+  .email-verification-box {
+    padding: 32px 18px 28px;
+    border-radius: 0.875rem;
+    gap: 16px;
+  }
+
+  .email-verification-icon {
+    width: 96px;
+    margin-bottom: 4px;
+  }
+
+  .email-verification-title {
+    font-size: 1.45rem;
+    line-height: 1.2;
+  }
+
+  .email-verification-description {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .email-highlight {
+    overflow-wrap: anywhere;
+  }
+
+  .btn-verify-code {
+    padding: 13px 18px;
+    font-size: 1rem;
+  }
+
+  .email-verification-divider {
+    width: 100%;
+  }
+
+  .email-resend-container {
+    font-size: 0.95rem;
+    gap: 6px;
+  }
+
+  .timer-text {
+    margin-left: 0;
+    font-size: 1rem;
+  }
 }
