@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BFP-fsis</string>
+    <string name="title_activity_main">BFP-fsis</string>
+    <string name="package_name">com.philitachi.fsis</string>
+    <string name="custom_url_scheme">com.philitachi.fsis</string>
+</resources>

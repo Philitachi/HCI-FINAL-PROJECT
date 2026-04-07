@@ -73,19 +73,22 @@ body {
   color: #111827;
   /* Dark text */
   border: none;
-  border-radius: 8px; /* Matched to 8px like the primary button */
+  border-radius: 8px;
+  /* Matched to 8px like the primary button */
   padding: 0.875rem 1.5rem;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); /* Matched transition */
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  /* Matched transition */
   font-family: inherit;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .btn-download:hover {
   background-color: #D1D5DB;
-  transform: translateY(-2px); /* Matched lift animation */
+  transform: translateY(-2px);
+  /* Matched lift animation */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -103,9 +106,11 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   color: #ffffff;
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); /* Premium teal/blue gradient */
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  /* Premium teal/blue gradient */
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px; /* Slightly squarer than full pill for a modern software look */
+  border-radius: 8px;
+  /* Slightly squarer than full pill for a modern software look */
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -144,7 +149,7 @@ body {
 
 @media (max-width: 768px) {
   .hero-section {
-    padding-top: 5px;
+    padding-top: 40px;
   }
 
   .hero-content {
@@ -168,7 +173,8 @@ body {
     width: 100%;
   }
 
-  .btn-download, .btn-start {
+  .btn-download,
+  .btn-start {
     width: 100%;
     max-width: 320px;
   }
