@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { hydrateUserSession } from './utils/userSession';
 
 // Scrolls to top on route change
 function ScrollToTop() {
@@ -46,14 +47,36 @@ import Drafts from './pages/Drafts';
 import Establishment from './pages/Establishment';
 
 function App() {
+  const [isAppReady, setIsAppReady] = useState(false);
+
   useEffect(() => {
-    const theme = localStorage.getItem('theme');
-    if (theme === 'light') {
-      document.documentElement.classList.add('light-mode');
-    } else {
-      document.documentElement.classList.remove('light-mode');
-    }
+    let isMounted = true;
+
+    const initializeApp = async () => {
+      await hydrateUserSession();
+
+      const theme = localStorage.getItem('theme');
+      if (theme === 'light') {
+        document.documentElement.classList.add('light-mode');
+      } else {
+        document.documentElement.classList.remove('light-mode');
+      }
+
+      if (isMounted) {
+        setIsAppReady(true);
+      }
+    };
+
+    void initializeApp();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
+
+  if (!isAppReady) {
+    return null;
+  }
 
   return (
     <Router>

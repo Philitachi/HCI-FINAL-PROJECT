@@ -6,6 +6,7 @@ import Sidebar from '../../components/Sidebar';
 import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import { FolderPlus, FileText, FileCheck, Building, Archive, Check, Save, XCircle, Trash2, AlertCircle, ChevronUp, ChevronDown } from 'lucide-react';
 import './dashboard.css';
+import { persistUserSession } from '../../utils/userSession';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const Dashboard = () => {
               if (!session.firstName) {
                 session.firstName = userData.firstName;
                 session.lastName = userData.lastName;
-                localStorage.setItem('userSession', JSON.stringify(session));
+                await persistUserSession(session);
               }
             } else {
               setUserName('User');

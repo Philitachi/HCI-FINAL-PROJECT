@@ -6,6 +6,7 @@ import logo from '../assets/Logo.svg';
 import './TopNavigationBar2.css';
 import { Menu, Sun, Moon, Bell, ChevronDown, Settings, LogOut } from 'lucide-react';
 import '../styles/ConfirmModal.css';
+import { clearUserSession, persistUserSession } from '../utils/userSession';
 
 const TopNavigationBar2 = () => {
   const navigate = useNavigate();
@@ -81,7 +82,7 @@ const TopNavigationBar2 = () => {
                 if (!session.firstName || !session.lastName) {
                   session.firstName = userData.firstName;
                   session.lastName = userData.lastName;
-                  localStorage.setItem('userSession', JSON.stringify(session));
+                  await persistUserSession(session);
                 }
               } else {
                 setUserInitial('U');
@@ -313,8 +314,8 @@ const TopNavigationBar2 = () => {
     setShowSignOutModal(true);
   };
 
-  const confirmSignOut = () => {
-    localStorage.removeItem('userSession');
+  const confirmSignOut = async () => {
+    await clearUserSession();
     navigate('/signin');
   };
 
