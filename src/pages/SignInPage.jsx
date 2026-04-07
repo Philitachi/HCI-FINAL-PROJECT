@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -7,7 +7,7 @@ import '../styles/SignInPage.css';
 import logo from '../assets/Logo.svg';
 import ExitButton from '../components/exitButton';
 import { hashPassword } from '../utils/crypto';
-import { persistUserSession } from '../utils/userSession';
+import { getUserSession, persistUserSession } from '../utils/userSession';
 import { User, Lock, Eye, EyeOff } from 'lucide-react';
 
 const SignInPage = () => {
@@ -17,6 +17,12 @@ const SignInPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (getUserSession()) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [navigate]);
 
   const handleSignIn = async (e) => {
     e.preventDefault();

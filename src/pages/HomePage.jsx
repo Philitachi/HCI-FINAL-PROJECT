@@ -10,13 +10,21 @@ import WatchUsOnYoutube from './watchusonYoutube';
 import CTA from './CTA';
 import Footer from './Footer';
 import { ArrowRight } from 'lucide-react';
+import { getUserSession } from '../utils/userSession';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isNativeApp = Capacitor.isNativePlatform();
+  const hasActiveSession = Boolean(getUserSession());
   // Place the real APK at public/fsis-mobile-app.apk.
   const apkDownloadPath = `${import.meta.env.BASE_URL}fsis-mobile-app.apk`;
+
+  useEffect(() => {
+    if (isNativeApp && hasActiveSession) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [hasActiveSession, isNativeApp, navigate]);
 
   useEffect(() => {
     if (location.hash === '#about') {
@@ -63,7 +71,7 @@ const HomePage = () => {
                 Download App
               </button>
             )}
-            <button className="btn-start" onClick={() => navigate('/signin')}>
+            <button className="btn-start" onClick={() => navigate(hasActiveSession ? '/dashboard' : '/signin')}>
               Start your Application
               <ArrowRight size={20} strokeWidth={2} className="arrow-icon" />
             </button>
