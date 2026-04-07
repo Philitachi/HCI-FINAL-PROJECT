@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 import '../styles/HomePage.css';
 import backgroundImage from '../assets/backgroundImage.png';
 import AboutFSIS from './AboutFSIS';
@@ -13,6 +14,7 @@ import { ArrowRight } from 'lucide-react';
 const HomePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isNativeApp = Capacitor.isNativePlatform();
   // Place the real APK at public/fsis-mobile-app.apk.
   const apkDownloadPath = `${import.meta.env.BASE_URL}fsis-mobile-app.apk`;
 
@@ -56,9 +58,11 @@ const HomePage = () => {
             certificates today.
           </p>
           <div className="hero-actions">
-            <button className="btn-download" onClick={handleApkDownload}>
-              Download App
-            </button>
+            {!isNativeApp && (
+              <button className="btn-download" onClick={handleApkDownload}>
+                Download App
+              </button>
+            )}
             <button className="btn-start" onClick={() => navigate('/signin')}>
               Start your Application
               <ArrowRight size={20} strokeWidth={2} className="arrow-icon" />
