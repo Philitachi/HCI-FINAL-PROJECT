@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 import '../styles/HomePage.css';
 import backgroundImage from '../assets/backgroundImage.png';
 import AboutFSIS from './AboutFSIS';
@@ -9,10 +10,21 @@ import WatchUsOnYoutube from './watchusonYoutube';
 import CTA from './CTA';
 import Footer from './Footer';
 import { ArrowRight } from 'lucide-react';
+import { getUserSession } from '../utils/userSession';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isNativeApp = Capacitor.isNativePlatform();
+  const hasActiveSession = Boolean(getUserSession());
+  // Place the real APK at public/fsis-mobile-app.apk.
+  const apkDownloadPath = `${import.meta.env.BASE_URL}fsis-mobile-app.apk`;
+
+  useEffect(() => {
+    if (isNativeApp && hasActiveSession) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [hasActiveSession, isNativeApp, navigate]);
 
   useEffect(() => {
     if (location.hash === '#about') {
@@ -24,6 +36,15 @@ const HomePage = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [location]);
+
+  const handleApkDownload = () => {
+    const downloadLink = document.createElement('a');
+    downloadLink.href = apkDownloadPath;
+    downloadLink.download = 'fsis-mobile-app.apk';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
 
   return (
     <div className="homepage-container">
@@ -45,8 +66,12 @@ const HomePage = () => {
             certificates today.
           </p>
           <div className="hero-actions">
-            <button className="btn-download">Download App</button>
-            <button className="btn-start" onClick={() => navigate('/signin')}>
+            {!isNativeApp && (
+              <button className="btn-download" onClick={handleApkDownload}>
+                Download App
+              </button>
+            )}
+            <button className="btn-start" onClick={() => navigate(hasActiveSession ? '/dashboard' : '/signin')}>
               Start your Application
               <ArrowRight size={20} strokeWidth={2} className="arrow-icon" />
             </button>

@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { doc, getDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { db, auth, storage } from '../firebase';
+import { db, storage } from '../firebase';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import './Settings.css';
 import './Dashboard/dashboard.css';
+import { persistUserSession } from '../utils/userSession';
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -107,7 +108,7 @@ const Settings = () => {
       const session = JSON.parse(localStorage.getItem('userSession') || '{}');
       session.firstName = editData.firstName;
       session.lastName = editData.lastName;
-      localStorage.setItem('userSession', JSON.stringify(session));
+      await persistUserSession(session);
 
       // Dispatch custom event to notify other components (like TopNavigationBar)
       window.dispatchEvent(new Event('userProfileUpdated'));

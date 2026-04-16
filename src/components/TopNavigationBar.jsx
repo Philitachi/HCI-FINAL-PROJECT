@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/Logo.svg';
 import './TopNavigationBar.css';
 import { Sun, Moon, Home, FileText, LogIn, UserPlus } from 'lucide-react';
+import { getUserSession } from '../utils/userSession';
 
 const TopNavigationBar = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const TopNavigationBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef(null);
   const mobileMenuRef = useRef(null);
+  const signInTarget = getUserSession() ? '/dashboard' : '/signin';
 
   useEffect(() => {
     if (isDarkMode) {
@@ -105,7 +107,7 @@ const TopNavigationBar = () => {
           <Sun className="sun-icon" size={20} strokeWidth={2} style={{ transform: isDarkMode ? 'rotate(-90deg) scale(0)' : 'rotate(0) scale(1)', opacity: isDarkMode ? 0 : 1 }} />
           <Moon className="moon-icon" size={20} strokeWidth={2} style={{ transform: isDarkMode ? 'rotate(0) scale(1)' : 'rotate(90deg) scale(0)', opacity: isDarkMode ? 1 : 0 }} />
         </button>
-        <button className="btn-signin" onClick={() => navigate('/signin')}>Sign In</button>
+        <button className="btn-signin" onClick={() => navigate(signInTarget)}>Sign In</button>
         <button className="btn-signup" onClick={() => navigate('/signup')}>Sign up</button>
       </nav>
 
@@ -133,7 +135,7 @@ const TopNavigationBar = () => {
           Submit a Complaint
         </a>
         <div className="mobile-drawer-divider"></div>
-        <a className="mobile-drawer-link" onClick={() => handleMobileNav('/signin')}>
+        <a className="mobile-drawer-link" onClick={() => handleMobileNav(signInTarget)}>
           <LogIn size={18} strokeWidth={2} />
           Sign In
         </a>

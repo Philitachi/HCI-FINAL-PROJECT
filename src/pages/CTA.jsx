@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import '../styles/CTA.css';
+import { getUserSession } from '../utils/userSession';
 
 const CTA = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   const navigate = useNavigate();
+  const ctaTarget = getUserSession() ? '/dashboard' : '/signin';
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -48,7 +50,7 @@ const CTA = () => {
 
           <button 
             className="cta-button" 
-            onClick={() => navigate('/signin')}
+            onClick={() => navigate(ctaTarget)}
           >
             Start your Application
             <ArrowRight size={20} strokeWidth={2} className="cta-button-icon" />

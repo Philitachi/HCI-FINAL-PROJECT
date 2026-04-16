@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, updateDoc, collection, query, where, getDocs, serverTimestamp } from 'firebase/firestore';
@@ -9,8 +9,16 @@ import logo from '../assets/Logo.svg';
 import ExitButton from '../components/exitButton';
 import { hashPassword, generateSalt } from '../utils/crypto';
 
+const SIGNUP_DRAFT_STORAGE_KEY = 'signup-form-draft';
+const SIGNUP_DRAFT_SESSION_KEY = 'signup-form-session-active';
+
 const SignUpPage = () => {
   const navigate = useNavigate();
+
+  const clearSignupDraft = () => {
+    localStorage.removeItem(SIGNUP_DRAFT_STORAGE_KEY);
+    sessionStorage.removeItem(SIGNUP_DRAFT_SESSION_KEY);
+  };
   
   // Form State
   const [formData, setFormData] = useState({
@@ -40,6 +48,67 @@ const SignUpPage = () => {
     password: useRef(null),
     passwordConfirmation: useRef(null)
   };
+
+  useEffect(() => {
+    const hasActiveSignupSession = sessionStorage.getItem(SIGNUP_DRAFT_SESSION_KEY) === 'true';
+
+    if (!hasActiveSignupSession) {
+      localStorage.removeItem(SIGNUP_DRAFT_STORAGE_KEY);
+    }
+
+    sessionStorage.setItem(SIGNUP_DRAFT_SESSION_KEY, 'true');
+
+    const savedDraft = localStorage.getItem(SIGNUP_DRAFT_STORAGE_KEY);
+    if (!savedDraft) return;
+
+    try {
+      const parsedDraft = JSON.parse(savedDraft);
+      setFormData((prev) => ({
+        ...prev,
+        firstName: parsedDraft.firstName ?? '',
+        lastName: parsedDraft.lastName ?? '',
+        email: parsedDraft.email ?? '',
+        phone: parsedDraft.phone ?? '',
+        passwordConfirmation: parsedDraft.passwordConfirmation ?? ''
+      }));
+      setPassword(parsedDraft.password ?? '');
+    } catch (error) {
+      console.error('Failed to restore sign-up draft:', error);
+      clearSignupDraft();
+    }
+  }, []);
+
+  useEffect(() => {
+    const draft = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      password,
+      passwordConfirmation: formData.passwordConfirmation
+    };
+
+    const hasAnyValue = Object.values(draft).some((value) => value.trim() !== '');
+    if (!hasAnyValue) {
+      localStorage.removeItem(SIGNUP_DRAFT_STORAGE_KEY);
+      return;
+    }
+
+    localStorage.setItem(SIGNUP_DRAFT_STORAGE_KEY, JSON.stringify(draft));
+  }, [
+    formData.email,
+    formData.firstName,
+    formData.lastName,
+    formData.passwordConfirmation,
+    formData.phone,
+    password
+  ]);
+
+  useEffect(() => () => {
+    if (emailTypingTimeoutId.current) {
+      clearTimeout(emailTypingTimeoutId.current);
+    }
+  }, []);
 
   const isPasswordValid = password.length >= 8 && /[a-z]/.test(password) && /[A-Z]/.test(password) && /\d/.test(password);
 
@@ -251,6 +320,8 @@ const SignUpPage = () => {
         'TkdpHziryGZ1SETq9'
       );
 
+      clearSignupDraft();
+
       // 5. Navigate to email verification page with the email as a param
       navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
     } catch (error) {
@@ -289,6 +360,8 @@ const SignUpPage = () => {
                   },
                   'TkdpHziryGZ1SETq9'
                 );
+
+                clearSignupDraft();
 
                 navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
                 return;

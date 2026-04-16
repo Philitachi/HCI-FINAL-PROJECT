@@ -1,31 +1,16 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { clearUserSessionSync, getUserSession } from '../utils/userSession';
 
 /**
  * A wrapper component that protects routes from unauthorized access.
- * It checks localStorage for a valid user session.
+ * It checks the restored user session before rendering protected pages.
  */
 const ProtectedRoute = ({ children }) => {
-  const sessionData = localStorage.getItem('userSession');
+  const session = getUserSession();
 
-  if (!sessionData) {
-    // No session found, redirect to sign-in page
-    return <Navigate to="/signin" replace />;
-  }
-
-  try {
-    const session = JSON.parse(sessionData);
-    const now = new Date().getTime();
-
-    // Check if the session has expired
-    if (now > session.expiresAt) {
-      // Session expired, clear it and redirect
-      localStorage.removeItem('userSession');
-      return <Navigate to="/signin" replace />;
-    }
-  } catch (error) {
-    // If JSON parsing fails (old/corrupt data), clear and redirect
-    localStorage.removeItem('userSession');
+  if (!session) {
+    clearUserSessionSync();
     return <Navigate to="/signin" replace />;
   }
 

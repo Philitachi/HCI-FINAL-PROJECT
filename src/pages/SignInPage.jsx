@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
-import { auth, db } from '../firebase';
+import { doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import emailjs from '@emailjs/browser';
 import '../styles/SignInPage.css';
 import logo from '../assets/Logo.svg';
 import ExitButton from '../components/exitButton';
 import { hashPassword } from '../utils/crypto';
+import { getUserSession, persistUserSession } from '../utils/userSession';
 import { User, Lock, Eye, EyeOff } from 'lucide-react';
 
 const SignInPage = () => {
@@ -17,6 +17,12 @@ const SignInPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (getUserSession()) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [navigate]);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -52,15 +58,13 @@ const SignInPage = () => {
       // 3. Password matches! Check email verification status
       if (userData.emailVerified) {
         // Email is verified → set local session with expiration (24 hours - standard)
-        const expirationTime = new Date().getTime() + (24 * 60 * 60 * 1000); // 24 hours from now
         const sessionData = {
           isAuthenticated: true,
-          expiresAt: expirationTime,
           email: userData.email,
           firstName: userData.firstName || '',
           lastName: userData.lastName || ''
         };
-        localStorage.setItem('userSession', JSON.stringify(sessionData));
+        await persistUserSession(sessionData);
         navigate('/dashboard');
       } else {
         // Email is NOT verified → send a new code and go to verification page
