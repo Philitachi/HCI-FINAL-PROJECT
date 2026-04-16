@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { hydrateUserSession } from './utils/userSession';
+import GlobalLoader from './components/GlobalLoader';
 
 // Scrolls to top on route change
 function ScrollToTop() {
@@ -80,6 +81,7 @@ function App() {
 
   return (
     <Router>
+      <GlobalLoader />
       <ScrollToTop />
       <Routes>
         <Route element={<PublicLayout />}>
