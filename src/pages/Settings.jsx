@@ -476,7 +476,7 @@ const Settings = () => {
                         userSelect: 'none'
                       }}
                     >
-                      <span style={{ paddingRight: '1rem' }}>
+                      <span style={{ paddingRight: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {fontOptions.find(opt => opt.value === fontPreference)?.label || 'Outfit (Default)'}
                       </span>
                       <svg 
@@ -555,7 +555,7 @@ const Settings = () => {
                         userSelect: 'none'
                       }}
                     >
-                      <span style={{ paddingRight: '1rem' }}>
+                      <span style={{ paddingRight: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {sizeOptions.find(opt => opt.value === fontSizePreference)?.label || 'Medium (Default)'}
                       </span>
                       <svg 
