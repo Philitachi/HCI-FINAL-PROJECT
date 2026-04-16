@@ -1,8 +1,19 @@
-/* Left intentionally blank. See HomePage.css for styling. */
+/* Global Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Nunito:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Font Override Classes */
+:root[data-font="Inter"] *:not(code):not(pre) { font-family: 'Inter', sans-serif !important; }
+:root[data-font="Roboto"] *:not(code):not(pre) { font-family: 'Roboto', sans-serif !important; }
+:root[data-font="Nunito"] *:not(code):not(pre) { font-family: 'Nunito', sans-serif !important; }
+:root[data-font="Outfit"] *:not(code):not(pre) { font-family: 'Outfit', sans-serif !important; }
 
 html {
   font-size: 103%;
 }
+
+html[data-font-size="small"] { font-size: 96%; }
+html[data-font-size="medium"] { font-size: 103%; }
+html[data-font-size="large"] { font-size: 110%; }
 
 /* Force form elements to inherit font properties globally */
 input, select, textarea, button {
@@ -44,6 +55,13 @@ input, select, textarea, button {
 
 :root.light-mode ::-webkit-scrollbar-thumb:hover {
   background-color: #94a3b8;
+}
+
+/* Light mode overrides for Select dropdown */
+:root.light-mode select.font-select {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
 }
 
 /* ========== GLOBAL MOBILE SIZING ========== */

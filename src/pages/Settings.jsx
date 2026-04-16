@@ -15,6 +15,45 @@ const Settings = () => {
   const [saving, setSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [fontPreference, setFontPreference] = useState(
+    localStorage.getItem('fontFamily') || 'Outfit'
+  );
+  const [fontSizePreference, setFontSizePreference] = useState(
+    localStorage.getItem('fontSize') || 'medium'
+  );
+  
+  const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
+  const [sizeDropdownOpen, setSizeDropdownOpen] = useState(false);
+  
+  const dropdownRef = useRef(null);
+  const sizeDropdownRef = useRef(null);
+
+  // Close custom dropdowns if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setFontDropdownOpen(false);
+      }
+      if (sizeDropdownRef.current && !sizeDropdownRef.current.contains(event.target)) {
+        setSizeDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const fontOptions = [
+    { value: 'Outfit', label: 'Outfit (Default)' },
+    { value: 'Inter', label: 'Inter (Clean & Modern)' },
+    { value: 'Roboto', label: 'Roboto (Android Standard)' },
+    { value: 'Nunito', label: 'Nunito (Friendly & Balanced)' }
+  ];
+
+  const sizeOptions = [
+    { value: 'small', label: 'Small' },
+    { value: 'medium', label: 'Medium (Default)' },
+    { value: 'large', label: 'Large' }
+  ];
   
   const [userData, setUserData] = useState({
     firstName: '',
@@ -189,6 +228,24 @@ const Settings = () => {
     }
   };
 
+  const handleFontChange = (e) => {
+    const selectedFont = e.target.value;
+    setFontPreference(selectedFont);
+    localStorage.setItem('fontFamily', selectedFont);
+    document.documentElement.setAttribute('data-font', selectedFont);
+    setSuccessMessage(`Font changed to ${selectedFont}`);
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
+
+  const handleSizeChange = (e) => {
+    const selectedSize = e.target.value;
+    setFontSizePreference(selectedSize);
+    localStorage.setItem('fontSize', selectedSize);
+    document.documentElement.setAttribute('data-font-size', selectedSize);
+    setSuccessMessage(`Text size changed to ${selectedSize}`);
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
+
   const handleDeleteProfilePicture = async () => {
     if (!window.confirm('Are you sure you want to remove your profile picture?')) return;
     
@@ -308,8 +365,9 @@ const Settings = () => {
               </div>
             </div>
 
-            {/* Information Card */}
-            <div className="settings-card info-card">
+            <div className="settings-right-column" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              {/* Information Card */}
+              <div className="settings-card info-card">
               <h2 className="card-title">Personal Information</h2>
               
               {successMessage && <div className="alert success">{successMessage}</div>}
@@ -374,6 +432,173 @@ const Settings = () => {
                   </button>
                 </div>
               </form>
+            </div>
+
+            {/* Display Preferences Card */}
+            <div className="settings-card info-card" style={{ marginTop: 0 }}>
+              <h2 className="card-title">Display Preferences</h2>
+              <div className="settings-form">
+                <div className="form-group">
+                  <label>Font Style</label>
+                  <div className="custom-dropdown-container" ref={dropdownRef} style={{ position: 'relative', width: '100%' }}>
+                    <div 
+                      className="custom-dropdown-header"
+                      onClick={() => setFontDropdownOpen(!fontDropdownOpen)}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        backgroundColor: 'var(--sidebar-bg-color, #0f172a)',
+                        border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
+                        borderRadius: '8px',
+                        padding: '0.75rem 1rem',
+                        color: 'var(--text-primary-color, #ffffff)',
+                        fontSize: '1rem',
+                        cursor: 'pointer',
+                        transition: 'border-color 0.2s',
+                        userSelect: 'none'
+                      }}
+                    >
+                      <span style={{ paddingRight: '1rem' }}>
+                        {fontOptions.find(opt => opt.value === fontPreference)?.label || 'Outfit (Default)'}
+                      </span>
+                      <svg 
+                        width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                        style={{
+                          transform: fontDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                          color: '#9ca3af',
+                          flexShrink: 0,
+                          marginRight: '0.5rem' /* Padding to keep it off the edge */
+                        }}
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </div>
+                    
+                    {fontDropdownOpen && (
+                      <div className="custom-dropdown-list" style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        width: '100%',
+                        marginTop: '0.5rem',
+                        backgroundColor: 'var(--sidebar-bg-color, #0f172a)',
+                        border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
+                        borderRadius: '8px',
+                        zIndex: 50,
+                        maxHeight: '140px', /* Built in scroll bar triggers easily */
+                        overflowY: 'auto',
+                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+                      }}>
+                        {fontOptions.map((opt) => (
+                          <div 
+                            key={opt.value}
+                            onClick={() => {
+                              handleFontChange({ target: { value: opt.value } });
+                              setFontDropdownOpen(false);
+                            }}
+                            className="custom-dropdown-item"
+                            style={{
+                              padding: '0.75rem 1rem',
+                              cursor: 'pointer',
+                              color: fontPreference === opt.value ? 'var(--accent-color, #3b82f6)' : 'var(--text-primary-color, #ffffff)',
+                              backgroundColor: fontPreference === opt.value ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+                              transition: 'background-color 0.2s',
+                              borderBottom: '1px solid rgba(255,255,255,0.03)'
+                            }}
+                          >
+                            {opt.label}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <span className="input-hint">Changes text style globally across the app immediately.</span>
+                </div>
+
+                <div className="form-group" style={{ marginTop: '1rem' }}>
+                  <label>Font Size</label>
+                  <div className="custom-dropdown-container" ref={sizeDropdownRef} style={{ position: 'relative', width: '100%' }}>
+                    <div 
+                      className="custom-dropdown-header"
+                      onClick={() => setSizeDropdownOpen(!sizeDropdownOpen)}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        backgroundColor: 'var(--sidebar-bg-color, #0f172a)',
+                        border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
+                        borderRadius: '8px',
+                        padding: '0.75rem 1rem',
+                        color: 'var(--text-primary-color, #ffffff)',
+                        fontSize: '1rem',
+                        cursor: 'pointer',
+                        transition: 'border-color 0.2s',
+                        userSelect: 'none'
+                      }}
+                    >
+                      <span style={{ paddingRight: '1rem' }}>
+                        {sizeOptions.find(opt => opt.value === fontSizePreference)?.label || 'Medium (Default)'}
+                      </span>
+                      <svg 
+                        width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                        style={{
+                          transform: sizeDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                          color: '#9ca3af',
+                          flexShrink: 0,
+                          marginRight: '0.5rem'
+                        }}
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </div>
+                    
+                    {sizeDropdownOpen && (
+                      <div className="custom-dropdown-list" style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        width: '100%',
+                        marginTop: '0.5rem',
+                        backgroundColor: 'var(--sidebar-bg-color, #0f172a)',
+                        border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
+                        borderRadius: '8px',
+                        zIndex: 50,
+                        maxHeight: '140px',
+                        overflowY: 'auto',
+                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+                      }}>
+                        {sizeOptions.map((opt) => (
+                          <div 
+                            key={opt.value}
+                            onClick={() => {
+                              handleSizeChange({ target: { value: opt.value } });
+                              setSizeDropdownOpen(false);
+                            }}
+                            className="custom-dropdown-item"
+                            style={{
+                              padding: '0.75rem 1rem',
+                              cursor: 'pointer',
+                              color: fontSizePreference === opt.value ? 'var(--accent-color, #3b82f6)' : 'var(--text-primary-color, #ffffff)',
+                              backgroundColor: fontSizePreference === opt.value ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+                              transition: 'background-color 0.2s',
+                              borderBottom: '1px solid rgba(255,255,255,0.03)'
+                            }}
+                          >
+                            {opt.label}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <span className="input-hint">Scales the interface for easier reading or denser information.</span>
+                </div>
+              </div>
+              </div>
             </div>
           </div>
         </div>

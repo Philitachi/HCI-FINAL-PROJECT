@@ -63,6 +63,14 @@ function App() {
         document.documentElement.classList.remove('light-mode');
       }
 
+      // Initialize Font Style
+      const font = localStorage.getItem('fontFamily') || 'Outfit';
+      document.documentElement.setAttribute('data-font', font);
+
+      // Initialize Font Size
+      const fontSize = localStorage.getItem('fontSize') || 'medium';
+      document.documentElement.setAttribute('data-font-size', fontSize);
+
       if (isMounted) {
         setIsAppReady(true);
       }
