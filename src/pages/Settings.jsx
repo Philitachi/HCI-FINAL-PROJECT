@@ -24,6 +24,8 @@ const Settings = () => {
   
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
   const [sizeDropdownOpen, setSizeDropdownOpen] = useState(false);
+  const [fontDropUp, setFontDropUp] = useState(false);
+  const [sizeDropUp, setSizeDropUp] = useState(false);
   
   const dropdownRef = useRef(null);
   const sizeDropdownRef = useRef(null);
@@ -41,6 +43,21 @@ const Settings = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Check available space below when dropdowns open
+  useEffect(() => {
+    if (fontDropdownOpen && dropdownRef.current) {
+      const rect = dropdownRef.current.getBoundingClientRect();
+      setFontDropUp(window.innerHeight - rect.bottom < 200);
+    }
+  }, [fontDropdownOpen]);
+
+  useEffect(() => {
+    if (sizeDropdownOpen && sizeDropdownRef.current) {
+      const rect = sizeDropdownRef.current.getBoundingClientRect();
+      setSizeDropUp(window.innerHeight - rect.bottom < 200);
+    }
+  }, [sizeDropdownOpen]);
 
   const fontOptions = [
     { value: 'Outfit', label: 'Outfit (Default)' },
@@ -281,7 +298,7 @@ const Settings = () => {
   if (loading) {
     return (
       <div className="dashboard-container">
-        <TopNavigationBar2 />
+        <TopNavigationBar2 hideHamburger={true} />
         <div className="dashboard-body">
           <Sidebar />
           <main className="dashboard-main-content">
@@ -297,7 +314,7 @@ const Settings = () => {
 
   return (
     <div className="dashboard-container settings-full-page">
-      <TopNavigationBar2 />
+      <TopNavigationBar2 hideHamburger={true} />
       <main className="settings-main-container">
         <div className="settings-content">
           <div className="settings-nav-header">
@@ -480,17 +497,16 @@ const Settings = () => {
                     {fontDropdownOpen && (
                       <div className="custom-dropdown-list" style={{
                         position: 'absolute',
-                        top: '100%',
+                        ...(fontDropUp ? { bottom: '100%', top: 'auto', marginBottom: '0.5rem' } : { top: '100%', marginTop: '0.5rem' }),
                         left: 0,
                         width: '100%',
-                        marginTop: '0.5rem',
                         backgroundColor: 'var(--sidebar-bg-color, #0f172a)',
                         border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
                         borderRadius: '8px',
                         zIndex: 50,
-                        maxHeight: '140px', /* Built in scroll bar triggers easily */
+                        maxHeight: '140px',
                         overflowY: 'auto',
-                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+                        boxShadow: fontDropUp ? '0 -10px 25px -5px rgba(0, 0, 0, 0.3)' : '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
                       }}>
                         {fontOptions.map((opt) => (
                           <div 
@@ -560,17 +576,16 @@ const Settings = () => {
                     {sizeDropdownOpen && (
                       <div className="custom-dropdown-list" style={{
                         position: 'absolute',
-                        top: '100%',
+                        ...(sizeDropUp ? { bottom: '100%', top: 'auto', marginBottom: '0.5rem' } : { top: '100%', marginTop: '0.5rem' }),
                         left: 0,
                         width: '100%',
-                        marginTop: '0.5rem',
                         backgroundColor: 'var(--sidebar-bg-color, #0f172a)',
                         border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
                         borderRadius: '8px',
                         zIndex: 50,
                         maxHeight: '140px',
                         overflowY: 'auto',
-                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+                        boxShadow: sizeDropUp ? '0 -10px 25px -5px rgba(0, 0, 0, 0.3)' : '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
                       }}>
                         {sizeOptions.map((opt) => (
                           <div 

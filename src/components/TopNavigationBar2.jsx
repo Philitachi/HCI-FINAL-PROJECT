@@ -8,7 +8,7 @@ import { Menu, Sun, Moon, Bell, ChevronDown, Settings, LogOut } from 'lucide-rea
 import '../styles/ConfirmModal.css';
 import { clearUserSession, persistUserSession } from '../utils/userSession';
 
-const TopNavigationBar2 = () => {
+const TopNavigationBar2 = ({ hideHamburger = false }) => {
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem('theme') !== 'light';
@@ -322,9 +322,11 @@ const TopNavigationBar2 = () => {
   return (
     <header className="topnav2-header">
       <div className="topnav2-left">
-        <button className="topnav2-hamburger" aria-label="Toggle sidebar" onClick={() => window.dispatchEvent(new CustomEvent('toggleMobileSidebar'))}>
-          <Menu size={22} strokeWidth={2} />
-        </button>
+        {!hideHamburger && (
+          <button className="topnav2-hamburger" aria-label="Toggle sidebar" onClick={() => window.dispatchEvent(new CustomEvent('toggleMobileSidebar'))}>
+            <Menu size={22} strokeWidth={2} />
+          </button>
+        )}
         <div className="topnav2-brand">
           <img src={logo} alt="Fire Safety Inspection System Logo" className="topnav2-logo" />
           <span className="topnav2-title">
