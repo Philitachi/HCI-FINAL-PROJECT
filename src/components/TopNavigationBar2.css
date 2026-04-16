@@ -462,8 +462,12 @@
   color: #94a3b8;
 }
 
+:root.light-mode .notif-list {
+  scrollbar-color: #94a3b8 transparent;
+}
+
 :root.light-mode .notif-list::-webkit-scrollbar-thumb {
-  background-color: #e2e8f0;
+  background-color: #94a3b8;
 }
 
 :root.light-mode .topnav2-user-dropdown {
