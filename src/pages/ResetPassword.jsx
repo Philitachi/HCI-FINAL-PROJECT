@@ -177,12 +177,12 @@ const ResetPassword = () => {
         <div className="illustration-wrapper-reset">
           <img 
             src={verifyEmailDark} 
-            alt="Verify Email" 
+            alt="Illustration of an envelope with a verification code for password reset" 
             className="reset-password-icon dark-img" 
           />
           <img 
             src={verifyEmailLight} 
-            alt="Verify Email" 
+            alt="Illustration of an envelope with a verification code for password reset" 
             className="reset-password-icon light-img" 
           />
         </div>

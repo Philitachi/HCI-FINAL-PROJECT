@@ -85,8 +85,8 @@ const ForgotPasswordPage = () => {
       <div className="forgot-content">
         <div className="forgot-card">
           <div className="illustration-wrapper">
-            <img src={illustrationDark} alt="Forgot Password Illustration" className="forgot-illustration dark-img" />
-            <img src={illustrationLight} alt="Forgot Password Illustration" className="forgot-illustration light-img" />
+            <img src={illustrationDark} alt="Illustration of a person with a question mark, representing a forgotten password" className="forgot-illustration dark-img" />
+            <img src={illustrationLight} alt="Illustration of a person with a question mark, representing a forgotten password" className="forgot-illustration light-img" />
           </div>
           
           <h2 className="forgot-title">Forgot your password?</h2>

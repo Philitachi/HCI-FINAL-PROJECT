@@ -12,25 +12,25 @@ const features = [
     title: "FSIC Online Application System",
     description: "Apply for your Fire Safety Inspection Certificate (FSIC) with ease. Our streamlined digital platform provides a fast, convenient way for business owners to fulfill compliance requirements seamlessly.",
     imgSrc: FsicSystemImg,
-    altText: "Online Application System Illustration",
+    altText: "Illustration of a person submitting a fire safety certificate application online through a digital form",
   },
   {
     title: "Fast & Transparent Process",
     description: "Monitor your application status in real-time. Submit requirements, track progress, and receive instant notifications at every milestone—all within a single, centralized dashboard.",
     imgSrc: FastProcessImg,
-    altText: "Fast and Transparent Process Illustration",
+    altText: "Illustration of a dashboard showing real-time application tracking with progress milestones",
   },
   {
     title: "Secure Data Management",
     description: "Your data and documents are protected through secure encryption and storage, ensuring that all submitted information and files remain private and compliant with government standards.",
     imgSrc: SecureMgmtImg,
-    altText: "Secure Document Management Illustration",
+    altText: "Illustration of a shield and lock protecting uploaded documents with secure encryption",
   },
   {
     title: "Dedicated Support",
     description: "Business owners can access step-by-step guides, frequently asked questions (FAQs), and responsive support services to assist them in completing their FSIC application quickly and accurately.",
     imgSrc: AssistanceImg,
-    altText: "Assistance for Business Owners Illustration",
+    altText: "Illustration of a support agent helping a business owner navigate the application process",
   }
 ];
 

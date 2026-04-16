@@ -12,7 +12,7 @@ const PasswordResetSuccess = () => {
         <div className="illustration-wrapper-success">
           <img 
             src={emailVerifiedBg} 
-            alt="Success" 
+            alt="Green checkmark icon indicating your password has been successfully reset" 
             className="success-illustration" 
           />
         </div>

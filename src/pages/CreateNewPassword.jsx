@@ -102,12 +102,12 @@ const CreateNewPassword = () => {
         <div className="illustration-wrapper-create">
           <img 
             src={illustrationDark} 
-            alt="Create New Password" 
+            alt="Illustration of a person setting up a new secure password" 
             className="create-password-icon dark-img" 
           />
           <img 
             src={illustrationLight} 
-            alt="Create New Password" 
+            alt="Illustration of a person setting up a new secure password" 
             className="create-password-icon light-img" 
           />
         </div>

@@ -262,7 +262,7 @@ const Settings = () => {
             <div className="settings-card profile-card">
               <div className="profile-image-container">
                 {userData.profilePicture ? (
-                  <img src={userData.profilePicture} alt="Profile" className="profile-preview" />
+                  <img src={userData.profilePicture} alt={`Profile picture of ${userData.firstName} ${userData.lastName}`} className="profile-preview" />
                 ) : (
                   <div className="profile-placeholder">
                     {userData.firstName.charAt(0)}{userData.lastName.charAt(0)}
