@@ -5,7 +5,7 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage
 import { db, storage } from '../firebase';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
-import './Settings.css';
+import '../styles/Settings.css';
 import './Dashboard/dashboard.css';
 import { persistUserSession } from '../utils/userSession';
 

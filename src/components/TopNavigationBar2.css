@@ -529,10 +529,12 @@
 
   .notif-dropdown {
     position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    width: 100%;
-    border-radius: 0 0 12px 12px;
+    top: 65px;
+    left: 1rem;
+    right: 1rem;
+    width: calc(100% - 2rem);
+    max-width: 380px;
+    margin: 0 auto;
+    border-radius: 12px;
   }
 }

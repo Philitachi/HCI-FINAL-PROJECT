@@ -5,7 +5,7 @@ import { db } from '../firebase';
 import { CheckCircle } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
-import './FullDetails.css';
+import '../styles/FullDetails.css';
 import '../styles/ConfirmModal.css';
 
 const FullDetails = () => {
