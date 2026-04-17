@@ -912,7 +912,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
 
           {requiredDocuments.length === 0 ? (
             <div className="empty-requirements-state">
-              <img src={EmailVerifiedSVG} alt="Checkmark illustration indicating no document requirements are needed for this application type" className="empty-req-img" />
+              <img src={EmailVerifiedSVG} alt="No document requirements" className="empty-req-img" />
               <p className="empty-req-text">
                 No any kind of requirement(s) is needed for this application. Click <span className="text-highlight">"NEXT STEP"</span> button to go onto next page.
               </p>

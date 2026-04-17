@@ -53,7 +53,7 @@ const AboutFSIS = ({ standalone = true }) => {
               {/* Top Title Bar Overlay */}
               <div className="yt-title-bar">
                 <div className="yt-avatar">
-                   <img src={logo} alt="Bureau of Fire Protection official logo" />
+                   <img src={logo} alt="Logo" />
                 </div>
                 <div className="yt-video-title">Bureau of Fire Protection: Fire Safety Information System</div>
               </div>

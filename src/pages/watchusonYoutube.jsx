@@ -68,7 +68,7 @@ const WatchUsOnYoutube = () => {
                 {/* Top Title Bar Overlay */}
                 <div className="yt-card-topbar">
                   <div className="yt-card-avatar">
-                    <img src={logo} alt="Bureau of Fire Protection official logo used as YouTube channel avatar" />
+                    <img src={logo} alt="Logo" />
                   </div>
                   <span className="yt-card-title">{video.title}</span>
                 </div>

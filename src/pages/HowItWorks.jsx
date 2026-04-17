@@ -106,7 +106,7 @@ const HowItWorks = () => {
           {/* Step 1 */}
           <div className="hiw-step fade-in-up" style={{ transitionDelay: '0.2s' }}>
             <div className="hiw-circle-bg">
-              <img src={isDarkMode ? AccessSiteImgDark : AccessSiteImgLight} alt="Illustration showing a user navigating to the Fire Safety Inspection System website" className="hiw-illustration" />
+              <img src={isDarkMode ? AccessSiteImgDark : AccessSiteImgLight} alt="Access the site" className="hiw-illustration" />
             </div>
             <div className="hiw-step-text">
               <h3>Access the site</h3>
@@ -117,7 +117,7 @@ const HowItWorks = () => {
           {/* Step 2 */}
           <div className="hiw-step fade-in-up" style={{ transitionDelay: '0.4s' }}>
             <div className="hiw-circle-bg">
-              <img src={isDarkMode ? CreateAccountImgDark : CreateAccountImgLight} alt="Illustration showing a user filling out a registration form to create a new account" className="hiw-illustration" />
+              <img src={isDarkMode ? CreateAccountImgDark : CreateAccountImgLight} alt="Create an Account" className="hiw-illustration" />
             </div>
             <div className="hiw-step-text">
               <h3>Create an Account</h3>
@@ -128,7 +128,7 @@ const HowItWorks = () => {
           {/* Step 3 */}
           <div className="hiw-step fade-in-up" style={{ transitionDelay: '0.6s' }}>
             <div className="hiw-circle-bg">
-              <img src={isDarkMode ? VerifyIdentityImgDark : VerifyIdentityImgLight} alt="Illustration showing a user verifying their identity through email confirmation" className="hiw-illustration" />
+              <img src={isDarkMode ? VerifyIdentityImgDark : VerifyIdentityImgLight} alt="Verify your Identity" className="hiw-illustration" />
             </div>
             <div className="hiw-step-text">
               <h3>Verify your Identity</h3>

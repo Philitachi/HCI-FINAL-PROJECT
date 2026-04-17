@@ -16,7 +16,7 @@ const TermsAndConditions = () => {
       <div className="terms-content-wrapper">
         {/* Header Section (Above the card) */}
         <div className="terms-header">
-          <img src={logo} alt="Fire Safety Inspection System Logo" className="terms-logo" />
+          <img src={logo} alt="Logo" className="terms-logo" />
           <h1 className="terms-title">Fire Safety Inspection System</h1>
         </div>
 

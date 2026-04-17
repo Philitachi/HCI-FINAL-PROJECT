@@ -210,7 +210,7 @@ const EmailVerification = () => {
       <div className="email-verification-box">
         <img 
           src={verifyEmailIcon} 
-          alt="Verify Email Envelope" 
+          alt="Verify Email" 
           className="email-verification-icon" 
         />
         

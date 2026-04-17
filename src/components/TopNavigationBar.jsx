@@ -88,7 +88,7 @@ const TopNavigationBar = () => {
     <header className="navbar">
       <div className="navbar-brand">
         <div className="logo-placeholder" style={{ backgroundColor: 'transparent', padding: 0 }}>
-          <img src={logo} alt="Fire Safety Inspection System Logo" style={{ width: '40px', height: '40px' }} />
+          <img src={logo} alt="Logo" style={{ width: '40px', height: '40px' }} />
         </div>
         <span className="brand-text">
           <span className="brand-accent">Fire Safety</span> Inspection System

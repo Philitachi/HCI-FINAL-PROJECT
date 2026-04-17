@@ -328,7 +328,7 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
           </button>
         )}
         <div className="topnav2-brand">
-          <img src={logo} alt="Fire Safety Inspection System Logo" className="topnav2-logo" />
+          <img src={logo} alt="Logo" className="topnav2-logo" />
           <span className="topnav2-title">
             <span className="topnav2-title-accent">Fire Safety</span> Inspection System
           </span>

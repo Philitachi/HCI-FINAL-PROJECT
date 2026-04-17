@@ -16,7 +16,7 @@ const EmailVerified = () => {
       <div className="email-verified-box">
         <img 
           src={emailVerifiedIcon} 
-          alt="Email Verified Checkmark" 
+          alt="Email Verified" 
           className="email-verified-icon" 
         />
         

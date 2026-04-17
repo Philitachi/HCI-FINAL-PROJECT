@@ -407,7 +407,7 @@ const SignUpPage = () => {
       <div className="signup-content">
         {/* Header Section (Above the card) */}
         <div className="signup-header">
-          <img src={logo} alt="Fire Safety Inspection System Logo" className="signup-logo" />
+          <img src={logo} alt="Logo" className="signup-logo" />
           <h1 className="signup-title"><span className="signup-title-accent">Fire Safety</span> Inspection System</h1>
         </div>
 
