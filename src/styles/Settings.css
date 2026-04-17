@@ -225,7 +225,7 @@
   letter-spacing: 0.025em;
 }
 
-.form-group input {
+.form-group input:not([type="radio"]):not([type="checkbox"]) {
   background-color: var(--sidebar-bg-color, #0f172a);
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
   border-radius: 8px;
@@ -239,12 +239,12 @@
   box-sizing: border-box;
 }
 
-.form-group input:focus {
+.form-group input:not([type="radio"]):not([type="checkbox"]):focus {
   border-color: var(--accent-color, #3b82f6);
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
-.form-group input.disabled-input {
+.form-group input.disabled-input:not([type="radio"]):not([type="checkbox"]) {
   background-color: rgba(255, 255, 255, 0.03);
   cursor: not-allowed;
   color: #64748b;
@@ -390,13 +390,13 @@
   color: #0f172a;
 }
 
-:root.light-mode .form-group input {
+:root.light-mode .form-group input:not([type="radio"]):not([type="checkbox"]) {
   background-color: #f8fafc;
   border-color: #e2e8f0;
   color: #0f172a;
 }
 
-:root.light-mode .form-group input.disabled-input {
+:root.light-mode .form-group input.disabled-input:not([type="radio"]):not([type="checkbox"]) {
   background-color: #f1f5f9;
   color: #94a3b8;
 }
@@ -494,7 +494,7 @@
     font-size: 1.25rem;
   }
 
-  .form-group input, 
+  .form-group input:not([type="radio"]):not([type="checkbox"]), 
   .phone-input-wrapper {
     padding: 0.4rem 0.6rem;
     font-size: 0.85rem;
