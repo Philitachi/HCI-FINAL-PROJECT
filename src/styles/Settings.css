@@ -285,8 +285,8 @@
 }
 
 .phone-input-wrapper input {
-  border: none;
-  background: transparent;
+  border: none !important;
+  background: transparent !important;
   flex: 1;
   width: 100%;
   min-width: 0;
