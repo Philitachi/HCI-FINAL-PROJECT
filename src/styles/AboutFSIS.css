@@ -204,14 +204,16 @@
 }
 
 .yt-avatar {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
   border-radius: 50%;
-  background-color: transparent;
+  background-color: #fff;
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
 .yt-avatar img {
