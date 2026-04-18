@@ -5,6 +5,8 @@ import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import Pagination from '../components/Pagination';
 import EmptyState from '../components/EmptyState';
+import useDebugLoadingGate from '../hooks/useDebugLoadingGate';
+import { EstablishmentListSkeleton } from '../components/PageSkeletons';
 import { Plus, Building, Search, MapPin, Calendar, FileText, ChevronRight } from 'lucide-react';
 import '../styles/Establishment.css';
 import './Dashboard/dashboard.css';
@@ -15,6 +17,7 @@ const Establishment = () => {
   const [activeTopTab, setActiveTopTab] = useState('already-applied');
   const [allApps, setAllApps] = useState([]);
   const [loading, setLoading] = useState(true);
+  const showLoading = useDebugLoadingGate(loading);
 
   const filters = ['All', 'Residential', 'Commercial', 'Industrial', 'Institutional', 'Assembly', 'Educational'];
 
@@ -147,8 +150,8 @@ const Establishment = () => {
             </div>
           </div>
 
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading establishments...</div>
+          {showLoading ? (
+            <EstablishmentListSkeleton count={4} />
           ) : filteredEstablishments.length > 0 ? (
             <div className="establishment-list">
               {filteredEstablishments.map((est) => {

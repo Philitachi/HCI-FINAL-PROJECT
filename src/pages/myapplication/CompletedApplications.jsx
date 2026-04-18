@@ -7,6 +7,8 @@ import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import MyApplicationsNav from '../../components/MyApplicationsNav';
 import Pagination from '../../components/Pagination';
 import EmptyState from '../../components/EmptyState';
+import useDebugLoadingGate from '../../hooks/useDebugLoadingGate';
+import { ApplicationsListSkeleton } from '../../components/PageSkeletons';
 import './CompletedApplications.css';
 import '../Dashboard/dashboard.css';
 
@@ -16,6 +18,7 @@ const CompletedApplications = () => {
   const activeSubTab = filter || 'range';
   const [allApplications, setAllApplications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const showLoading = useDebugLoadingGate(loading);
 
   // Range date picker state
   const [dateFrom, setDateFrom] = useState('');
@@ -289,8 +292,8 @@ const CompletedApplications = () => {
             </div>
           </MyApplicationsNav>
 
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
+          {showLoading ? (
+            <ApplicationsListSkeleton count={4} />
           ) : currentApplications.length > 0 ? (
             <div className="applications-list">
               {currentApplications.map((app) => (

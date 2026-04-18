@@ -11,6 +11,10 @@ const Pagination = ({
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+
+  if (totalItems === 0) {
+    return null;
+  }
   
   // Safe page change handler
   const handlePageChange = (page) => {

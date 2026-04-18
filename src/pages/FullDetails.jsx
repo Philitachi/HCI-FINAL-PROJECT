@@ -5,6 +5,8 @@ import { db } from '../firebase';
 import { CheckCircle } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
+import { FullDetailsSkeleton } from '../components/PageSkeletons';
+import useDebugLoadingGate from '../hooks/useDebugLoadingGate';
 import '../styles/FullDetails.css';
 import '../styles/ConfirmModal.css';
 
@@ -14,6 +16,7 @@ const FullDetails = () => {
   const [activeTab, setActiveTab] = useState('application');
   const [appData, setAppData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const showLoading = useDebugLoadingGate(loading);
   const [cancelConfirm, setCancelConfirm] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [cancelSuccess, setCancelSuccess] = useState(null);
@@ -86,14 +89,14 @@ const FullDetails = () => {
     { id: 'other-attachments', label: 'Other Attachments' },
   ];
 
-  if (loading) {
+  if (showLoading) {
     return (
       <div className="dashboard-container">
         <TopNavigationBar2 />
         <div className="dashboard-body">
           <Sidebar />
           <main className="dashboard-main-content full-details-main">
-            <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary-color)' }}>Loading application details...</div>
+            <FullDetailsSkeleton />
           </main>
         </div>
       </div>

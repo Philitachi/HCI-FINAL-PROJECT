@@ -3,18 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import { doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from '../firebase';
-import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import '../styles/Settings.css';
 import './Dashboard/dashboard.css';
 import { persistUserSession } from '../utils/userSession';
+import useDebugLoadingGate, { DEBUG_SKELETON_STORAGE_KEY } from '../hooks/useDebugLoadingGate';
+import { SettingsSkeleton } from '../components/PageSkeletons';
+
+const SHOW_DEBUG_TOGGLE = import.meta.env.DEV;
 
 const Settings = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const showLoading = useDebugLoadingGate(loading);
   const [saving, setSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [debugSkeletonsEnabled, setDebugSkeletonsEnabled] = useState(() => {
+    if (!SHOW_DEBUG_TOGGLE || typeof window === 'undefined') {
+      return false;
+    }
+
+    return window.localStorage.getItem(DEBUG_SKELETON_STORAGE_KEY) !== 'off';
+  });
   const [fontPreference, setFontPreference] = useState(
     localStorage.getItem('fontFamily') || 'Outfit'
   );
@@ -263,6 +274,18 @@ const Settings = () => {
     setTimeout(() => setSuccessMessage(''), 3000);
   };
 
+  const handleDebugSkeletonToggle = () => {
+    const nextValue = !debugSkeletonsEnabled;
+    setDebugSkeletonsEnabled(nextValue);
+    window.localStorage.setItem(DEBUG_SKELETON_STORAGE_KEY, nextValue ? 'on' : 'off');
+    setSuccessMessage(
+      nextValue
+        ? 'Skeleton debug enabled. Refresh this page or open another data page to test it.'
+        : 'Skeleton debug disabled. Refresh this page or open another data page to confirm normal loading.',
+    );
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
+
   const handleDeleteProfilePicture = async () => {
     if (!window.confirm('Are you sure you want to remove your profile picture?')) return;
     
@@ -295,19 +318,13 @@ const Settings = () => {
     }
   };
 
-  if (loading) {
+  if (showLoading) {
     return (
-      <div className="dashboard-container">
+      <div className="dashboard-container settings-full-page">
         <TopNavigationBar2 hideHamburger={true} />
-        <div className="dashboard-body">
-          <Sidebar />
-          <main className="dashboard-main-content">
-            <div className="loading-container">
-              <div className="loader"></div>
-              <p>Loading settings...</p>
-            </div>
-          </main>
-        </div>
+        <main className="settings-main-container">
+          <SettingsSkeleton />
+        </main>
       </div>
     );
   }
@@ -615,6 +632,36 @@ const Settings = () => {
               </div>
               </div>
             </div>
+
+            {SHOW_DEBUG_TOGGLE && (
+              <div className="settings-card info-card settings-dev-card" style={{ marginTop: 0 }}>
+                <div className="settings-dev-header">
+                  <div>
+                    <h2 className="card-title">Developer Testing</h2>
+                    <p className="settings-dev-copy">
+                      Keep skeleton loaders visible longer while testing in local development.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className={`settings-debug-toggle ${debugSkeletonsEnabled ? 'active' : ''}`}
+                    onClick={handleDebugSkeletonToggle}
+                    aria-pressed={debugSkeletonsEnabled}
+                  >
+                    <span className="settings-debug-toggle-track">
+                      <span className="settings-debug-toggle-thumb" />
+                    </span>
+                    <span className="settings-debug-toggle-label">
+                      {debugSkeletonsEnabled ? 'On' : 'Off'}
+                    </span>
+                  </button>
+                </div>
+                <p className="settings-dev-hint">
+                  This is dev-only and will not appear on your deployed app. Refresh the current page, or open another
+                  loading page, after changing it.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </main>

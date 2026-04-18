@@ -6,6 +6,8 @@ import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import EmptyState from '../components/EmptyState';
 import Pagination from '../components/Pagination';
+import useDebugLoadingGate from '../hooks/useDebugLoadingGate';
+import { DraftListSkeleton } from '../components/PageSkeletons';
 import { Search, FileText, User, Building, MapPin, Calendar, Clock, XCircle, CheckCircle, Trash2 } from 'lucide-react';
 import '../styles/Drafts.css';
 import '../styles/ConfirmModal.css';
@@ -15,6 +17,7 @@ const Drafts = () => {
   const navigate = useNavigate();
   const [draftsList, setDraftsList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const showLoading = useDebugLoadingGate(loading);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [deleteSuccess, setDeleteSuccess] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -168,8 +171,8 @@ const Drafts = () => {
             const indexOfFirstItem = indexOfLastItem - itemsPerPage;
             const currentDrafts = filteredDrafts.slice(indexOfFirstItem, indexOfLastItem);
 
-            return loading ? (
-            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading drafts...</div>
+            return showLoading ? (
+            <DraftListSkeleton count={4} />
           ) : currentDrafts.length > 0 ? (
             <>
               <div className="drafts-list">

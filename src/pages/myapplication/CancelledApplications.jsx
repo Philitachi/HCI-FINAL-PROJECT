@@ -7,6 +7,8 @@ import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import MyApplicationsNav from '../../components/MyApplicationsNav';
 import Pagination from '../../components/Pagination';
 import EmptyState from '../../components/EmptyState';
+import useDebugLoadingGate from '../../hooks/useDebugLoadingGate';
+import { ApplicationsListSkeleton } from '../../components/PageSkeletons';
 import './CancelledApplications.css';
 import '../Dashboard/dashboard.css';
 
@@ -15,6 +17,7 @@ const CancelledApplications = () => {
   const [filter, setFilter] = useState('cancelled');
   const [allApps, setAllApps] = useState([]);
   const [loading, setLoading] = useState(true);
+  const showLoading = useDebugLoadingGate(loading);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -183,8 +186,8 @@ const CancelledApplications = () => {
             </div>
           </MyApplicationsNav>
 
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
+          {showLoading ? (
+            <ApplicationsListSkeleton count={4} showSecondaryAction={filter === 'cancelled'} />
           ) : currentApplications.length > 0 ? (
             <div className="applications-list">
               {currentApplications.map((app) => (

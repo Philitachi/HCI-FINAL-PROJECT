@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import Pagination from '../components/Pagination';
 import EmptyState from '../components/EmptyState';
+import { ApplicationsListSkeleton } from '../components/PageSkeletons';
 import useApplications from '../hooks/useApplications';
 import { Search, FileText } from 'lucide-react';
 import '../styles/Renewals.css';
@@ -50,7 +51,7 @@ const Renewals = () => {
           </div>
           
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading renewals...</div>
+            <ApplicationsListSkeleton count={4} showAction={false} />
           ) : currentRenewals.length > 0 ? (
             <div className="applications-list">
               {currentRenewals.map((app) => (

@@ -5,6 +5,7 @@ import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import MyApplicationsNav from '../../components/MyApplicationsNav';
 import Pagination from '../../components/Pagination';
 import EmptyState from '../../components/EmptyState';
+import { ApplicationsListSkeleton } from '../../components/PageSkeletons';
 import useApplications from '../../hooks/useApplications';
 import './OngoingApplications-pending.css';
 import '../Dashboard/dashboard.css';
@@ -101,7 +102,7 @@ const OngoingApplicationsPending = () => {
           </MyApplicationsNav>
 
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary-color)' }}>Loading applications...</div>
+            <ApplicationsListSkeleton count={4} />
           ) : currentApplications.length > 0 ? (
             <div className="applications-list">
               {currentApplications.map((app) => (

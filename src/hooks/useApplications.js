@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import useDebugLoadingGate from './useDebugLoadingGate';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 
@@ -10,6 +11,7 @@ import { db } from '../firebase';
 const useApplications = (statusFilter = null) => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const showLoading = useDebugLoadingGate(loading);
 
   useEffect(() => {
     const session = JSON.parse(localStorage.getItem('userSession') || '{}');
@@ -86,7 +88,7 @@ const useApplications = (statusFilter = null) => {
     return () => unsubscribe();
   }, [statusFilter]);
 
-  return { applications, loading };
+  return { applications, loading: showLoading };
 };
 
 export default useApplications;
