@@ -7,8 +7,13 @@ const GlobalLoader = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const handleOnline = () => setIsOffline(false);
-    const handleOffline = () => setIsOffline(true);
+    const handleOnline = () => {
+      setIsOffline(false);
+      setVisible(false);
+    };
+    const handleOffline = () => {
+      setIsOffline(true);
+    };
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
@@ -28,25 +33,43 @@ const GlobalLoader = () => {
       connection.addEventListener('change', checkSpeed);
     }
 
+    // Global click listener to intercept interaction during bad network
+    const handleGlobalClick = (e) => {
+      // Check if they clicked an interactive element natively
+      const interactive = e.target.closest('button, a, input[type="submit"], [role="button"], .custom-select-trigger');
+      if (interactive) {
+        const currentlyOffline = !navigator.onLine;
+        let currentlySlow = false;
+        
+        if (connection) {
+          currentlySlow = connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g' || connection.effectiveType === '3g';
+        }
+        
+        if (currentlyOffline || currentlySlow) {
+          setIsOffline(currentlyOffline);
+          setIsSlow(currentlySlow);
+          setVisible(true);
+          
+          // Auto-dismiss the loader after 3 seconds to let them continue
+          setTimeout(() => {
+            setVisible(false);
+          }, 3000);
+        }
+      }
+    };
+
+    // Use capture phase to ensure intercept regardless of click bubbling prevention
+    document.addEventListener('click', handleGlobalClick, true);
+
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
+      document.removeEventListener('click', handleGlobalClick, true);
       if (connection) {
         connection.removeEventListener('change', checkSpeed);
       }
     };
   }, []);
-
-  // Control visibility with a slight delay for smooth transitions
-  useEffect(() => {
-    if (isOffline || isSlow) {
-      setVisible(true);
-    } else {
-      // Brief delay before hiding to avoid flicker
-      const timeout = setTimeout(() => setVisible(false), 600);
-      return () => clearTimeout(timeout);
-    }
-  }, [isOffline, isSlow]);
 
   if (!visible) return null;
 
