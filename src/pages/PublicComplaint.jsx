@@ -229,6 +229,23 @@ const PublicComplaint = () => {
     // Reset or redirect
   };
 
+  const handleEnterToNext = (e) => {
+    if (e.key === 'Enter' && e.target.tagName.toLowerCase() === 'input') {
+      if (e.target.value.trim() !== '' && e.target.checkValidity()) {
+        e.preventDefault();
+        
+        const form = e.target.closest('form') || document.body;
+        const focusable = Array.from(form.querySelectorAll('input:not([type="hidden"]), button, textarea, [tabindex="0"]'))
+          .filter(el => !el.disabled && el.offsetParent !== null);
+          
+        const index = focusable.indexOf(e.target);
+        if (index > -1 && index + 1 < focusable.length) {
+          focusable[index + 1].focus();
+        }
+      }
+    }
+  };
+
   return (
     <div className="public-complaint-wrapper" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div className="public-complaint-body" style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
@@ -269,7 +286,7 @@ const PublicComplaint = () => {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} onKeyDown={handleEnterToNext}>
                 {/* STEP 1: COMPLAINANT INFORMATION */}
                 {step === 1 && (
                   <div className="step-content animate-fade-in">

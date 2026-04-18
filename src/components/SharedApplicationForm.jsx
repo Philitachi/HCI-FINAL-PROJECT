@@ -467,9 +467,25 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
 
     setStep(step + 1);
   };
+  const handleEnterToNext = (e) => {
+    if (e.key === 'Enter' && e.target.tagName.toLowerCase() === 'input') {
+      if (e.target.value.trim() !== '' && e.target.checkValidity()) {
+        e.preventDefault();
+        
+        const form = e.target.closest('.new-app-card') || document.body;
+        const focusable = Array.from(form.querySelectorAll('input:not([type="hidden"]), button, textarea, [tabindex="0"]'))
+          .filter(el => !el.disabled && el.offsetParent !== null);
+          
+        const index = focusable.indexOf(e.target);
+        if (index > -1 && index + 1 < focusable.length) {
+          focusable[index + 1].focus();
+        }
+      }
+    }
+  };
 
   return (
-    <div className="new-app-card">
+    <div className="new-app-card" onKeyDown={handleEnterToNext}>
       {/* Progress Wizard */}
       <div className="new-app-steps">
         <div className={`app-step-indicator ${step >= 1 ? 'active' : ''} ${step > 1 ? 'completed' : ''}`}>

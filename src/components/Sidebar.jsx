@@ -195,7 +195,19 @@ const Sidebar = () => {
         ref={sidebarRef}
         onScroll={handleScroll}
       >
-      <div className="sidebar-header" onClick={() => setIsCollapsed(!isCollapsed)}>
+      <div 
+        className="sidebar-header" 
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsCollapsed(!isCollapsed);
+          }
+        }}
+        tabIndex={0}
+        role="button"
+        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
         <Menu size={24} strokeWidth={2} className="toggle-sidebar-icon" />
       </div>
       <nav className="sidebar-nav">
@@ -216,6 +228,16 @@ const Sidebar = () => {
                     <div 
                       className={`sidebar-link ${location.pathname.startsWith(item.path) ? 'active' : ''} ${openMenus[item.name] ? 'open' : ''} ${location.pathname.startsWith(item.path) && shouldAnimate ? 'animate' : ''}`}
                       onClick={(e) => toggleMenu(item.name, e)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          toggleMenu(item.name, e);
+                        }
+                      }}
+                      tabIndex={0}
+                      role="button"
+                      aria-expanded={openMenus[item.name]}
+                      aria-haspopup="true"
                       style={{ cursor: 'pointer' }}
                       title={isCollapsed ? item.name : ''}
                     >
@@ -247,6 +269,7 @@ const Sidebar = () => {
                     to={item.path}
                     className={`sidebar-link ${location.pathname === item.path || location.pathname.startsWith(item.path + '/') ? 'active' : ''} ${(location.pathname === item.path || location.pathname.startsWith(item.path + '/')) && shouldAnimate ? 'animate' : ''}`}
                     title={isCollapsed ? item.name : ''}
+                    aria-label={item.name}
                   >
                     <span className="sidebar-icon" style={{ color: item.iconColor }}>{item.icon}</span>
                     <span className="sidebar-text">{item.name}</span>
