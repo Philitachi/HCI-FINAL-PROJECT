@@ -30,9 +30,17 @@ const SignInPage = () => {
     setIsLoading(true);
 
     try {
+      if (typeof navigator !== 'undefined' && !navigator.onLine) {
+        setError('You appear to be offline. Reconnect to the internet and try signing in again.');
+        setIsLoading(false);
+        return;
+      }
+
+      const normalizedEmail = email.trim();
+
       // 1. Query Firestore for the user with this email
       const usersRef = collection(db, 'users');
-      const q = query(usersRef, where('email', '==', email));
+      const q = query(usersRef, where('email', '==', normalizedEmail));
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
@@ -93,7 +101,18 @@ const SignInPage = () => {
       }
     } catch (error) {
       console.error('Sign-in error:', error);
-      setError('An error occurred during sign-in. Please try again.');
+
+      const isConnectivityIssue =
+        (typeof navigator !== 'undefined' && !navigator.onLine) ||
+        ['network-request-failed', 'unavailable', 'deadline-exceeded'].some((code) =>
+          error?.code?.includes(code),
+        );
+
+      setError(
+        isConnectivityIssue
+          ? 'The connection looks weak right now. Please check your internet and try signing in again.'
+          : 'An error occurred during sign-in. Please try again.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -119,7 +138,7 @@ const SignInPage = () => {
 
           <form className="signin-form" onSubmit={handleSignIn}>
             {error && (
-              <div className="form-top-error">{error}</div>
+              <div className="form-top-error" role="alert">{error}</div>
             )}
 
             {/* Email Input */}
@@ -164,7 +183,7 @@ const SignInPage = () => {
               </button>
             </div>
 
-            <button type="submit" className="signin-btn-submit" disabled={isLoading}>
+            <button type="submit" className="signin-btn-submit" disabled={isLoading} aria-busy={isLoading}>
               {isLoading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>

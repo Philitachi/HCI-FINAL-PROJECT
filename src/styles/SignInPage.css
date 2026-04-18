@@ -100,6 +100,17 @@
   gap: 1.25rem;
 }
 
+.form-top-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
 /* Unified input wrapper — icon + input share one visual field */
 .input-wrapper {
   display: flex;
@@ -214,12 +225,23 @@
   font-family: inherit;
 }
 
-.btn-submit:hover {
+.signin-btn-submit:hover {
   background-color: #238531;
 }
 
-.btn-submit:active {
+.signin-btn-submit:active {
   transform: scale(0.98);
+}
+
+.signin-btn-submit:disabled {
+  background-color: #1f7f2f;
+  cursor: wait;
+  opacity: 0.82;
+}
+
+.signin-btn-submit:focus-visible {
+  outline: 2px solid rgba(43, 160, 60, 0.45);
+  outline-offset: 3px;
 }
 
 /* Footer / Links Styles */
@@ -342,6 +364,12 @@
 
 :root.light-mode .signup-prompt {
   color: #6B7280;
+}
+
+:root.light-mode .form-top-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+  color: #EF4444;
 }
 
 :root.light-mode .signin-form .form-input:focus,
