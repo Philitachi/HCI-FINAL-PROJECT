@@ -7,6 +7,7 @@ import TopNavigationBar2 from '../../components/TopNavigationBar2';
 import { FolderPlus, FileText, FileCheck, Building, Archive, Check, Save, XCircle, Trash2, AlertCircle, ChevronUp, ChevronDown } from 'lucide-react';
 import './dashboard.css';
 import { persistUserSession } from '../../utils/userSession';
+import { formatRelativeDateTime } from '../../utils/time';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -30,8 +31,13 @@ const Dashboard = () => {
   });
   const [recentActivity, setRecentActivity] = useState([]);
   const [visibleCount, setVisibleCount] = useState(5);
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
 
   useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 60000);
+
     const isDarkMode = localStorage.getItem('theme') !== 'light';
     if (isDarkMode) {
       document.documentElement.classList.remove('light-mode');
@@ -134,26 +140,12 @@ const Dashboard = () => {
         unsubscribeActivity = onSnapshot(logsQuery, (snapshot) => {
           const logs = snapshot.docs.map(docSnap => {
             const data = docSnap.data();
-            let timeAgo = '';
-            if (data.timestamp) {
-              const date = data.timestamp.toDate();
-              const now = new Date();
-              const diffMs = now - date;
-              const diffMins = Math.floor(diffMs / 60000);
-              const diffHrs = Math.floor(diffMs / 3600000);
-              const diffDays = Math.floor(diffMs / 86400000);
-              if (diffMins < 1) timeAgo = 'Just now';
-              else if (diffMins < 60) timeAgo = `${diffMins}m ago`;
-              else if (diffHrs < 24) timeAgo = `${diffHrs}h ago`;
-              else if (diffDays < 7) timeAgo = `${diffDays}d ago`;
-              else timeAgo = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-            }
             return {
               id: docSnap.id,
               action: data.action || '',
               referenceNumber: data.referenceNumber || '---',
               establishmentName: data.establishmentName || '---',
-              timeAgo: timeAgo
+              timestamp: data.timestamp || null
             };
           });
           setRecentActivity(logs);
@@ -162,6 +154,7 @@ const Dashboard = () => {
     }
 
     return () => {
+      window.clearInterval(intervalId);
       if (unsubscribeMetrics) unsubscribeMetrics();
       if (unsubscribeActivity) unsubscribeActivity();
     };
@@ -263,7 +256,7 @@ const Dashboard = () => {
                           {log.referenceNumber} &bull; {log.establishmentName}
                         </span>
                       </div>
-                      <span className="activity-time">{log.timeAgo}</span>
+                      <span className="activity-time">{formatRelativeDateTime(log.timestamp, currentTime)}</span>
                     </div>
                   );
                 })}

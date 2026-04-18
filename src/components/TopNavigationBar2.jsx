@@ -7,6 +7,77 @@ import './TopNavigationBar2.css';
 import { Menu, Sun, Moon, Bell, ChevronDown, Settings, LogOut } from 'lucide-react';
 import '../styles/ConfirmModal.css';
 import { clearUserSession, persistUserSession } from '../utils/userSession';
+import { formatRelativeDateTime, toTimestampMs } from '../utils/time';
+
+const VALID_NOTIFICATION_STATUSES = ['completeness check', 'assessment', 'pending review', 'declined', 'approved'];
+
+const normalizeStatusKey = (status = '') => status.toLowerCase().trim().replace(/\s+/g, '-');
+
+const getNotificationTimestamp = (application) =>
+  toTimestampMs(application.updatedAt) ||
+  toTimestampMs(application.createdAt) ||
+  Date.now();
+
+const normalizeStoredNotification = (notification) => {
+  const notifDate = toTimestampMs(notification?.notifDate);
+
+  if (notifDate === null || !notification) {
+    return null;
+  }
+
+  const statusKey = normalizeStatusKey(notification.status);
+  const stableId = notification.appId
+    ? `${notification.appId}_${statusKey}_${notifDate}`
+    : notification.id || `notif_${notifDate}`;
+
+  return {
+    ...notification,
+    id: stableId,
+    notifDate,
+    isRead: Boolean(notification.isRead),
+  };
+};
+
+const buildNotification = (application, options = {}) => {
+  const notifDate = options.notifDate || getNotificationTimestamp(application);
+  const statusKey = normalizeStatusKey(application.status);
+
+  return {
+    id: `${application.id}_${statusKey}_${notifDate}`,
+    appId: application.id,
+    status: application.status,
+    establishmentName: application.establishmentName,
+    referenceNumber: application.referenceNumber,
+    notifDate,
+    isRead: Boolean(options.isRead),
+  };
+};
+
+const mergeNotifications = (existingNotifications = [], incomingNotifications = []) => {
+  const merged = new Map();
+
+  [...existingNotifications, ...incomingNotifications].forEach((notification) => {
+    const normalized = normalizeStoredNotification(notification);
+
+    if (!normalized || !normalized.id) {
+      return;
+    }
+
+    const previous = merged.get(normalized.id);
+
+    merged.set(normalized.id, previous
+      ? {
+          ...previous,
+          ...normalized,
+          isRead: previous.isRead && normalized.isRead,
+        }
+      : normalized);
+  });
+
+  return Array.from(merged.values())
+    .sort((a, b) => b.notifDate - a.notifDate)
+    .slice(0, 50);
+};
 
 const TopNavigationBar2 = ({ hideHamburger = false }) => {
   const navigate = useNavigate();
@@ -32,9 +103,23 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
   const [notifOpen, setNotifOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [visibleNotifsCount, setVisibleNotifsCount] = useState(10);
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
   
   const notifRef = useRef(null);
   const userMenuRef = useRef(null);
+  const notificationsRef = useRef([]);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 60000);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    notificationsRef.current = notifications;
+  }, [notifications]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -131,8 +216,11 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
           const savedNotifs = JSON.parse(localStorage.getItem(notifsKey) || '[]');
           const savedCount = parseInt(localStorage.getItem(countKey) || '0', 10);
           const savedStatuses = JSON.parse(localStorage.getItem(statusKey) || '{}');
-          
-          setNotifications(savedNotifs);
+
+          const storedNotifications = mergeNotifications(savedNotifs);
+
+          notificationsRef.current = storedNotifications;
+          setNotifications(storedNotifications);
           setUnreadCount(savedCount);
           previousStatuses.current = savedStatuses;
         } catch (e) {
@@ -145,9 +233,12 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
         let isFirstSnapshot = Object.keys(previousStatuses.current).length === 0;
 
         unsubscribeNotifs = onSnapshot(q, (snapshot) => {
-          const validStatuses = ['completeness check', 'assessment', 'pending review', 'declined', 'approved'];
-          const currentApps = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          
+          const currentApps = snapshot.docs.map(doc => ({
+            id: doc.id,
+            hasPendingWrites: doc.metadata.hasPendingWrites,
+            ...doc.data(),
+          }));
+
           const newNotifs = [];
           const currentStatusMap = { ...previousStatuses.current };
           let changed = false;
@@ -156,37 +247,22 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
             const appId = app.id;
             const currentStatus = (app.status || '').toLowerCase().trim();
             const prevStatus = previousStatuses.current[appId];
+            const hasExistingStatusNotification = notificationsRef.current.some(notification =>
+              notification.appId === appId && normalizeStatusKey(notification.status) === normalizeStatusKey(app.status)
+            );
 
             if (isFirstSnapshot) {
-              // On first load with empty cache, generate notifications from existing data
-              if (validStatuses.includes(currentStatus)) {
-                let notifDate = Date.now();
-                if (app.updatedAt && app.updatedAt.toDate) {
-                  notifDate = app.updatedAt.toDate().getTime();
-                } else if (app.createdAt && app.createdAt.toDate) {
-                  notifDate = app.createdAt.toDate().getTime();
-                }
-                newNotifs.push({
-                  id: appId + '_' + notifDate,
-                  appId: appId,
-                  status: app.status,
-                  establishmentName: app.establishmentName,
-                  referenceNumber: app.referenceNumber,
-                  notifDate: notifDate,
-                  isRead: true // Mark initial ones as read
-                });
+              // Seed current statuses only when they do not already exist in the saved history.
+              if (VALID_NOTIFICATION_STATUSES.includes(currentStatus) && !hasExistingStatusNotification) {
+                newNotifs.push(buildNotification(app, {
+                  isRead: true,
+                  notifDate: app.hasPendingWrites ? Date.now() : undefined,
+                }));
               }
             } else {
-              // On subsequent snapshots, only create a notification if status actually changed
-              if (prevStatus && currentStatus !== prevStatus && validStatuses.includes(currentStatus)) {
-                newNotifs.push({
-                  id: appId + '_' + Date.now(),
-                  appId: appId,
-                  status: app.status,
-                  establishmentName: app.establishmentName,
-                  referenceNumber: app.referenceNumber,
-                  notifDate: Date.now()
-                });
+              // Status changes should create a fresh notification entry at the top.
+              if (prevStatus && currentStatus !== prevStatus && VALID_NOTIFICATION_STATUSES.includes(currentStatus)) {
+                newNotifs.push(buildNotification(app, { notifDate: Date.now() }));
               }
             }
             
@@ -205,22 +281,12 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
           }
 
           if (newNotifs.length > 0) {
-            if (isFirstSnapshot) {
-              // On first load, replace saved notifications with fresh data
-              const sorted = newNotifs
-                .sort((a, b) => b.notifDate - a.notifDate)
-                .slice(0, 50);
-              setNotifications(sorted);
-              localStorage.setItem(notifsKey, JSON.stringify(sorted));
-              // Don't bump unread for initial historical load
-            } else {
-              setNotifications(prev => {
-                const updated = [...newNotifs, ...prev]
-                  .sort((a, b) => b.notifDate - a.notifDate)
-                  .slice(0, 50);
-                localStorage.setItem(notifsKey, JSON.stringify(updated));
-                return updated;
-              });
+            const updated = mergeNotifications(notificationsRef.current, newNotifs);
+            notificationsRef.current = updated;
+            setNotifications(updated);
+            localStorage.setItem(notifsKey, JSON.stringify(updated));
+
+            if (!isFirstSnapshot) {
               setUnreadCount(prev => {
                 const newCount = prev + newNotifs.length;
                 localStorage.setItem(countKey, newCount.toString());
@@ -266,6 +332,7 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
     const updatedNotifs = notifications.map(n => 
       n.id === notif.id ? { ...n, isRead: true } : n
     );
+    notificationsRef.current = updatedNotifs;
     setNotifications(updatedNotifs);
     
     // Save to localStorage
@@ -365,7 +432,7 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
                           <div className="notif-title">
                             <span className="notif-status">{(notif.status || '').toUpperCase()}</span>
                             <span className="notif-time">
-                              {notif.notifDate ? new Date(notif.notifDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                              {formatRelativeDateTime(notif.notifDate, currentTime)}
                             </span>
                           </div>
                           <p className="notif-establishment">{notif.establishmentName}</p>
