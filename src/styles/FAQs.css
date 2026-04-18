@@ -376,9 +376,39 @@
 
 /* Media Queries */
 @media (max-width: 768px) {
+  .modern-contact-form-container {
+    margin-top: 1.5rem;
+  }
+
+  .contact-form-header {
+    padding: 1.25rem 0.75rem;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .contact-form-body {
+    padding: 1.25rem 0.75rem;
+    gap: 1.25rem;
+  }
+
+  .contact-success-state {
+    padding: 2rem 0.75rem;
+  }
+
   .form-row {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
+
+  .form-submit-row {
+    margin-top: 0;
+  }
+
+  .submit-contact-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
   .faq-answer-text {
     padding-left: 1.75rem; /* Remove indent on mobile where icons might stack or spacing is tight */
   }

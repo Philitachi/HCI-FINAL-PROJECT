@@ -77,7 +77,7 @@
 
 .type-filter-wrapper {
   position: relative;
-  z-index: 100;
+  z-index: 1;
 }
 
 .type-filter-menu {
@@ -89,7 +89,7 @@
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
   border-radius: 10px;
   box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
+  z-index: 10;
   overflow-y: auto;
   max-height: 250px;
   padding: 0.5rem;
