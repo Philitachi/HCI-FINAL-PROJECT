@@ -1,12 +1,6 @@
 /* MyApplicationsNav.css */
 .applications-tabs-container {
   padding-bottom: 0.1rem;
-  position: sticky;
-  top: 70px;
-  z-index: 40;
-  background-color: var(--dashboard-bg-color, #111827);
-  margin-top: -2.5rem;
-  padding-top: 2.5rem;
 }
 
 :root.light-mode .applications-tabs-container {
@@ -240,9 +234,7 @@ html:not(.light-mode) .segment-btn.active {
 /* ========== MOBILE RESPONSIVE ========== */
 @media (max-width: 768px) {
   .applications-tabs-container {
-    top: 60px;
-    margin-top: -1.5rem;
-    padding-top: 1.5rem;
+    padding-bottom: 0.1rem;
   }
 
   .main-tabs {

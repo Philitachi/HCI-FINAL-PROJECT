@@ -12,6 +12,45 @@ import { ApplicationsListSkeleton } from '../../components/PageSkeletons';
 import './CompletedApplications.css';
 import '../Dashboard/dashboard.css';
 
+const toComparableDate = (value) => {
+  if (!value) {
+    return null;
+  }
+
+  if (typeof value.toDate === 'function') {
+    return value.toDate();
+  }
+
+  return value instanceof Date ? value : null;
+};
+
+const getCompletedReferenceDate = (data) => (
+  toComparableDate(data.updatedAt) || toComparableDate(data.createdAt)
+);
+
+const getStartOfDay = (date) => {
+  const result = new Date(date);
+  result.setHours(0, 0, 0, 0);
+  return result;
+};
+
+const getDaysAgo = (date, days) => {
+  const result = getStartOfDay(date);
+  result.setDate(result.getDate() - days);
+  return result;
+};
+
+const getMonthsAgo = (date, months) => {
+  const result = getStartOfDay(date);
+  const dayOfMonth = result.getDate();
+  result.setDate(1);
+  result.setMonth(result.getMonth() - months);
+
+  const lastDayOfTargetMonth = new Date(result.getFullYear(), result.getMonth() + 1, 0).getDate();
+  result.setDate(Math.min(dayOfMonth, lastDayOfTargetMonth));
+  return result;
+};
+
 const CompletedApplications = () => {
   const navigate = useNavigate();
   const { filter } = useParams();
@@ -59,14 +98,15 @@ const CompletedApplications = () => {
       const apps = snapshot.docs
         .map(doc => {
           const data = doc.data();
+          const referenceDate = getCompletedReferenceDate(data);
           let dateStr = '';
           let timeStr = '';
-          let createdDate = null;
-          if (data.createdAt) {
-            createdDate = data.createdAt.toDate();
-            dateStr = createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
-            timeStr = createdDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+          if (referenceDate) {
+            dateStr = referenceDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+            timeStr = referenceDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
           }
+
           const locationParts = [data.fireStation, data.barangay, data.city].filter(Boolean);
           const location = locationParts.join(', ') || data.address || '---';
 
@@ -80,14 +120,14 @@ const CompletedApplications = () => {
             status: data.status || '',
             refNo: data.referenceNumber || '---',
             occupancyType: data.occupancyType || '---',
-            createdDate: createdDate,
+            referenceDate,
             rawData: data
           };
         })
         .filter(app => app.status.trim().toLowerCase() === 'completed')
         .sort((a, b) => {
-          const dateA = a.createdDate || new Date(0);
-          const dateB = b.createdDate || new Date(0);
+          const dateA = a.referenceDate || new Date(0);
+          const dateB = b.referenceDate || new Date(0);
           return dateB - dateA;
         });
 
@@ -109,37 +149,37 @@ const CompletedApplications = () => {
       case 'month': {
         // This month
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-        return allApplications.filter(app => app.createdDate && app.createdDate >= startOfMonth);
+        return allApplications.filter(app => app.referenceDate && app.referenceDate >= startOfMonth);
       }
       case 'lastmonth': {
         // Last month
         const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
         const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
-        return allApplications.filter(app => app.createdDate && app.createdDate >= startOfLastMonth && app.createdDate <= endOfLastMonth);
+        return allApplications.filter(app => app.referenceDate && app.referenceDate >= startOfLastMonth && app.referenceDate <= endOfLastMonth);
       }
       case 'year': {
         // This year
         const startOfYear = new Date(now.getFullYear(), 0, 1);
-        return allApplications.filter(app => app.createdDate && app.createdDate >= startOfYear);
+        return allApplications.filter(app => app.referenceDate && app.referenceDate >= startOfYear);
       }
       case '30days': {
-        const thirtyDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30, 0, 0, 0, 0);
-        return allApplications.filter(app => app.createdDate && app.createdDate >= thirtyDaysAgo);
+        const thirtyDaysAgo = getDaysAgo(now, 30);
+        return allApplications.filter(app => app.referenceDate && app.referenceDate >= thirtyDaysAgo);
       }
       case '90days': {
-        const ninetyDaysAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 90, 0, 0, 0, 0);
-        return allApplications.filter(app => app.createdDate && app.createdDate >= ninetyDaysAgo);
+        const ninetyDaysAgo = getDaysAgo(now, 90);
+        return allApplications.filter(app => app.referenceDate && app.referenceDate >= ninetyDaysAgo);
       }
       case '6months': {
-        const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate(), 0, 0, 0, 0);
-        return allApplications.filter(app => app.createdDate && app.createdDate >= sixMonthsAgo);
+        const sixMonthsAgo = getMonthsAgo(now, 6);
+        return allApplications.filter(app => app.referenceDate && app.referenceDate >= sixMonthsAgo);
       }
       case 'range': {
         // Custom date range
         if (!dateFrom && !dateTo) return allApplications;
         return allApplications.filter(app => {
-          if (!app.createdDate) return false;
-          const appDate = app.createdDate;
+          if (!app.referenceDate) return false;
+          const appDate = app.referenceDate;
           
           if (dateFrom) {
             const [y, m, d] = dateFrom.split('-').map(Number);
