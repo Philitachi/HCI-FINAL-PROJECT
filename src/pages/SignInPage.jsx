@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import emailjs from '@emailjs/browser';
@@ -17,12 +17,11 @@ const SignInPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const existingSession = getUserSession();
 
-  useEffect(() => {
-    if (getUserSession()) {
-      navigate('/dashboard', { replace: true });
-    }
-  }, [navigate]);
+  if (existingSession) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleSignIn = async (e) => {
     e.preventDefault();
