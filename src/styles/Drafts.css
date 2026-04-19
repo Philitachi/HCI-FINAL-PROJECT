@@ -350,15 +350,16 @@
     padding-left: 0;
     width: 100%;
     min-width: unset;
-    flex-direction: row;
+    flex-direction: column;
     margin-top: 0.5rem;
   }
 
   .btn-draft-continue,
   .btn-draft-delete {
+    width: 100%;
     font-size: 0.8rem;
-    padding: 0.5rem 1rem;
-    flex: 1;
+    padding: 0.6rem 1rem;
+    flex: none;
     justify-content: center;
   }
 }
