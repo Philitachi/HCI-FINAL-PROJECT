@@ -411,21 +411,137 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .full-details-main {
+    width: 100%;
+    max-width: none;
+    padding: 1.5rem 1rem;
+    gap: 1rem;
+  }
+
+  .fd-header-card,
+  .fd-content-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.25rem 0.75rem;
+    border-radius: 12px;
+  }
+
   .fd-header-card {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 1rem;
   }
+
+  .fd-header-left {
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .fd-header-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .fd-header-titles h1 {
+    font-size: 1.15rem;
+  }
+
+  .fd-header-titles p {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .fd-header-right {
+    display: flex;
+  }
+
+  .fd-status-badge {
+    max-width: 100%;
+    justify-content: center;
+    padding: 0.45rem 0.9rem;
+  }
+
+  .fd-ref-header {
+    margin-bottom: 1.5rem;
+    padding: 0 0.25rem;
+  }
+
+  .fd-ref-header h2 {
+    font-size: 1.15rem;
+    overflow-wrap: anywhere;
+  }
+
+  .fd-tabs-container {
+    margin-bottom: 1.5rem;
+  }
+
+  .fd-tab-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
+  }
+
   .fd-grid-2 {
     grid-template-columns: 1fr;
-  }
-  .fd-footer-action {
-    flex-direction: column;
-    align-items: flex-start;
     gap: 1rem;
   }
+
+  .fd-col-span-2 {
+    grid-column: span 1;
+  }
+
+  .fd-section {
+    padding: 1.25rem 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+  }
+
+  .fd-section-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.85rem;
+  }
+
+  .fd-section-header h3 {
+    font-size: 1rem;
+  }
+
+  .fd-section-header p {
+    line-height: 1.45;
+  }
+
+  .fd-field label {
+    font-size: 0.78rem;
+  }
+
+  .fd-input-mock {
+    min-height: 40px;
+    padding: 0.7rem 0.85rem;
+  }
+
+  .fd-footer-action {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .fd-footer-buttons {
+    width: 100%;
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .fd-btn-back,
+  .fd-btn-delete {
+    width: 100%;
+    justify-content: center;
+  }
+
   .fd-app-status-row {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .fd-empty-tab {
+    padding: 2.5rem 0.75rem;
   }
 }
