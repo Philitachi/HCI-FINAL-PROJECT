@@ -397,6 +397,11 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .signup-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
   .signup-card {
     padding: 2rem;
   }
