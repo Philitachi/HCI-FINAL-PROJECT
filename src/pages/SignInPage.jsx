@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 import { doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import emailjs from '@emailjs/browser';
 import '../styles/SignInPage.css';
 import logo from '../assets/Logo.svg';
+import ExitButton from '../components/exitButton';
 import { hashPassword } from '../utils/crypto';
 import { getUserSession, persistUserSession } from '../utils/userSession';
 import { User, Lock, Eye, EyeOff } from 'lucide-react';
@@ -17,6 +19,7 @@ const SignInPage = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const existingSession = getUserSession();
+  const isNativeApp = Capacitor.isNativePlatform();
 
   if (existingSession) {
     return <Navigate to="/dashboard" replace />;
@@ -127,6 +130,8 @@ const SignInPage = () => {
         </div>
 
         <div className="signin-card">
+          {!isNativeApp && <ExitButton to="/" />}
+
           <h2 className="card-title">Welcome Back</h2>
           <p className="card-subtitle">
             Enter your credentials to access your<br />dashboard

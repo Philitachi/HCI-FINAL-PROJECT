@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, updateDoc, collection, query, where, getDocs, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import emailjs from '@emailjs/browser';
 import '../styles/SignUpPage.css';
 import logo from '../assets/Logo.svg';
+import ExitButton from '../components/exitButton';
 import { hashPassword, generateSalt } from '../utils/crypto';
 
 const SIGNUP_DRAFT_STORAGE_KEY = 'signup-form-draft';
@@ -13,6 +15,7 @@ const SIGNUP_DRAFT_SESSION_KEY = 'signup-form-session-active';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const isNativeApp = Capacitor.isNativePlatform();
 
   const clearSignupDraft = () => {
     localStorage.removeItem(SIGNUP_DRAFT_STORAGE_KEY);
@@ -412,6 +415,8 @@ const SignUpPage = () => {
 
         {/* Signup Card */}
         <div className="signup-card">
+          {!isNativeApp && <ExitButton to="/" />}
+
           <h2 className="card-title-left">Create Account</h2>
           <p className="card-subtitle-left">
             Please complete the registration form
