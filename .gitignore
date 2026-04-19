@@ -14,10 +14,25 @@ dist-ssr
 
 # Local Android build toolchain and generated Android outputs
 .android-build-tools/
+.android-sdk-local/
+.jdk-21-local/
+android-build-tools/
+android-sdk-local/
+jdk-21-local/
+.gradle/
 android/.gradle/
 android/local.properties
+android/key.properties
 android/build/
 android/app/build/
+android/**/build/
+android/**/.gradle/
+android/**/.cxx/
+android/**/.externalNativeBuild/
+android/captures/
+android/**/*.iml
+*.jks
+*.keystore
 
 # Editor directories and files
 .vscode/*
