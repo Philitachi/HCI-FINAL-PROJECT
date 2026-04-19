@@ -103,6 +103,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .draft-icon-container {
@@ -123,6 +124,8 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 
 .draft-title {
@@ -131,6 +134,11 @@
   margin: 0;
   color: var(--text-primary-color, white);
   letter-spacing: -0.2px;
+  min-width: 0;
+  max-width: 100%;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* Slate colored draft badge instead of blue */
@@ -151,6 +159,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  min-width: 0;
 }
 
 .draft-detail-text {
@@ -159,6 +168,9 @@
   gap: 0.6rem;
   font-size: 0.95rem;
   color: var(--text-secondary-color, #9ca3af);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .detail-icon {
@@ -174,6 +186,7 @@
   align-items: center;
   gap: 2rem;
   margin-top: 0.25rem;
+  min-width: 0;
 }
 
 .draft-date-time,
@@ -184,6 +197,9 @@
   font-size: 0.9rem;
   color: var(--text-secondary-color, #9ca3af);
   font-weight: 500;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* Action Button */
