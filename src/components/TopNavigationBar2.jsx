@@ -394,12 +394,17 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
             <Menu size={22} strokeWidth={2} />
           </button>
         )}
-        <div className="topnav2-brand">
+        <button
+          type="button"
+          className="topnav2-brand"
+          aria-label="Go to dashboard"
+          onClick={() => navigate('/dashboard')}
+        >
           <img src={logo} alt="Logo" className="topnav2-logo" />
           <span className="topnav2-title">
             <span className="topnav2-title-accent">Fire Safety</span> Inspection System
           </span>
-        </div>
+        </button>
       </div>
       <div className="topnav2-right">
         <button className="topnav2-theme-toggle" aria-label="Toggle dark mode" onClick={() => setIsDarkMode(!isDarkMode)}>

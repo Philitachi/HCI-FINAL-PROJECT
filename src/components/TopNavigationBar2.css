@@ -16,6 +16,19 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  text-align: left;
+}
+
+.topnav2-brand:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 4px;
+  border-radius: 8px;
 }
 
 .topnav2-logo {
