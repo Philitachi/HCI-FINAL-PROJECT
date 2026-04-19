@@ -255,6 +255,12 @@
   box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
 }
 
+.custom-select-trigger:focus-visible {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
+}
+
 .custom-select-trigger.error {
   border-color: #ef4444;
 }
@@ -316,7 +322,8 @@
   transition: background-color 0.15s, color 0.15s;
 }
 
-.custom-option:hover {
+.custom-option:hover,
+.custom-option.active {
   background-color: rgba(56, 189, 248, 0.1);
   color: #38bdf8;
 }
@@ -613,7 +620,8 @@
 :root.light-mode .custom-option {
   color: #475569;
 }
-:root.light-mode .custom-option:hover {
+:root.light-mode .custom-option:hover,
+:root.light-mode .custom-option.active {
   background-color: #f0f9ff;
   color: #0284c7;
 }

@@ -15,7 +15,71 @@ import barangaysData from '../data/barangays.json';
 
 export const CustomSelect = ({ name, value, options, onChange, placeholder, disabled, error }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const ref = useRef(null);
+  const listboxId = `${name}-select-listbox`;
+  const activeOptionId = isOpen && options[activeIndex] ? `${listboxId}-${activeIndex}` : undefined;
+
+  const getInitialActiveIndex = () => {
+    const selectedIndex = options.findIndex((opt) => opt === value);
+    return selectedIndex >= 0 ? selectedIndex : 0;
+  };
+
+  const openOptions = () => {
+    if (disabled || options.length === 0) return;
+    setActiveIndex(getInitialActiveIndex());
+    setIsOpen(true);
+  };
+
+  const selectOption = (opt) => {
+    onChange({ target: { name, value: opt, type: 'select' } });
+    setIsOpen(false);
+  };
+
+  const handleTriggerKeyDown = (e) => {
+    if (disabled) return;
+
+    if (['Enter', ' ', 'ArrowDown', 'ArrowUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (options.length === 0) {
+      setIsOpen(false);
+      return;
+    }
+
+    if (e.key === 'Escape') {
+      setIsOpen(false);
+      return;
+    }
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      if (isOpen && options[activeIndex]) {
+        selectOption(options[activeIndex]);
+      } else {
+        openOptions();
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowDown') {
+      if (!isOpen) {
+        openOptions();
+        return;
+      }
+      setActiveIndex((current) => (current + 1) % options.length);
+      return;
+    }
+
+    if (e.key === 'ArrowUp') {
+      if (!isOpen) {
+        openOptions();
+        return;
+      }
+      setActiveIndex((current) => (current - 1 + options.length) % options.length);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -25,26 +89,42 @@ export const CustomSelect = ({ name, value, options, onChange, placeholder, disa
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!isOpen || !activeOptionId) return;
+    document.getElementById(activeOptionId)?.scrollIntoView({ block: 'nearest' });
+  }, [activeOptionId, isOpen]);
+
   return (
     <div className="custom-select-container" ref={ref}>
       <div
         className={`custom-select-trigger ${disabled ? 'disabled' : ''} ${error ? 'error' : ''} ${isOpen ? 'open' : ''}`}
-        onClick={() => !disabled && setIsOpen(!isOpen)}
+        role="combobox"
+        tabIndex={disabled ? -1 : 0}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-controls={isOpen ? listboxId : undefined}
+        aria-activedescendant={activeOptionId}
+        aria-disabled={disabled}
+        aria-invalid={Boolean(error)}
+        aria-label={placeholder || name}
+        onClick={() => !disabled && (isOpen ? setIsOpen(false) : openOptions())}
+        onKeyDown={handleTriggerKeyDown}
         style={{ userSelect: 'none' }}
       >
         {value || placeholder}
-        <div className="custom-select-arrow"></div>
+        <div className="custom-select-arrow" aria-hidden="true"></div>
       </div>
       {isOpen && !disabled && (
-        <ul className="custom-options-list">
-          {options.map((opt) => (
+        <ul className="custom-options-list" id={listboxId} role="listbox">
+          {options.map((opt, index) => (
             <li
+              id={`${listboxId}-${index}`}
               key={opt}
-              className={`custom-option ${value === opt ? 'selected' : ''}`}
-              onClick={() => {
-                onChange({ target: { name, value: opt, type: 'select' } });
-                setIsOpen(false);
-              }}
+              className={`custom-option ${value === opt ? 'selected' : ''} ${activeIndex === index ? 'active' : ''}`}
+              role="option"
+              aria-selected={value === opt}
+              onMouseEnter={() => setActiveIndex(index)}
+              onClick={() => selectOption(opt)}
             >
               {opt}
             </li>
@@ -141,6 +221,8 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [submittedRef, setSubmittedRef] = useState('');
   const [successType, setSuccessType] = useState('Submit'); // 'Submit', 'Draft', or 'Error'
+  const successModalRef = useRef(null);
+  const successCloseButtonRef = useRef(null);
 
   // Pre-fill form data from draft if provided
   useEffect(() => {
@@ -170,6 +252,61 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
       }));
     }
   }, [draftData]);
+
+  useEffect(() => {
+    if (!showSuccessModal) return undefined;
+
+    const previouslyFocusedElement = document.activeElement;
+    const focusTimer = window.setTimeout(() => {
+      successCloseButtonRef.current?.focus();
+    }, 0);
+
+    const handleModalKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setShowSuccessModal(false);
+        if (successType !== 'Error') {
+          navigate('/dashboard');
+        }
+        return;
+      }
+
+      if (event.key !== 'Tab' || !successModalRef.current) return;
+
+      const focusableElements = Array.from(
+        successModalRef.current.querySelectorAll(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        successModalRef.current.focus();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleModalKeyDown);
+
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.removeEventListener('keydown', handleModalKeyDown);
+      if (previouslyFocusedElement instanceof HTMLElement && previouslyFocusedElement.isConnected) {
+        previouslyFocusedElement.focus();
+      }
+    };
+  }, [showSuccessModal, successType, navigate]);
 
   // Generate a random reference number
   const generateRefNumber = () => {
@@ -1193,9 +1330,17 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
       {/* Success Modal */}
       {showSuccessModal && (
         <div className="success-modal-overlay">
-          <div className="success-modal">
+          <div
+            className="success-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="success-modal-title"
+            aria-describedby="success-modal-message"
+            tabIndex="-1"
+            ref={successModalRef}
+          >
             <div className="success-modal-icon">
-              <div className={`success-icon-circle ${successType === 'Error' ? 'error-icon' : ''}`}>
+              <div className={`success-icon-circle ${successType === 'Error' ? 'error-icon' : ''}`} aria-hidden="true">
                 {successType === 'Error' ? (
                   <XCircle size={48} color="#ef4444" strokeWidth={2.5} />
                 ) : (
@@ -1203,11 +1348,11 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                 )}
               </div>
             </div>
-            <h2 className="success-modal-title">
+            <h2 className="success-modal-title" id="success-modal-title">
               {successType === 'Draft' ? 'Application Saved to Draft!' : 
                successType === 'Error' ? 'Submission Failed' : 'Application Submitted!'}
             </h2>
-            <p className="success-modal-message">
+            <p className="success-modal-message" id="success-modal-message">
               {successType === 'Draft' 
                 ? 'Your application has been successfully saved to your drafts. Kindly check it on your drafts.' 
                 : successType === 'Error'
@@ -1220,7 +1365,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                 <span className="success-ref-value">{submittedRef}</span>
               </div>
             )}
-            <button className={`btn-success-close ${successType === 'Error' ? 'btn-error-retry' : ''}`} onClick={() => {
+            <button type="button" ref={successCloseButtonRef} className={`btn-success-close ${successType === 'Error' ? 'btn-error-retry' : ''}`} onClick={() => {
               setShowSuccessModal(false);
               if (successType !== 'Error') {
                 navigate('/dashboard');

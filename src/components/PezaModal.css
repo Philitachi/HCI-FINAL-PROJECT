@@ -25,6 +25,10 @@
   overflow: hidden;
 }
 
+.peza-modal:focus {
+  outline: none;
+}
+
 .peza-modal-header {
   display: flex;
   align-items: center;
@@ -110,6 +114,13 @@
 .peza-btn-cancel:hover {
   background: rgba(255, 255, 255, 0.05);
   color: white;
+}
+
+.peza-btn-cancel:focus-visible,
+.peza-btn-confirm:focus-visible,
+.peza-modal-close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.3);
 }
 
 .peza-btn-confirm {
