@@ -31,9 +31,9 @@ html {
   font-size: 103%;
 }
 
-html[data-font-size="small"] { font-size: 98%; }
-html[data-font-size="medium"] { font-size: 110%; }
-html[data-font-size="large"] { font-size: 115%; }
+html[data-font-size="small"] { font-size: 110%; }
+html[data-font-size="medium"] { font-size: 120%; }
+html[data-font-size="large"] { font-size: 130%; }
 
 /* Force form elements to inherit font properties globally */
 input, select, textarea, button {
