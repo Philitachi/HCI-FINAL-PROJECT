@@ -23,6 +23,10 @@
   animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.delete-confirm-modal:focus {
+  outline: none;
+}
+
 .delete-confirm-icon {
   margin-bottom: 1.5rem;
   display: flex;
@@ -71,6 +75,12 @@
 .btn-confirm-no:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-confirm-no:focus-visible,
+.btn-confirm-yes:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.24);
 }
 
 .btn-confirm-yes {
@@ -138,6 +148,11 @@
   background: #f1f5f9;
   border-color: #94a3b8;
   color: #0f172a;
+}
+
+:root.light-mode .btn-confirm-no:focus-visible,
+:root.light-mode .btn-confirm-yes:focus-visible {
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.18);
 }
 
 /* ========== MOBILE RESPONSIVE ========== */

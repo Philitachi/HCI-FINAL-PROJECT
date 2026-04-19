@@ -8,6 +8,7 @@ import { Menu, Sun, Moon, Bell, ChevronDown, Settings, LogOut } from 'lucide-rea
 import '../styles/ConfirmModal.css';
 import { clearUserSession, persistUserSession } from '../utils/userSession';
 import { formatRelativeDateTime, toTimestampMs } from '../utils/time';
+import useModalFocusTrap from '../hooks/useModalFocusTrap';
 
 const VALID_NOTIFICATION_STATUSES = ['completeness check', 'assessment', 'pending review', 'declined', 'approved'];
 
@@ -108,6 +109,9 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
   const notifRef = useRef(null);
   const userMenuRef = useRef(null);
   const notificationsRef = useRef([]);
+  const signOutModalRef = useModalFocusTrap(showSignOutModal, {
+    onEscape: () => setShowSignOutModal(false),
+  });
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -381,6 +385,27 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
     setShowSignOutModal(true);
   };
 
+  const handleUserMenuToggle = () => {
+    setNotifOpen(false);
+    setDropdownOpen(prev => !prev);
+  };
+
+  const handleUserMenuKeyDown = (event) => {
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleUserMenuToggle();
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setDropdownOpen(false);
+    }
+  };
+
   const confirmSignOut = async () => {
     await clearUserSession();
     navigate('/signin');
@@ -483,17 +508,28 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
           )}
         </button>
 
-        <div className="topnav2-user-profile" ref={userMenuRef} onClick={() => setDropdownOpen(!dropdownOpen)}>
+        <div
+          className="topnav2-user-profile"
+          ref={userMenuRef}
+          role="button"
+          tabIndex={0}
+          aria-label="User menu"
+          aria-haspopup="menu"
+          aria-expanded={dropdownOpen}
+          aria-controls={dropdownOpen ? 'topnav2-user-menu' : undefined}
+          onClick={handleUserMenuToggle}
+          onKeyDown={handleUserMenuKeyDown}
+        >
           <div className="topnav2-avatar">{userInitial}</div>
-          <ChevronDown className={`topnav2-chevron-icon ${dropdownOpen ? 'open' : ''}`} size={16} strokeWidth={2} />
+          <ChevronDown className={`topnav2-chevron-icon ${dropdownOpen ? 'open' : ''}`} size={16} strokeWidth={2} aria-hidden="true" />
           
           {dropdownOpen && (
-            <div className="topnav2-user-dropdown">
-              <button className="topnav2-dropdown-item" onClick={() => { setDropdownOpen(false); navigate('/settings'); }}>
+            <div className="topnav2-user-dropdown" id="topnav2-user-menu" role="menu" onClick={(event) => event.stopPropagation()}>
+              <button type="button" className="topnav2-dropdown-item" role="menuitem" onClick={() => { setDropdownOpen(false); navigate('/settings'); }}>
                 <Settings size={16} strokeWidth={2} />
                 Settings
               </button>
-              <button className="topnav2-dropdown-item" onClick={handleLogoutClick}>
+              <button type="button" className="topnav2-dropdown-item" role="menuitem" onClick={handleLogoutClick}>
                 <LogOut size={16} strokeWidth={2} />
                 Sign Out
               </button>
@@ -504,8 +540,16 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
 
       {showSignOutModal && (
         <div className="delete-confirm-overlay">
-          <div className="delete-confirm-modal">
-            <div className="delete-confirm-icon">
+          <div
+            className="delete-confirm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="sign-out-modal-title"
+            aria-describedby="sign-out-modal-description"
+            tabIndex="-1"
+            ref={signOutModalRef}
+          >
+            <div className="delete-confirm-icon" aria-hidden="true">
               <div style={{ 
                 width: '64px', 
                 height: '64px', 
@@ -519,15 +563,15 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
                   <LogOut size={32} strokeWidth={2} />
               </div>
             </div>
-            <h2 className="delete-confirm-title">Sign Out Confirmation</h2>
-            <p className="delete-confirm-text">
+            <h2 className="delete-confirm-title" id="sign-out-modal-title">Sign Out Confirmation</h2>
+            <p className="delete-confirm-text" id="sign-out-modal-description">
               Are you sure you want to sign out?
             </p>
             <div className="delete-confirm-actions">
-              <button className="btn-confirm-no" onClick={() => setShowSignOutModal(false)}>
+              <button type="button" className="btn-confirm-no" onClick={() => setShowSignOutModal(false)}>
                 No, Stay
               </button>
-              <button className="btn-confirm-yes" onClick={confirmSignOut}>
+              <button type="button" className="btn-confirm-yes" onClick={confirmSignOut}>
                 Yes, Sign Out
               </button>
             </div>

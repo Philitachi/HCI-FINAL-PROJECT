@@ -7,6 +7,7 @@ import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import { FullDetailsSkeleton } from '../components/PageSkeletons';
 import useDebugLoadingGate from '../hooks/useDebugLoadingGate';
+import useModalFocusTrap from '../hooks/useModalFocusTrap';
 import '../styles/FullDetails.css';
 import '../styles/ConfirmModal.css';
 
@@ -20,6 +21,11 @@ const FullDetails = () => {
   const [cancelConfirm, setCancelConfirm] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [cancelSuccess, setCancelSuccess] = useState(null);
+  const cancelModalRef = useModalFocusTrap(cancelConfirm, {
+    onEscape: () => {
+      if (!isCancelling) setCancelConfirm(false);
+    },
+  });
 
   useEffect(() => {
     const fetchApplication = async () => {
@@ -329,21 +335,30 @@ const FullDetails = () => {
       {/* Cancel Confirmation Modal */}
       {cancelConfirm && (
         <div className="delete-confirm-overlay" onClick={() => setCancelConfirm(false)}>
-          <div className="delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="delete-confirm-icon">
+          <div
+            className="delete-confirm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cancel-application-modal-title"
+            aria-describedby="cancel-application-modal-description"
+            tabIndex="-1"
+            ref={cancelModalRef}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="delete-confirm-icon" aria-hidden="true">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="15" y1="9" x2="9" y2="15"></line>
                 <line x1="9" y1="9" x2="15" y2="15"></line>
               </svg>
             </div>
-            <h3 className="delete-confirm-title">Cancel Application?</h3>
-            <p className="delete-confirm-text">
+            <h3 className="delete-confirm-title" id="cancel-application-modal-title">Cancel Application?</h3>
+            <p className="delete-confirm-text" id="cancel-application-modal-description">
               Are you sure you want to cancel the application for <strong>"{appData.establishmentName}"</strong>? This action cannot be undone.
             </p>
             <div className="delete-confirm-actions">
-              <button className="btn-confirm-no" onClick={() => setCancelConfirm(false)}>No, Keep it</button>
-              <button className="btn-confirm-yes" onClick={handleCancelApplication} disabled={isCancelling}>
+              <button type="button" className="btn-confirm-no" onClick={() => setCancelConfirm(false)}>No, Keep it</button>
+              <button type="button" className="btn-confirm-yes" onClick={handleCancelApplication} disabled={isCancelling}>
                 {isCancelling ? 'Cancelling...' : 'Yes, Cancel'}
               </button>
             </div>

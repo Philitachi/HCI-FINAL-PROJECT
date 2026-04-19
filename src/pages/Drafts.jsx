@@ -7,6 +7,7 @@ import TopNavigationBar2 from '../components/TopNavigationBar2';
 import EmptyState from '../components/EmptyState';
 import Pagination from '../components/Pagination';
 import useDebugLoadingGate from '../hooks/useDebugLoadingGate';
+import useModalFocusTrap from '../hooks/useModalFocusTrap';
 import { DraftListSkeleton } from '../components/PageSkeletons';
 import { Search, FileText, User, Building, MapPin, Calendar, Clock, XCircle, CheckCircle, Trash2 } from 'lucide-react';
 import '../styles/Drafts.css';
@@ -23,6 +24,9 @@ const Drafts = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const deleteModalRef = useModalFocusTrap(Boolean(deleteConfirm), {
+    onEscape: () => setDeleteConfirm(null),
+  });
 
   useEffect(() => {
     const session = JSON.parse(localStorage.getItem('userSession') || '{}');
@@ -243,17 +247,26 @@ const Drafts = () => {
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
         <div className="delete-confirm-overlay" onClick={() => setDeleteConfirm(null)}>
-          <div className="delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="delete-confirm-icon">
+          <div
+            className="delete-confirm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-draft-modal-title"
+            aria-describedby="delete-draft-modal-description"
+            tabIndex="-1"
+            ref={deleteModalRef}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="delete-confirm-icon" aria-hidden="true">
               <XCircle size={48} color="#ef4444" strokeWidth={1.5} />
             </div>
-            <h3 className="delete-confirm-title">Delete Draft?</h3>
-            <p className="delete-confirm-text">
+            <h3 className="delete-confirm-title" id="delete-draft-modal-title">Delete Draft?</h3>
+            <p className="delete-confirm-text" id="delete-draft-modal-description">
               Are you sure you want to delete the draft for <strong>"{deleteConfirm.title}"</strong>? This action cannot be undone.
             </p>
             <div className="delete-confirm-actions">
-              <button className="btn-confirm-no" onClick={() => setDeleteConfirm(null)}>No, Keep it</button>
-              <button className="btn-confirm-yes" onClick={() => handleDeleteDraft(deleteConfirm.id)}>Yes, Delete</button>
+              <button type="button" className="btn-confirm-no" onClick={() => setDeleteConfirm(null)}>No, Keep it</button>
+              <button type="button" className="btn-confirm-yes" onClick={() => handleDeleteDraft(deleteConfirm.id)}>Yes, Delete</button>
             </div>
           </div>
         </div>
@@ -289,4 +302,3 @@ const Drafts = () => {
 };
 
 export default Drafts;
-
