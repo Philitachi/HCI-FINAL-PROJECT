@@ -184,7 +184,7 @@ body {
 
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 2.25rem;
+    font-size: 2.80rem;
     word-break: break-word;
     overflow-wrap: break-word;
   }
