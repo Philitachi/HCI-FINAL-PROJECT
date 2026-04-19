@@ -5,7 +5,6 @@ import { db } from '../firebase';
 import emailjs from '@emailjs/browser';
 import '../styles/SignInPage.css';
 import logo from '../assets/Logo.svg';
-import ExitButton from '../components/exitButton';
 import { hashPassword } from '../utils/crypto';
 import { getUserSession, persistUserSession } from '../utils/userSession';
 import { User, Lock, Eye, EyeOff } from 'lucide-react';
@@ -128,8 +127,6 @@ const SignInPage = () => {
         </div>
 
         <div className="signin-card">
-          <ExitButton to="/" />
-
           <h2 className="card-title">Welcome Back</h2>
           <p className="card-subtitle">
             Enter your credentials to access your<br />dashboard

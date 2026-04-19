@@ -6,7 +6,6 @@ import { auth, db } from '../firebase';
 import emailjs from '@emailjs/browser';
 import '../styles/SignUpPage.css';
 import logo from '../assets/Logo.svg';
-import ExitButton from '../components/exitButton';
 import { hashPassword, generateSalt } from '../utils/crypto';
 
 const SIGNUP_DRAFT_STORAGE_KEY = 'signup-form-draft';
@@ -413,8 +412,6 @@ const SignUpPage = () => {
 
         {/* Signup Card */}
         <div className="signup-card">
-          <ExitButton to="/" />
-
           <h2 className="card-title-left">Create Account</h2>
           <p className="card-subtitle-left">
             Please complete the registration form

@@ -1,34 +1,84 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Capacitor } from '@capacitor/core';
+import { Network } from '@capacitor/network';
 import './GlobalLoader.css';
 
 const RECONNECTED_TOAST_DURATION = 2800;
 
+const getBrowserIsOffline = () => (
+  typeof navigator !== 'undefined' ? !navigator.onLine : false
+);
+
 const GlobalLoader = () => {
-  const [isOffline, setIsOffline] = useState(
-    typeof navigator !== 'undefined' ? !navigator.onLine : false,
-  );
+  const [isOffline, setIsOffline] = useState(getBrowserIsOffline);
   const [showReconnected, setShowReconnected] = useState(false);
   const hasMountedRef = useRef(false);
+  const isOfflineRef = useRef(getBrowserIsOffline());
 
   useEffect(() => {
-    const handleOnline = () => {
-      setIsOffline(false);
+    let isActive = true;
+    let nativeListenerHandle = null;
 
-      if (hasMountedRef.current) {
+    const applyConnectionStatus = (isConnected, shouldShowReconnectToast = true) => {
+      if (!isActive) return;
+
+      const nextIsOffline = !isConnected;
+      const wasOffline = isOfflineRef.current;
+      isOfflineRef.current = nextIsOffline;
+      setIsOffline(nextIsOffline);
+
+      if (nextIsOffline) {
+        setShowReconnected(false);
+      } else if (shouldShowReconnectToast && hasMountedRef.current && wasOffline) {
         setShowReconnected(true);
       }
     };
 
-    const handleOffline = () => {
-      setIsOffline(true);
-      setShowReconnected(false);
+    const handleOnline = () => {
+      applyConnectionStatus(true);
     };
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    const handleOffline = () => {
+      applyConnectionStatus(false);
+    };
+
+    if (Capacitor.isNativePlatform()) {
+      void Network.getStatus()
+        .then((status) => {
+          applyConnectionStatus(status.connected, false);
+        })
+        .catch(() => {
+          applyConnectionStatus(!getBrowserIsOffline(), false);
+        });
+
+      void Network.addListener('networkStatusChange', (status) => {
+        applyConnectionStatus(status.connected);
+      }).then((listenerHandle) => {
+        if (isActive) {
+          nativeListenerHandle = listenerHandle;
+        } else {
+          void listenerHandle.remove();
+        }
+      }).catch(() => {
+        if (!isActive) return;
+
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+      });
+    } else {
+      window.addEventListener('online', handleOnline);
+      window.addEventListener('offline', handleOffline);
+    }
+
     hasMountedRef.current = true;
 
     return () => {
+      isActive = false;
+
+      if (nativeListenerHandle) {
+        void nativeListenerHandle.remove();
+      }
+
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
