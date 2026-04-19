@@ -441,7 +441,21 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
           ref={notifRef}
           className={`topnav2-notification-btn ${notifOpen ? 'active' : ''} ${unreadCount > 0 ? 'has-unread' : ''}`} 
           aria-label="Notifications"
+          aria-expanded={notifOpen}
+          aria-haspopup="menu"
           onClick={handleNotifClick}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              if (!notifOpen) handleNotifClick();
+              setTimeout(() => {
+                const items = notifRef.current?.querySelectorAll('.notif-item');
+                if (items && items.length > 0) items[0].focus();
+              }, 0);
+            } else if (e.key === 'Escape' && notifOpen) {
+              setNotifOpen(false);
+            }
+          }}
         >
           <Bell className="bell-icon" size={20} strokeWidth={2} />
           {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
@@ -456,7 +470,38 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
                 {notifications.length > 0 ? (
                   <>
                     {notifications.slice(0, visibleNotifsCount).map(notif => (
-                      <div key={notif.id} className={`notif-item ${notif.isRead ? 'read' : 'unread'}`} onClick={() => handleNotifItemClick(notif)}>
+                      <div 
+                        key={notif.id} 
+                        className={`notif-item ${notif.isRead ? 'read' : 'unread'}`} 
+                        role="menuitem"
+                        tabIndex={0}
+                        onClick={() => handleNotifItemClick(notif)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleNotifItemClick(notif);
+                          } else if (e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            const items = Array.from(notifRef.current?.querySelectorAll('.notif-item, .notif-show-more-btn') || []);
+                            const currentIndex = items.indexOf(e.currentTarget);
+                            if (currentIndex >= 0 && currentIndex < items.length - 1) {
+                              items[currentIndex + 1].focus();
+                            }
+                          } else if (e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            const items = Array.from(notifRef.current?.querySelectorAll('.notif-item, .notif-show-more-btn') || []);
+                            const currentIndex = items.indexOf(e.currentTarget);
+                            if (currentIndex > 0) {
+                              items[currentIndex - 1].focus();
+                            } else {
+                              notifRef.current?.focus();
+                            }
+                          } else if (e.key === 'Escape') {
+                            setNotifOpen(false);
+                            notifRef.current?.focus();
+                          }
+                        }}
+                      >
                         <div className={`notif-status-indicator ${(notif.status || '').toLowerCase().replace(' ', '-')}`}></div>
                         <div className="notif-info">
                           <div className="notif-title">
@@ -477,9 +522,26 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
                       {visibleNotifsCount > 10 && (
                         <button 
                           className="notif-show-more-btn" 
+                          tabIndex={0}
                           onClick={(e) => {
                             e.stopPropagation();
                             setVisibleNotifsCount(prev => Math.max(10, prev - 10));
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'ArrowUp') {
+                              e.preventDefault();
+                              const items = Array.from(notifRef.current?.querySelectorAll('.notif-item, .notif-show-more-btn') || []);
+                              const currentIndex = items.indexOf(e.currentTarget);
+                              if (currentIndex > 0) items[currentIndex - 1].focus();
+                            } else if (e.key === 'ArrowDown') {
+                              e.preventDefault();
+                              const items = Array.from(notifRef.current?.querySelectorAll('.notif-item, .notif-show-more-btn') || []);
+                              const currentIndex = items.indexOf(e.currentTarget);
+                              if (currentIndex >= 0 && currentIndex < items.length - 1) items[currentIndex + 1].focus();
+                            } else if (e.key === 'Escape') {
+                              setNotifOpen(false);
+                              notifRef.current?.focus();
+                            }
                           }}
                         >
                           See less
@@ -488,9 +550,26 @@ const TopNavigationBar2 = ({ hideHamburger = false }) => {
                       {visibleNotifsCount < notifications.length && (
                         <button 
                           className="notif-show-more-btn" 
+                          tabIndex={0}
                           onClick={(e) => {
                             e.stopPropagation();
                             setVisibleNotifsCount(prev => prev + 10);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'ArrowUp') {
+                              e.preventDefault();
+                              const items = Array.from(notifRef.current?.querySelectorAll('.notif-item, .notif-show-more-btn') || []);
+                              const currentIndex = items.indexOf(e.currentTarget);
+                              if (currentIndex > 0) items[currentIndex - 1].focus();
+                            } else if (e.key === 'ArrowDown') {
+                              e.preventDefault();
+                              const items = Array.from(notifRef.current?.querySelectorAll('.notif-item, .notif-show-more-btn') || []);
+                              const currentIndex = items.indexOf(e.currentTarget);
+                              if (currentIndex >= 0 && currentIndex < items.length - 1) items[currentIndex + 1].focus();
+                            } else if (e.key === 'Escape') {
+                              setNotifOpen(false);
+                              notifRef.current?.focus();
+                            }
                           }}
                         >
                           See more
