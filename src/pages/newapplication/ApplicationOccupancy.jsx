@@ -43,20 +43,21 @@ const ApplicationOccupancy = () => {
                     <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary-color)'}}>Select Specific Option</h3>
                     <div className="sub-category-list">
                       {subOptions.map(sub => (
-                        <div 
+                        <button
+                          type="button"
                           key={sub.id}
                           className="sub-category-card custom-hover"
-                          style={{ cursor: 'pointer' }}
+                          aria-pressed={selectedSubOption?.id === sub.id}
                           onClick={() => setSelectedSubOption(sub)}
                         >
-                          <div className="sub-category-icon">
+                          <div className="sub-category-icon" aria-hidden="true">
                             <FileText size={24} strokeWidth={2} />
                           </div>
                           <div className="category-text">
                             <h3>{sub.title}</h3>
                             <p>{sub.desc}</p>
                           </div>
-                        </div>
+                        </button>
                       ))}
                     </div>
                  </div>

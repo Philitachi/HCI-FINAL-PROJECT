@@ -1131,7 +1131,16 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                     ) : (
                       <div
                         className={`req-drop-zone ${dragActiveId === idx ? 'drag-active' : ''} ${reqErrors[idx] ? 'input-error' : ''}`}
+                        tabIndex={0}
+                        role="button"
+                        aria-label={`Upload ${doc}`}
                         onClick={() => document.getElementById(`file-upload-${idx}`).click()}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            document.getElementById(`file-upload-${idx}`).click();
+                          }
+                        }}
                         onDragOver={(e) => { e.preventDefault(); setDragActiveId(idx); }}
                         onDragLeave={(e) => { e.preventDefault(); setDragActiveId(null); }}
                         onDrop={(e) => {
@@ -1342,9 +1351,9 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
             <div className="success-modal-icon">
               <div className={`success-icon-circle ${successType === 'Error' ? 'error-icon' : ''}`} aria-hidden="true">
                 {successType === 'Error' ? (
-                  <XCircle size={48} color="#ef4444" strokeWidth={2.5} />
+                  <XCircle size={36} color="#ef4444" strokeWidth={2.5} />
                 ) : (
-                  <CheckCircle size={48} color="#14b8a6" strokeWidth={2.5} />
+                  <CheckCircle size={36} color="#14b8a6" strokeWidth={2.5} />
                 )}
               </div>
             </div>

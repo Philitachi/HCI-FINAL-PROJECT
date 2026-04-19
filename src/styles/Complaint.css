@@ -257,8 +257,8 @@
 
 .custom-select-trigger:focus-visible {
   outline: none;
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
+  border-color: var(--focus-ring-color);
+  box-shadow: var(--focus-ring-shadow-soft);
 }
 
 .custom-select-trigger.error {
@@ -335,8 +335,9 @@
 }
 
 .form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: #14b8a6;
+  border-color: var(--focus-ring-color);
   background-color: rgba(0, 0, 0, 0.3);
+  box-shadow: var(--focus-ring-shadow-soft);
 }
 
 .form-input.error, .form-select.error, .form-textarea.error {
@@ -366,6 +367,11 @@
   color: var(--text-secondary-color, #cbd5e1);
 }
 
+.radio-label:focus-within,
+.checkbox-label:focus-within {
+  color: var(--text-primary-color, #ffffff);
+}
+
 .radio-input {
   appearance: none;
   width: 20px;
@@ -376,7 +382,14 @@
   outline: none;
   cursor: pointer;
   position: relative;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, outline-color 0.2s;
+}
+
+.radio-input:focus-visible {
+  border-color: var(--focus-ring-color);
+  outline: var(--focus-outline);
+  outline-offset: 3px;
+  box-shadow: var(--focus-ring-shadow-soft);
 }
 
 .radio-input:checked {
@@ -393,6 +406,10 @@
   height: 10px;
   border-radius: 50%;
   background-color: #14b8a6;
+}
+
+.radio-input:checked:focus-visible {
+  border-color: var(--focus-ring-color);
 }
 
 .checkbox-group {
@@ -422,14 +439,29 @@
   outline: none;
   cursor: pointer;
   position: relative;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s, outline-color 0.2s;
   flex-shrink: 0;
   margin-top: 0.1rem;
+}
+
+.checkbox-input:focus-visible {
+  border-color: var(--focus-ring-color);
+  outline: var(--focus-outline);
+  outline-offset: 3px;
+  box-shadow: var(--focus-ring-shadow-soft);
 }
 
 .checkbox-input:checked {
   background-color: #14b8a6;
   border-color: #14b8a6;
+}
+
+.checkbox-input.error {
+  border-color: #ef4444;
+}
+
+.checkbox-input.error:focus-visible {
+  border-color: #ef4444;
 }
 
 .checkbox-input:checked::after {
@@ -442,6 +474,10 @@
   border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+.checkbox-input:checked:focus-visible {
+  border-color: var(--focus-ring-color);
 }
 
 /* Privacy Consent */
@@ -557,8 +593,8 @@
 :root.light-mode .form-select:focus,
 :root.light-mode .form-textarea:focus {
   background-color: #ffffff;
-  border-color: #0d9488;
-  box-shadow: 0 0 0 1px #0d9488;
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 1px var(--focus-ring-color);
 }
 :root.light-mode .radio-input,
 :root.light-mode .checkbox-input {
@@ -582,6 +618,14 @@
 :root.light-mode .radio-input:checked::before {
   background-color: #0d9488;
 }
+
+:root.light-mode .radio-input:focus-visible,
+:root.light-mode .checkbox-input:focus-visible,
+:root.light-mode .radio-input:checked:focus-visible,
+:root.light-mode .checkbox-input:checked:focus-visible {
+  border-color: var(--focus-ring-color);
+}
+
 :root.light-mode .privacy-consent-card {
   background-color: #f8fafc;
   border-color: #e2e8f0;

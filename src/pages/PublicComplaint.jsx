@@ -154,6 +154,8 @@ const PublicComplaint = () => {
         ? [...formData.nature, value] 
         : formData.nature.filter(n => n !== value);
       setFormData({ ...formData, nature: updatedNature });
+    } else if (type === 'checkbox' && name === 'gender') {
+      setFormData({ ...formData, [name]: checked ? value : '' });
     } else if (type === 'checkbox') {
       setFormData({ ...formData, [name]: checked });
     } else {
@@ -231,6 +233,12 @@ const PublicComplaint = () => {
 
   const handleEnterToNext = (e) => {
     if (e.key === 'Enter' && e.target.tagName.toLowerCase() === 'input') {
+      if (e.target.type === 'checkbox' || e.target.type === 'radio') {
+        e.preventDefault();
+        e.target.click();
+        return;
+      }
+
       if (e.target.value.trim() !== '' && e.target.checkValidity()) {
         e.preventDefault();
         
@@ -351,7 +359,7 @@ const PublicComplaint = () => {
                           {['Male', 'Female', 'Prefer not to say', 'Other'].map((option) => (
                             <label key={option} className="checkbox-label" style={{ alignItems: 'center' }}>
                               <input 
-                                type="radio" 
+                                type="checkbox" 
                                 name="gender" 
                                 value={option}
                                 checked={formData.gender === option}

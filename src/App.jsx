@@ -12,6 +12,42 @@ function ScrollToTop() {
   return null;
 }
 
+// Moves keyboard/screen-reader focus into the new page after route navigation.
+function RouteFocusManager() {
+  const { pathname, search } = useLocation();
+
+  useEffect(() => {
+    const focusTimer = window.setTimeout(() => {
+      if (document.querySelector('[aria-modal="true"]')) return;
+
+      const target =
+        document.querySelector('main [data-route-focus="true"]') ||
+        document.querySelector('main h1') ||
+        document.querySelector('main h2') ||
+        document.querySelector('main');
+
+      if (!(target instanceof HTMLElement)) return;
+
+      if (!target.hasAttribute('tabindex')) {
+        target.setAttribute('tabindex', '-1');
+        target.dataset.routeFocusTabindexAdded = 'true';
+      }
+
+      target.classList.add('route-focus-target');
+
+      try {
+        target.focus({ preventScroll: true });
+      } catch {
+        target.focus();
+      }
+    }, 80);
+
+    return () => window.clearTimeout(focusTimer);
+  }, [pathname, search]);
+
+  return null;
+}
+
 import HomePage from './pages/HomePage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
@@ -91,6 +127,7 @@ function App() {
     <Router>
       <GlobalLoader />
       <ScrollToTop />
+      <RouteFocusManager />
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />

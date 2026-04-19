@@ -72,11 +72,19 @@
   transition: transform 0.2s, box-shadow 0.2s;
   background-color: var(--card-bg-color, #1e293b);
   border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.05));
+  color: inherit;
+  font-family: inherit;
 }
 
 .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.card:focus-visible,
+.metric-card:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-shadow), 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
 .card h3 {
@@ -110,11 +118,21 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   height: 100%;
+  width: 100%;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
 }
 
 .metric-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.metric-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--focus-ring-shadow), 0 10px 15px -3px rgba(0, 0, 0, 0.16);
 }
 
 .metric-icon {

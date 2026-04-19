@@ -44,7 +44,7 @@
 }
 
 .search-input:focus {
-  border-color: #14b8a6;
+  border-color: var(--focus-ring-color);
 }
 
 .type-filter-btn {
@@ -461,8 +461,8 @@
   background-color: #f8fafc;
 }
 :root.light-mode .search-input:focus {
-  border-color: #0d9488;
-  box-shadow: 0 0 0 1px #0d9488;
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 1px var(--focus-ring-color);
 }
 :root.light-mode .app-list-card:hover {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);

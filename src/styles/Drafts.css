@@ -64,8 +64,8 @@
 }
 
 .drafts-search-input:focus {
-  border-color: #0ea5e9;
-  box-shadow: 0 0 0 1px #0ea5e9, 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 1px var(--focus-ring-color), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 :root:not(.light-mode) .drafts-search-input {
@@ -75,8 +75,8 @@
 }
 
 :root:not(.light-mode) .drafts-search-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 1px #3b82f6;
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 1px var(--focus-ring-color);
 }
 
 /* App List Cards Customizations for Drafts */

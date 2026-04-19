@@ -90,14 +90,18 @@
 }
 
 .code-input-box:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  border-color: var(--focus-ring-color);
+  box-shadow: var(--focus-ring-shadow-soft);
   background-color: #1a2030;
 }
 
 .code-input-box.has-value {
-  border-color: #6366f1;
-  background-color: #1a2030;
+    border-color: #6366f1;
+    background-color: #1a2030;
+}
+
+.code-input-box.has-value:focus {
+    border-color: var(--focus-ring-color);
 }
 
 .code-input-box.code-error {
@@ -112,6 +116,10 @@
 .code-input-box.code-success {
   border-color: #2ecc71;
   box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+
+.code-input-box.code-success:focus {
+  box-shadow: var(--focus-ring-shadow-soft);
 }
 
 /* ============================
@@ -287,13 +295,17 @@
     color: #111827;
 }
 :root.light-mode .code-input-box:focus {
-    border-color: #4F46E5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    border-color: var(--focus-ring-color);
+    box-shadow: var(--focus-ring-shadow-soft);
     background-color: #ffffff;
 }
 :root.light-mode .code-input-box.has-value {
     border-color: #4F46E5;
     background-color: #ffffff;
+}
+
+:root.light-mode .code-input-box.has-value:focus {
+    border-color: var(--focus-ring-color);
 }
 :root.light-mode .btn-verify-code {
     background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);

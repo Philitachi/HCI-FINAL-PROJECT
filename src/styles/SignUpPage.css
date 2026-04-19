@@ -172,8 +172,8 @@
 
 .signup-form .form-input:focus {
   outline: none;
-  border-color: #0d94a1;
-  box-shadow: 0 0 0 1px #0d94a1;
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 1px var(--focus-ring-color);
   background-color: #161B22 !important;
 }
 
@@ -232,7 +232,7 @@
 
 /* Label colors based on input states */
 .signup-form .form-input:focus ~ .floating-label {
-  color: #0d94a1;
+  color: var(--focus-ring-color);
 }
 
 .signup-form .form-input.input-error ~ .floating-label,
@@ -271,7 +271,7 @@
 }
 
 .signup-form .form-input.input-success:focus {
-  box-shadow: 0 0 0 1px #0d94a1;
+  box-shadow: 0 0 0 1px var(--focus-ring-color);
 }
 
 .password-hint {
@@ -450,8 +450,8 @@
 }
 
 :root.light-mode .signup-form .form-input:focus {
-  border-color: #0d94a1;
-  box-shadow: 0 0 0 1px #0d94a1;
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 1px var(--focus-ring-color);
 }
 
 /* Floating labels */
@@ -467,7 +467,7 @@
 
 /* Specific label color states in light mode */
 :root.light-mode .signup-form .form-input:focus ~ .floating-label {
-  color: #0d94a1;
+  color: var(--focus-ring-color);
 }
 
 :root.light-mode .signup-form .form-input.input-error ~ .floating-label,

@@ -240,8 +240,8 @@
 }
 
 .form-group input:not([type="radio"]):not([type="checkbox"]):focus {
-  border-color: var(--accent-color, #3b82f6);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  border-color: var(--focus-ring-color);
+  box-shadow: var(--focus-ring-shadow-soft);
 }
 
 .form-group input.disabled-input:not([type="radio"]):not([type="checkbox"]) {
@@ -269,8 +269,8 @@
 }
 
 .phone-input-wrapper:focus-within {
-  border-color: var(--accent-color, #3b82f6);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  border-color: var(--focus-ring-color);
+  box-shadow: var(--focus-ring-shadow-soft);
 }
 
 .phone-input-wrapper .prefix {

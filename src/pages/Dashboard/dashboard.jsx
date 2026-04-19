@@ -173,14 +173,24 @@ const Dashboard = () => {
 
           <div className="dashboard-hero-layout">
             <div className="hero-action-col">
-              <div className="card apply-card" onClick={() => navigate('/new-application/evaluation')} style={{ cursor: 'pointer' }}>
+              <button
+                type="button"
+                className="card apply-card"
+                aria-label="Apply for new application"
+                onClick={() => navigate('/new-application/evaluation')}
+              >
                 <FolderPlus className="card-icon" size={64} stroke="white" strokeWidth={1.5} />
                 <h3>Apply for New Application</h3>
-              </div>
+              </button>
             </div>
 
             <div className="hero-metrics-col">
-            <div className="metric-card" onClick={() => navigate('/applications/all')} style={{ cursor: 'pointer' }}>
+              <button
+                type="button"
+                className="metric-card"
+                aria-label={`View active applications, ${metrics.active} total`}
+                onClick={() => navigate('/applications/all')}
+              >
                 <div className="metric-icon blue">
                   <FileText size={24} strokeWidth={2} />
                 </div>
@@ -188,8 +198,13 @@ const Dashboard = () => {
                   <span className="metric-value">{metrics.active}</span>
                   <span className="metric-label">Active<br/>Applications</span>
                 </div>
-              </div>
-              <div className="metric-card" onClick={() => navigate('/applications/completed')} style={{ cursor: 'pointer' }}>
+              </button>
+              <button
+                type="button"
+                className="metric-card"
+                aria-label={`View valid certificates and clearances, ${metrics.certificates} total`}
+                onClick={() => navigate('/applications/completed')}
+              >
                 <div className="metric-icon green">
                   <FileCheck size={24} strokeWidth={2} />
                 </div>
@@ -197,8 +212,13 @@ const Dashboard = () => {
                   <span className="metric-value">{metrics.certificates}</span>
                   <span className="metric-label">Valid<br/>Certificates/Clearances</span>
                 </div>
-              </div>
-              <div className="metric-card" onClick={() => navigate('/establishment')} style={{ cursor: 'pointer' }}>
+              </button>
+              <button
+                type="button"
+                className="metric-card"
+                aria-label={`View registered establishments, ${metrics.establishments} total`}
+                onClick={() => navigate('/establishment')}
+              >
                 <div className="metric-icon purple">
                   <Building size={24} strokeWidth={2} />
                 </div>
@@ -206,8 +226,13 @@ const Dashboard = () => {
                   <span className="metric-value">{metrics.establishments}</span>
                   <span className="metric-label">Registered<br/>Establishments</span>
                 </div>
-              </div>
-              <div className="metric-card" onClick={() => navigate('/drafts')} style={{ cursor: 'pointer' }}>
+              </button>
+              <button
+                type="button"
+                className="metric-card"
+                aria-label={`View saved drafts, ${metrics.drafts} total`}
+                onClick={() => navigate('/drafts')}
+              >
                 <div className="metric-icon orange">
                   <Archive size={24} strokeWidth={2} />
                 </div>
@@ -215,7 +240,7 @@ const Dashboard = () => {
                   <span className="metric-value">{metrics.drafts}</span>
                   <span className="metric-label">Saved<br/>Drafts</span>
                 </div>
-              </div>
+              </button>
             </div>
           </div>
 

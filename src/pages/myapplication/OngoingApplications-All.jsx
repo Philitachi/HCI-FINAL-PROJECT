@@ -71,7 +71,21 @@ const OngoingApplicationsAll = () => {
               <div className="type-filter-wrapper" ref={typeMenuRef}>
                 <button 
                   className={`type-filter-btn ${isTypeMenuOpen ? 'open' : ''}`}
+                  aria-expanded={isTypeMenuOpen}
+                  aria-haspopup="listbox"
                   onClick={() => setIsTypeMenuOpen(!isTypeMenuOpen)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'ArrowDown') {
+                      e.preventDefault();
+                      if (!isTypeMenuOpen) setIsTypeMenuOpen(true);
+                      setTimeout(() => {
+                        const items = typeMenuRef.current?.querySelectorAll('.type-filter-item');
+                        if (items && items.length > 0) items[0].focus();
+                      }, 0);
+                    } else if (e.key === 'Escape' && isTypeMenuOpen) {
+                      setIsTypeMenuOpen(false);
+                    }
+                  }}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
@@ -82,14 +96,44 @@ const OngoingApplicationsAll = () => {
                   </svg>
                 </button>
                 {isTypeMenuOpen && (
-                  <div className="type-filter-menu">
+                  <div className="type-filter-menu" role="listbox">
                     {occupancyOptions.map((option) => (
                       <div 
                         key={option} 
+                        role="option"
+                        aria-selected={selectedType === option}
+                        tabIndex={0}
                         className={`type-filter-item ${selectedType === option ? 'active' : ''}`}
                         onClick={() => {
                           setSelectedType(option);
                           setIsTypeMenuOpen(false);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setSelectedType(option);
+                            setIsTypeMenuOpen(false);
+                            typeMenuRef.current?.querySelector('.type-filter-btn')?.focus();
+                          } else if (e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            const items = Array.from(typeMenuRef.current?.querySelectorAll('.type-filter-item') || []);
+                            const currentIndex = items.indexOf(e.currentTarget);
+                            if (currentIndex >= 0 && currentIndex < items.length - 1) {
+                              items[currentIndex + 1].focus();
+                            }
+                          } else if (e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            const items = Array.from(typeMenuRef.current?.querySelectorAll('.type-filter-item') || []);
+                            const currentIndex = items.indexOf(e.currentTarget);
+                            if (currentIndex > 0) {
+                              items[currentIndex - 1].focus();
+                            } else {
+                              typeMenuRef.current?.querySelector('.type-filter-btn')?.focus();
+                            }
+                          } else if (e.key === 'Escape') {
+                            setIsTypeMenuOpen(false);
+                            typeMenuRef.current?.querySelector('.type-filter-btn')?.focus();
+                          }
                         }}
                       >
                         {option === 'All Types' ? 'All Types' : `${option} Occupancy`}

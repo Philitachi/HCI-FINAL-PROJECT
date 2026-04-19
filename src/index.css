@@ -7,6 +7,26 @@
 :root[data-font="Nunito"] *:not(code):not(pre) { font-family: 'Nunito', sans-serif !important; }
 :root[data-font="Outfit"] *:not(code):not(pre) { font-family: 'Outfit', sans-serif !important; }
 
+:root {
+  --focus-ring-color: #38bdf8;
+  --focus-ring-rgb: 56, 189, 248;
+  --focus-ring-bg: rgba(var(--focus-ring-rgb), 0.08);
+  --focus-ring-bg-strong: rgba(var(--focus-ring-rgb), 0.16);
+  --focus-ring-shadow: 0 0 0 4px rgba(var(--focus-ring-rgb), 0.28);
+  --focus-ring-shadow-soft: 0 0 0 3px rgba(var(--focus-ring-rgb), 0.22);
+  --focus-ring-inset: inset 0 0 0 2px var(--focus-ring-color);
+  --focus-outline: 2px solid var(--focus-ring-color);
+}
+
+:root.light-mode {
+  --focus-ring-color: #1d4ed8;
+  --focus-ring-rgb: 29, 78, 216;
+  --focus-ring-bg: rgba(var(--focus-ring-rgb), 0.08);
+  --focus-ring-bg-strong: rgba(var(--focus-ring-rgb), 0.16);
+  --focus-ring-shadow: 0 0 0 4px rgba(var(--focus-ring-rgb), 0.34);
+  --focus-ring-shadow-soft: 0 0 0 3px rgba(var(--focus-ring-rgb), 0.28);
+}
+
 html {
   font-size: 103%;
 }
@@ -21,8 +41,17 @@ input, select, textarea, button {
   font-size: inherit;
 }
 
+:where(a, button, input, textarea, select, [role="button"], [role="menuitem"], [tabindex]):focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: 3px;
+}
+
 ::placeholder {
   font-family: inherit;
+}
+
+.route-focus-target:focus {
+  outline: none;
 }
 
 /* Custom Global Scrollbar */

@@ -120,7 +120,7 @@
 .peza-btn-confirm:focus-visible,
 .peza-modal-close:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.3);
+  box-shadow: var(--focus-ring-shadow-soft);
 }
 
 .peza-btn-confirm {
@@ -179,4 +179,51 @@
 :root.light-mode .peza-btn-cancel:hover {
   background: #f1f5f9;
   color: #0f172a;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .peza-modal {
+    border-radius: 12px;
+  }
+
+  .peza-modal-header {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .peza-modal-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .peza-modal-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .peza-modal-close {
+    right: 1rem;
+    width: 28px;
+    height: 28px;
+  }
+
+  .peza-modal-body {
+    padding: 1rem;
+  }
+
+  .peza-modal-body p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .peza-modal-actions {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .peza-btn-cancel,
+  .peza-btn-confirm {
+    padding: 0.65rem 1rem;
+    font-size: 0.8rem;
+  }
 }

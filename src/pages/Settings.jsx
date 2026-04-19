@@ -477,7 +477,27 @@ const Settings = () => {
                   <div className="custom-dropdown-container" ref={dropdownRef} style={{ position: 'relative', width: '100%' }}>
                     <div 
                       className="custom-dropdown-header"
+                      role="combobox"
+                      aria-expanded={fontDropdownOpen}
+                      tabIndex={0}
                       onClick={() => setFontDropdownOpen(!fontDropdownOpen)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setFontDropdownOpen(!fontDropdownOpen);
+                        } else if (e.key === 'ArrowDown') {
+                          e.preventDefault();
+                          if (!fontDropdownOpen) {
+                            setFontDropdownOpen(true);
+                          }
+                          setTimeout(() => {
+                            const items = dropdownRef.current?.querySelectorAll('.custom-dropdown-item');
+                            if (items && items.length > 0) items[0].focus();
+                          }, 0);
+                        } else if (e.key === 'Escape' && fontDropdownOpen) {
+                          setFontDropdownOpen(false);
+                        }
+                      }}
                       style={{
                         display: 'flex',
                         justifyContent: 'space-between',
@@ -489,7 +509,7 @@ const Settings = () => {
                         color: 'var(--text-primary-color, #ffffff)',
                         fontSize: '1rem',
                         cursor: 'pointer',
-                        transition: 'border-color 0.2s',
+                        transition: 'border-color 0.2s, box-shadow 0.2s',
                         userSelect: 'none'
                       }}
                     >
@@ -528,9 +548,39 @@ const Settings = () => {
                         {fontOptions.map((opt) => (
                           <div 
                             key={opt.value}
+                            role="option"
+                            aria-selected={fontPreference === opt.value}
+                            tabIndex={0}
                             onClick={() => {
                               handleFontChange({ target: { value: opt.value } });
                               setFontDropdownOpen(false);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                handleFontChange({ target: { value: opt.value } });
+                                setFontDropdownOpen(false);
+                                dropdownRef.current?.querySelector('.custom-dropdown-header')?.focus();
+                              } else if (e.key === 'ArrowDown') {
+                                e.preventDefault();
+                                const items = Array.from(dropdownRef.current?.querySelectorAll('.custom-dropdown-item') || []);
+                                const currentIndex = items.indexOf(e.currentTarget);
+                                if (currentIndex >= 0 && currentIndex < items.length - 1) {
+                                  items[currentIndex + 1].focus();
+                                }
+                              } else if (e.key === 'ArrowUp') {
+                                e.preventDefault();
+                                const items = Array.from(dropdownRef.current?.querySelectorAll('.custom-dropdown-item') || []);
+                                const currentIndex = items.indexOf(e.currentTarget);
+                                if (currentIndex > 0) {
+                                  items[currentIndex - 1].focus();
+                                } else {
+                                  dropdownRef.current?.querySelector('.custom-dropdown-header')?.focus();
+                                }
+                              } else if (e.key === 'Escape') {
+                                setFontDropdownOpen(false);
+                                dropdownRef.current?.querySelector('.custom-dropdown-header')?.focus();
+                              }
                             }}
                             className="custom-dropdown-item"
                             style={{
@@ -556,7 +606,27 @@ const Settings = () => {
                   <div className="custom-dropdown-container" ref={sizeDropdownRef} style={{ position: 'relative', width: '100%' }}>
                     <div 
                       className="custom-dropdown-header"
+                      role="combobox"
+                      aria-expanded={sizeDropdownOpen}
+                      tabIndex={0}
                       onClick={() => setSizeDropdownOpen(!sizeDropdownOpen)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSizeDropdownOpen(!sizeDropdownOpen);
+                        } else if (e.key === 'ArrowDown') {
+                          e.preventDefault();
+                          if (!sizeDropdownOpen) {
+                            setSizeDropdownOpen(true);
+                          }
+                          setTimeout(() => {
+                            const items = sizeDropdownRef.current?.querySelectorAll('.custom-dropdown-item');
+                            if (items && items.length > 0) items[0].focus();
+                          }, 0);
+                        } else if (e.key === 'Escape' && sizeDropdownOpen) {
+                          setSizeDropdownOpen(false);
+                        }
+                      }}
                       style={{
                         display: 'flex',
                         justifyContent: 'space-between',
@@ -568,7 +638,7 @@ const Settings = () => {
                         color: 'var(--text-primary-color, #ffffff)',
                         fontSize: '1rem',
                         cursor: 'pointer',
-                        transition: 'border-color 0.2s',
+                        transition: 'border-color 0.2s, box-shadow 0.2s',
                         userSelect: 'none'
                       }}
                     >
@@ -607,9 +677,39 @@ const Settings = () => {
                         {sizeOptions.map((opt) => (
                           <div 
                             key={opt.value}
+                            role="option"
+                            aria-selected={fontSizePreference === opt.value}
+                            tabIndex={0}
                             onClick={() => {
                               handleSizeChange({ target: { value: opt.value } });
                               setSizeDropdownOpen(false);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                handleSizeChange({ target: { value: opt.value } });
+                                setSizeDropdownOpen(false);
+                                sizeDropdownRef.current?.querySelector('.custom-dropdown-header')?.focus();
+                              } else if (e.key === 'ArrowDown') {
+                                e.preventDefault();
+                                const items = Array.from(sizeDropdownRef.current?.querySelectorAll('.custom-dropdown-item') || []);
+                                const currentIndex = items.indexOf(e.currentTarget);
+                                if (currentIndex >= 0 && currentIndex < items.length - 1) {
+                                  items[currentIndex + 1].focus();
+                                }
+                              } else if (e.key === 'ArrowUp') {
+                                e.preventDefault();
+                                const items = Array.from(sizeDropdownRef.current?.querySelectorAll('.custom-dropdown-item') || []);
+                                const currentIndex = items.indexOf(e.currentTarget);
+                                if (currentIndex > 0) {
+                                  items[currentIndex - 1].focus();
+                                } else {
+                                  sizeDropdownRef.current?.querySelector('.custom-dropdown-header')?.focus();
+                                }
+                              } else if (e.key === 'Escape') {
+                                setSizeDropdownOpen(false);
+                                sizeDropdownRef.current?.querySelector('.custom-dropdown-header')?.focus();
+                              }
                             }}
                             className="custom-dropdown-item"
                             style={{

@@ -122,8 +122,8 @@
 }
 
 .input-wrapper:focus-within {
-  border-color: #2BA03C;
-  box-shadow: 0 0 0 1px #2BA03C;
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 1px var(--focus-ring-color);
 }
 
 .input-wrapper:not(:focus-within) {
@@ -211,6 +211,12 @@
   color: white;
 }
 
+.password-toggle-btn:focus-visible {
+  outline: var(--focus-outline) !important;
+  outline-offset: 3px;
+  box-shadow: none !important;
+}
+
 .signin-btn-submit {
   background-color: #2BA03C;
   color: white;
@@ -240,7 +246,7 @@
 }
 
 .signin-btn-submit:focus-visible {
-  outline: 2px solid rgba(43, 160, 60, 0.45);
+  outline: var(--focus-outline);
   outline-offset: 3px;
 }
 
@@ -337,8 +343,8 @@
 }
 
 :root.light-mode .input-wrapper:focus-within {
-  border-color: #2BA03C;
-  box-shadow: 0 0 0 1px #2BA03C;
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 1px var(--focus-ring-color);
 }
 
 :root.light-mode .signin-form .form-input {

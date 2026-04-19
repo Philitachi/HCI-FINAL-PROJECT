@@ -44,7 +44,7 @@
 }
 
 .search-input:focus {
-  border-color: #14b8a6;
+  border-color: var(--focus-ring-color);
 }
 
 .type-filter-btn {

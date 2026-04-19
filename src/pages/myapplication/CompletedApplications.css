@@ -87,8 +87,8 @@
 }
 
 .date-range-input:focus {
-  border-color: #14b8a6;
-  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.15);
+  border-color: var(--focus-ring-color);
+  box-shadow: var(--focus-ring-shadow-soft);
 }
 
 .date-range-input::-webkit-calendar-picker-indicator {
@@ -171,4 +171,3 @@
     justify-content: center;
   }
 }
-
