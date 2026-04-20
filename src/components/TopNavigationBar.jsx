@@ -11,7 +11,7 @@ const TopNavigationBar = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('theme') !== 'light';
+    return localStorage.getItem('theme') === 'dark';
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef(null);

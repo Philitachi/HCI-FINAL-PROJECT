@@ -38,7 +38,7 @@ const Dashboard = () => {
       setCurrentTime(Date.now());
     }, 60000);
 
-    const isDarkMode = localStorage.getItem('theme') !== 'light';
+    const isDarkMode = localStorage.getItem('theme') === 'dark';
     if (isDarkMode) {
       document.documentElement.classList.remove('light-mode');
       localStorage.setItem('theme', 'dark');

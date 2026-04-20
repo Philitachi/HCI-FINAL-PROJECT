@@ -83,7 +83,7 @@ const mergeNotifications = (existingNotifications = [], incomingNotifications = 
 const TopNavigationBar2 = ({ hideHamburger = false }) => {
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('theme') !== 'light';
+    return localStorage.getItem('theme') === 'dark';
   });
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showSignOutModal, setShowSignOutModal] = useState(false);

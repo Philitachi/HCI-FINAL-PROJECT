@@ -93,10 +93,10 @@ function App() {
       await hydrateUserSession();
 
       const theme = localStorage.getItem('theme');
-      if (theme === 'light') {
-        document.documentElement.classList.add('light-mode');
-      } else {
+      if (theme === 'dark') {
         document.documentElement.classList.remove('light-mode');
+      } else {
+        document.documentElement.classList.add('light-mode');
       }
 
       // Initialize Font Style

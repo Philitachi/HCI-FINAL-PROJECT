@@ -17,13 +17,13 @@ const HowItWorks = () => {
   
   // Track theme to switch illustrations
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('theme') !== 'light';
+    return localStorage.getItem('theme') === 'dark';
   });
 
   useEffect(() => {
     // Listen for theme changes on the window
     const handleStorageChange = () => {
-      setIsDarkMode(localStorage.getItem('theme') !== 'light');
+      setIsDarkMode(localStorage.getItem('theme') === 'dark');
     };
     
     // We also need to watch for class changes on the root element
