@@ -1,5 +1,5 @@
 /* Shared network feedback follows the pattern most production apps use:
-   a persistent offline banner plus a short reconnect toast. */
+   an upfront offline warning, then lightweight bottom status updates. */
 .network-status-banner,
 .network-status-toast {
   position: fixed;
@@ -104,12 +104,23 @@
   transform: translateY(0);
 }
 
+.network-status-toast.offline {
+  background: rgba(127, 29, 29, 0.96);
+  border-color: rgba(254, 202, 202, 0.18);
+  color: #fff7ed;
+}
+
 .network-status-toast-dot {
   width: 0.625rem;
   height: 0.625rem;
   border-radius: 999px;
   background: #22c55e;
   box-shadow: 0 0 0 0.3rem rgba(34, 197, 94, 0.18);
+}
+
+.network-status-toast.offline .network-status-toast-dot {
+  background: #ef4444;
+  box-shadow: 0 0 0 0.3rem rgba(239, 68, 68, 0.18);
 }
 
 :root.light-mode .network-status-banner {
@@ -136,6 +147,12 @@
   border-color: rgba(59, 130, 246, 0.12);
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
   color: #0c4a6e;
+}
+
+:root.light-mode .network-status-toast.offline {
+  background: rgba(255, 241, 242, 0.97);
+  border-color: rgba(248, 113, 113, 0.18);
+  color: #7f1d1d;
 }
 
 @media (max-width: 640px) {

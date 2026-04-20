@@ -931,6 +931,67 @@
   color: #64748b;
 }
 
+@media (max-width: 768px) {
+  .clearance-modal {
+    width: 95%;
+    max-height: 85vh;
+    border-radius: 12px;
+  }
+  
+  .clearance-modal-header {
+    padding: 1.25rem 1.25rem 1rem;
+  }
+  
+  .clearance-modal-title {
+    font-size: 1.15rem;
+  }
+  
+  .clearance-modal-body {
+    padding: 1rem 1.25rem 1.5rem;
+  }
+  
+  .clearance-search-section {
+    padding: 1rem;
+  }
+  
+  .clearance-search-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .clearance-search-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .clearance-divider {
+    margin: 1.25rem 0;
+  }
+  
+  .clearance-new-app-section {
+    padding: 1.5rem 1rem;
+  }
+  
+  .clearance-new-app-icon {
+    width: 42px;
+    height: 42px;
+  }
+  
+  .clearance-new-app-title {
+    font-size: 1rem;
+  }
+  
+  .clearance-new-app-desc {
+    font-size: 0.8rem;
+  }
+  
+  .clearance-start-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem;
+  }
+}
+
 /* Upload Requirements Step 2 Redesign */
 .upload-req-header {
   margin-bottom: 2rem;

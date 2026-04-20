@@ -1,25 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ComplaintSuccessModal from '../components/ComplaintSuccessModal';
 import '../styles/Complaint.css';
 import './Dashboard/dashboard.css';
 
+const createInitialComplaintFormData = () => ({
+  name: '',
+  address: '',
+  email: '',
+  contactNum: '',
+  gender: '',
+  otherGender: '',
+  officialInvolved: '',
+  region: '',
+  fireStation: '',
+  directorate: '',
+  nature: [],
+  narration: '',
+  consent: false
+});
+
 const PublicComplaint = () => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    name: '',
-    address: '',
-    email: '',
-    contactNum: '',
-    gender: '',
-    otherGender: '',
-    officialInvolved: '',
-    region: '',
-    fireStation: '',
-    directorate: '',
-    nature: [],
-    narration: '',
-    consent: false
-  });
+  const [formData, setFormData] = useState(createInitialComplaintFormData);
+  const [showComplaintSuccess, setShowComplaintSuccess] = useState(false);
   
   const [errors, setErrors] = useState({});
 
@@ -211,6 +215,15 @@ const PublicComplaint = () => {
     if (step > 1) setStep(step - 1);
   };
 
+  const handleComplaintSuccessClose = () => {
+    setShowComplaintSuccess(false);
+    setStep(1);
+    setFormData(createInitialComplaintFormData());
+    setErrors({});
+    setIsRegionOpen(false);
+    setIsFireStationOpen(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -227,8 +240,7 @@ const PublicComplaint = () => {
     
     // Handle form submission logic here
     console.log("Form submitted", formData);
-    alert("Complaint submitted successfully!");
-    // Reset or redirect
+    setShowComplaintSuccess(true);
   };
 
   const handleEnterToNext = (e) => {
@@ -565,6 +577,10 @@ const PublicComplaint = () => {
           </div>
         </main>
       </div>
+      <ComplaintSuccessModal
+        isOpen={showComplaintSuccess}
+        onClose={handleComplaintSuccessClose}
+      />
     </div>
   );
 };

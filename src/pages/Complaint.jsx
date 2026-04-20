@@ -2,27 +2,31 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
+import ComplaintSuccessModal from '../components/ComplaintSuccessModal';
 import { ArrowLeft, ArrowRight, Send } from 'lucide-react';
 import '../styles/Complaint.css';
 import './Dashboard/dashboard.css';
 
+const createInitialComplaintFormData = () => ({
+  name: '',
+  address: '',
+  email: '',
+  contactNum: '',
+  gender: '',
+  otherGender: '',
+  officialInvolved: '',
+  region: '',
+  fireStation: '',
+  directorate: '',
+  nature: [],
+  narration: '',
+  consent: false
+});
+
 const Complaint = () => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    name: '',
-    address: '',
-    email: '',
-    contactNum: '',
-    gender: '',
-    otherGender: '',
-    officialInvolved: '',
-    region: '',
-    fireStation: '',
-    directorate: '',
-    nature: [],
-    narration: '',
-    consent: false
-  });
+  const [formData, setFormData] = useState(createInitialComplaintFormData);
+  const [showComplaintSuccess, setShowComplaintSuccess] = useState(false);
   
   const [errors, setErrors] = useState({});
 
@@ -214,6 +218,15 @@ const Complaint = () => {
     if (step > 1) setStep(step - 1);
   };
 
+  const handleComplaintSuccessClose = () => {
+    setShowComplaintSuccess(false);
+    setStep(1);
+    setFormData(createInitialComplaintFormData());
+    setErrors({});
+    setIsRegionOpen(false);
+    setIsFireStationOpen(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -230,8 +243,7 @@ const Complaint = () => {
     
     // Handle form submission logic here
     console.log("Form submitted", formData);
-    alert("Complaint submitted successfully!");
-    // Reset or redirect
+    setShowComplaintSuccess(true);
   };
 
   const handleEnterToNext = (e) => {
@@ -570,6 +582,10 @@ const Complaint = () => {
           </div>
         </main>
       </div>
+      <ComplaintSuccessModal
+        isOpen={showComplaintSuccess}
+        onClose={handleComplaintSuccessClose}
+      />
     </div>
   );
 };

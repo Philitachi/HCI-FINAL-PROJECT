@@ -4,6 +4,7 @@ import { Network } from '@capacitor/network';
 import './GlobalLoader.css';
 
 const RECONNECTED_TOAST_DURATION = 2800;
+const OFFLINE_BANNER_DURATION = 5 * 1000;
 
 const getBrowserIsOffline = () => (
   typeof navigator !== 'undefined' ? !navigator.onLine : false
@@ -11,7 +12,8 @@ const getBrowserIsOffline = () => (
 
 const GlobalLoader = () => {
   const [isOffline, setIsOffline] = useState(getBrowserIsOffline);
-  const [showReconnected, setShowReconnected] = useState(false);
+  const [showOfflineBanner, setShowOfflineBanner] = useState(getBrowserIsOffline);
+  const [connectionToastMode, setConnectionToastMode] = useState(null);
   const hasMountedRef = useRef(false);
   const isOfflineRef = useRef(getBrowserIsOffline());
 
@@ -28,9 +30,16 @@ const GlobalLoader = () => {
       setIsOffline(nextIsOffline);
 
       if (nextIsOffline) {
-        setShowReconnected(false);
+        if (!wasOffline) {
+          setShowOfflineBanner(true);
+          setConnectionToastMode(null);
+        }
       } else if (shouldShowReconnectToast && hasMountedRef.current && wasOffline) {
-        setShowReconnected(true);
+        setShowOfflineBanner(false);
+        setConnectionToastMode('online');
+      } else {
+        setShowOfflineBanner(false);
+        setConnectionToastMode(null);
       }
     };
 
@@ -85,26 +94,48 @@ const GlobalLoader = () => {
   }, []);
 
   useEffect(() => {
-    if (!showReconnected) {
+    if (!isOffline || !showOfflineBanner) {
       return undefined;
     }
 
     const timeoutId = window.setTimeout(() => {
-      setShowReconnected(false);
+      setShowOfflineBanner(false);
+
+      if (isOfflineRef.current) {
+        setConnectionToastMode('offline');
+      }
+    }, OFFLINE_BANNER_DURATION);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isOffline, showOfflineBanner]);
+
+  useEffect(() => {
+    if (connectionToastMode !== 'online') {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setConnectionToastMode(null);
     }, RECONNECTED_TOAST_DURATION);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [showReconnected]);
+  }, [connectionToastMode]);
+
+  const toastMessage = connectionToastMode === 'offline'
+    ? "You're offline. We'll update this when your internet is back."
+    : 'Back online. You can try again now.';
 
   return (
     <>
       <div
-        className={`network-status-banner ${isOffline ? 'show' : ''}`}
+        className={`network-status-banner ${showOfflineBanner ? 'show' : ''}`}
         role="status"
         aria-live="polite"
-        aria-hidden={!isOffline}
+        aria-hidden={!showOfflineBanner}
       >
         <div className="network-status-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" className="network-status-icon-svg">
@@ -124,13 +155,13 @@ const GlobalLoader = () => {
       </div>
 
       <div
-        className={`network-status-toast ${showReconnected ? 'show' : ''}`}
+        className={`network-status-toast ${connectionToastMode ? 'show' : ''} ${connectionToastMode || ''}`}
         role="status"
         aria-live="polite"
-        aria-hidden={!showReconnected}
+        aria-hidden={!connectionToastMode}
       >
         <span className="network-status-toast-dot" aria-hidden="true" />
-        Back online. You can try again now.
+        {toastMessage}
       </div>
     </>
   );

@@ -1,9 +1,23 @@
-import React, { useState } from 'react';
-import { Home, ChevronDown, Search, Info, CheckCircle2, Eye } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ChevronDown, Info, CheckCircle2 } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import TopNavigationBar2 from '../components/TopNavigationBar2';
 import '../styles/FAQs.css';
 import './Dashboard/dashboard.css';
+
+const initialContactFormData = {
+  name: '',
+  email: '',
+  subject: '',
+  message: ''
+};
+
+const requiredContactFields = [
+  { name: 'name', label: 'Name' },
+  { name: 'email', label: 'Email address' },
+  { name: 'subject', label: 'Subject' },
+  { name: 'message', label: 'Message' }
+];
 
 const FAQItem = ({ question, answer, isActive, onClick }) => {
   return (
@@ -34,8 +48,11 @@ const FAQItem = ({ question, answer, isActive, onClick }) => {
 
 const FAQs = () => {
   const [activeIndex, setActiveIndex] = useState(null);
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [formData, setFormData] = useState(initialContactFormData);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const successModalRef = useRef(null);
+  const successCloseButtonRef = useRef(null);
 
   const toggleFAQ = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -44,16 +61,95 @@ const FAQs = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (fieldErrors[name]) {
+      setFieldErrors((currentErrors) => ({
+        ...currentErrors,
+        [name]: ''
+      }));
+    }
   };
+
+  const handleSuccessClose = useCallback(() => {
+    setIsSubmitted(false);
+    setFormData(initialContactFormData);
+    setFieldErrors({});
+  }, []);
+
+  useEffect(() => {
+    if (!isSubmitted) return undefined;
+
+    const previouslyFocusedElement = document.activeElement;
+    const focusTimer = window.setTimeout(() => {
+      successCloseButtonRef.current?.focus();
+    }, 0);
+
+    const handleModalKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        handleSuccessClose();
+        return;
+      }
+
+      if (event.key !== 'Tab' || !successModalRef.current) return;
+
+      const focusableElements = Array.from(
+        successModalRef.current.querySelectorAll(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        successModalRef.current.focus();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleModalKeyDown);
+
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.removeEventListener('keydown', handleModalKeyDown);
+
+      if (previouslyFocusedElement instanceof HTMLElement && previouslyFocusedElement.isConnected) {
+        previouslyFocusedElement.focus();
+      }
+    };
+  }, [isSubmitted, handleSuccessClose]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const nextErrors = {};
+
+    requiredContactFields.forEach(({ name, label }) => {
+      if (!formData[name].trim()) {
+        nextErrors[name] = `${label} is required.`;
+      }
+    });
+
+    if (!nextErrors.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+      nextErrors.email = 'Please enter a valid email address.';
+    }
+
+    setFieldErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      return;
+    }
+
     setIsSubmitted(true);
-    // Simulation of API call
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 5000);
   };
 
   const faqsList = [
@@ -119,49 +215,117 @@ const FAQs = () => {
               </div>
             </div>
 
-            {isSubmitted ? (
-              <div className="contact-success-state animate-fade-in">
-                <div className="success-icon-wrapper">
-                  <CheckCircle2 className="success-icon" size={48} strokeWidth={2} />
+            <form className="contact-form-body animate-fade-in" onSubmit={handleSubmit} noValidate>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="faq-contact-name">Your Name <span className="required-asterisk">*</span></label>
+                  <input
+                    id="faq-contact-name"
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="E.g. John Doe"
+                    required
+                    aria-invalid={Boolean(fieldErrors.name)}
+                    aria-describedby={fieldErrors.name ? 'faq-contact-name-error' : undefined}
+                    className={`modern-input ${fieldErrors.name ? 'input-error' : ''}`}
+                  />
+                  {fieldErrors.name && <span className="faq-field-error" id="faq-contact-name-error">{fieldErrors.name}</span>}
                 </div>
-                <h4>Message Sent!</h4>
-                <p>We've received your query and will respond via email as soon as possible.</p>
-                <button className="reset-contact-btn" onClick={() => setIsSubmitted(false)}>Send another message</button>
+                <div className="form-group">
+                  <label htmlFor="faq-contact-email">Email Address <span className="required-asterisk">*</span></label>
+                  <input
+                    id="faq-contact-email"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="E.g. john@example.com"
+                    required
+                    aria-invalid={Boolean(fieldErrors.email)}
+                    aria-describedby={fieldErrors.email ? 'faq-contact-email-error' : undefined}
+                    className={`modern-input ${fieldErrors.email ? 'input-error' : ''}`}
+                  />
+                  {fieldErrors.email && <span className="faq-field-error" id="faq-contact-email-error">{fieldErrors.email}</span>}
+                </div>
               </div>
-            ) : (
-              <form className="contact-form-body animate-fade-in" onSubmit={handleSubmit}>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Your Name</label>
-                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="E.g. John Doe" required className="modern-input" />
-                  </div>
-                  <div className="form-group">
-                    <label>Email Address</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="E.g. john@example.com" required className="modern-input" />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Subject</label>
-                  <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder="How can we help you?" required className="modern-input" />
-                </div>
-                <div className="form-group">
-                  <label>Message</label>
-                  <textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Type your message here..." rows="4" required className="modern-textarea"></textarea>
-                </div>
-                <div className="form-submit-row">
-                  <button type="submit" className="submit-contact-btn">
-                    <span>Send Message</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="22" y1="2" x2="11" y2="13"></line>
-                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                  </button>
-                </div>
-              </form>
-            )}
+              <div className="form-group">
+                <label htmlFor="faq-contact-subject">Subject <span className="required-asterisk">*</span></label>
+                <input
+                  id="faq-contact-subject"
+                  type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  placeholder="How can we help you?"
+                  required
+                  aria-invalid={Boolean(fieldErrors.subject)}
+                  aria-describedby={fieldErrors.subject ? 'faq-contact-subject-error' : undefined}
+                  className={`modern-input ${fieldErrors.subject ? 'input-error' : ''}`}
+                />
+                {fieldErrors.subject && <span className="faq-field-error" id="faq-contact-subject-error">{fieldErrors.subject}</span>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="faq-contact-message">Message <span className="required-asterisk">*</span></label>
+                <textarea
+                  id="faq-contact-message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="Type your message here..."
+                  rows="4"
+                  required
+                  aria-invalid={Boolean(fieldErrors.message)}
+                  aria-describedby={fieldErrors.message ? 'faq-contact-message-error' : undefined}
+                  className={`modern-textarea ${fieldErrors.message ? 'input-error' : ''}`}
+                ></textarea>
+                {fieldErrors.message && <span className="faq-field-error" id="faq-contact-message-error">{fieldErrors.message}</span>}
+              </div>
+              <div className="form-submit-row">
+                <button type="submit" className="submit-contact-btn">
+                  <span>Send Message</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+            </form>
           </div>
         </main>
       </div>
+
+      {isSubmitted && (
+        <div className="faq-success-overlay">
+          <div
+            className="faq-success-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="faq-success-title"
+            aria-describedby="faq-success-message"
+            tabIndex="-1"
+            ref={successModalRef}
+          >
+            <div className="faq-success-icon" aria-hidden="true">
+              <CheckCircle2 size={46} strokeWidth={2.2} />
+            </div>
+            <h2 id="faq-success-title">Message Sent!</h2>
+            <p id="faq-success-message">
+              We've received your message. The Bureau of Fire Protection will respond
+              to the email address you provided as soon as possible.
+            </p>
+            <button
+              type="button"
+              className="faq-success-button"
+              onClick={handleSuccessClose}
+              ref={successCloseButtonRef}
+            >
+              Send another message
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

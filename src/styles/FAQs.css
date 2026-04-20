@@ -220,6 +220,12 @@
   color: var(--text-primary-color, #cbd5e1);
 }
 
+.contact-form-body .required-asterisk {
+  color: #ef4444;
+  margin-left: 0.25rem;
+  font-weight: 700;
+}
+
 .modern-input, .modern-textarea {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.2);
@@ -242,6 +248,28 @@
   border-color: var(--focus-ring-color);
   background-color: rgba(0, 0, 0, 0.3);
   box-shadow: var(--focus-ring-shadow-soft);
+}
+
+.modern-input.input-error,
+.modern-textarea.input-error,
+.modern-input[aria-invalid="true"],
+.modern-textarea[aria-invalid="true"] {
+  border-color: #ef4444;
+  background-color: rgba(127, 29, 29, 0.14);
+}
+
+.modern-input.input-error:focus,
+.modern-textarea.input-error:focus,
+.modern-input[aria-invalid="true"]:focus,
+.modern-textarea[aria-invalid="true"]:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+.faq-field-error {
+  color: #f87171;
+  font-size: 0.8rem;
+  line-height: 1.35;
 }
 
 .modern-input::placeholder, .modern-textarea::placeholder {
@@ -275,53 +303,86 @@
   box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
 }
 
-/* Success State */
-.contact-success-state {
-  padding: 4rem 2rem;
+/* Success Modal */
+.faq-success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
+  background-color: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: faqModalFadeIn 0.25s ease-out;
+}
+
+.faq-success-modal {
+  width: min(420px, 100%);
+  background-color: var(--card-bg-color, #1e293b);
+  border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 18px;
+  padding: 2rem;
   text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+  animation: faqModalPopIn 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.success-icon-wrapper {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background-color: rgba(16, 185, 129, 0.1);
-  color: #10b981;
+.faq-success-modal:focus {
+  outline: none;
+}
+
+.faq-success-icon {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 1.35rem;
+  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  color: #10b981;
+  background-color: rgba(16, 185, 129, 0.12);
+  box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.05);
 }
 
-.contact-success-state h4 {
-  font-size: 1.5rem;
-  margin: 0 0 0.5rem 0;
-  color: white;
+.faq-success-modal h2 {
+  margin: 0 0 0.65rem;
+  color: var(--text-primary-color, #ffffff);
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.35px;
 }
 
-.contact-success-state p {
-  color: #94a3b8;
-  margin: 0 0 2rem 0;
-  max-width: 400px;
+.faq-success-modal p {
+  margin: 0 auto 1.7rem;
+  max-width: 34ch;
+  color: var(--text-secondary-color, #94a3b8);
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
-.reset-contact-btn {
+.faq-success-button {
+  width: 100%;
+  border: 1px solid #14b8a6;
+  border-radius: 12px;
+  padding: 0.95rem 1rem;
   background-color: transparent;
   color: #14b8a6;
-  border: 1px solid #14b8a6;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
+  font: inherit;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
-.reset-contact-btn:hover {
+.faq-success-button:hover {
   background-color: rgba(20, 184, 166, 0.1);
+  transform: translateY(-1px);
+}
+
+.faq-success-button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-shadow);
 }
 
 .animate-fade-in {
@@ -333,17 +394,27 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes faqModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes faqModalPopIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* Light Mode Overrides */
 :root.light-mode .faqs-title,
 :root.light-mode .faq-question-content,
 :root.light-mode .contact-header-text h3,
-:root.light-mode .contact-success-state h4 {
+:root.light-mode .faq-success-modal h2 {
   color: #0f172a;
 }
 :root.light-mode .faqs-subtitle,
 :root.light-mode .faq-answer-text,
 :root.light-mode .contact-header-text p,
-:root.light-mode .contact-success-state p {
+:root.light-mode .faq-success-modal p {
   color: #475569;
 }
 :root.light-mode .faq-item,
@@ -392,6 +463,35 @@
   border-color: var(--focus-ring-color);
   box-shadow: var(--focus-ring-shadow-soft);
 }
+:root.light-mode .modern-input.input-error,
+:root.light-mode .modern-textarea.input-error,
+:root.light-mode .modern-input[aria-invalid="true"],
+:root.light-mode .modern-textarea[aria-invalid="true"] {
+  border-color: #dc2626;
+  background-color: #fff1f2;
+}
+:root.light-mode .modern-input.input-error:focus,
+:root.light-mode .modern-textarea.input-error:focus,
+:root.light-mode .modern-input[aria-invalid="true"]:focus,
+:root.light-mode .modern-textarea[aria-invalid="true"]:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.18);
+}
+:root.light-mode .faq-field-error {
+  color: #b91c1c;
+}
+:root.light-mode .faq-success-overlay {
+  background-color: rgba(15, 23, 42, 0.32);
+}
+:root.light-mode .faq-success-modal {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16);
+}
+:root.light-mode .faq-success-icon {
+  background-color: #ecfdf5;
+  box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.08);
+}
 
 /* Media Queries */
 @media (max-width: 768px) {
@@ -410,10 +510,6 @@
     gap: 1.25rem;
   }
 
-  .contact-success-state {
-    padding: 2rem 0.75rem;
-  }
-
   .form-row {
     grid-template-columns: 1fr;
     gap: 1.25rem;
@@ -430,5 +526,25 @@
 
   .faq-answer-text {
     padding-left: 1.75rem; /* Remove indent on mobile where icons might stack or spacing is tight */
+  }
+
+  .faq-success-modal {
+    padding: 1.5rem 1.1rem;
+    border-radius: 16px;
+  }
+
+  .faq-success-icon {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 1rem;
+  }
+
+  .faq-success-modal h2 {
+    font-size: 1.3rem;
+  }
+
+  .faq-success-modal p {
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
   }
 }
