@@ -9,6 +9,7 @@ import '../styles/SignUpPage.css';
 import logo from '../assets/Logo.svg';
 import ExitButton from '../components/exitButton';
 import { hashPassword, generateSalt } from '../utils/crypto';
+import { Loader2 } from 'lucide-react';
 
 const SIGNUP_DRAFT_STORAGE_KEY = 'signup-form-draft';
 const SIGNUP_DRAFT_SESSION_KEY = 'signup-form-session-active';
@@ -583,7 +584,7 @@ const SignUpPage = () => {
 
             <div className="submit-container">
               <button type="submit" className="btn-signup-submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Creating Account...' : 'Sign Up'}
+                {isSubmitting ? <><Loader2 size={18} className="btn-spinner" /> Creating Account...</> : 'Sign Up'}
               </button>
             </div>
           </form>

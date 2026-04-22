@@ -9,7 +9,7 @@ import logo from '../assets/Logo.svg';
 import ExitButton from '../components/exitButton';
 import { hashPassword } from '../utils/crypto';
 import { getUserSession, persistUserSession } from '../utils/userSession';
-import { User, Lock, Eye, EyeOff } from 'lucide-react';
+import { User, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 const SignInPage = () => {
   const navigate = useNavigate();
@@ -185,7 +185,7 @@ const SignInPage = () => {
             </div>
 
             <button type="submit" className="signin-btn-submit" disabled={isLoading} aria-busy={isLoading}>
-              {isLoading ? 'Signing In...' : 'Sign In'}
+              {isLoading ? <><Loader2 size={18} className="btn-spinner" /> Signing In...</> : 'Sign In'}
             </button>
           </form>
 

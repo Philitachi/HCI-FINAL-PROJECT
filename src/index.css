@@ -140,3 +140,14 @@ input, select, textarea, button {
     padding: 0.2rem 0.5rem;
   }
 }
+
+/* ========== GLOBAL BUTTON SPINNER ========== */
+@keyframes btn-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.btn-spinner {
+  animation: btn-spin 0.75s linear infinite;
+  flex-shrink: 0;
+}

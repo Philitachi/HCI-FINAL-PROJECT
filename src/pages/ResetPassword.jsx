@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import emailjs from '@emailjs/browser';
+import { Loader2 } from 'lucide-react';
 import '../styles/ResetPassword.css';
 import verifyEmailDark from '../assets/verifyyouemailaddress.svg';
 import verifyEmailLight from '../assets/verifyyouemailaddress.svg';
@@ -217,7 +218,7 @@ const ResetPassword = () => {
           onClick={handleVerifyCode}
           disabled={!isCodeComplete || isLoading}
         >
-          {isLoading ? 'Verifying...' : 'Verify Code'}
+          {isLoading ? <><Loader2 size={18} className="btn-spinner" /> Verifying...</> : 'Verify Code'}
         </button>
 
         <div className="reset-divider"></div>

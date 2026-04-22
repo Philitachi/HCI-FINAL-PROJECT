@@ -6,6 +6,7 @@ import { hashPassword, generateSalt } from '../utils/crypto';
 import illustrationDark from '../assets/Createnewpassword.svg';
 import illustrationLight from '../assets/Createnewpassword.svg';
 import '../styles/CreateNewPassword.css';
+import { Loader2 } from 'lucide-react';
 
 const CreateNewPassword = () => {
   const location = useLocation();
@@ -193,7 +194,7 @@ const CreateNewPassword = () => {
             className="create-btn-primary" 
             disabled={isLoading || !isPasswordValid || !doPasswordsMatch}
           >
-            {isLoading ? 'Resetting...' : 'Reset Password'}
+            {isLoading ? <><Loader2 size={18} className="btn-spinner" /> Resetting...</> : 'Reset Password'}
           </button>
         </form>
       </div>

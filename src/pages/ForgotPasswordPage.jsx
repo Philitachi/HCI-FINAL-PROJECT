@@ -6,6 +6,7 @@ import emailjs from '@emailjs/browser';
 import '../styles/ForgotPasswordPage.css';
 import illustrationDark from '../assets/ForgotPasswordIllustrationDarkmode.svg';
 import illustrationLight from '../assets/forgotPasswordIllustrationLightmode.svg';
+import { Loader2 } from 'lucide-react';
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -120,7 +121,7 @@ const ForgotPasswordPage = () => {
             )}
             
             <button type="submit" className="btn-send" disabled={isLoading}>
-              {isLoading ? 'Sending Code...' : 'Send Code'}
+              {isLoading ? <><Loader2 size={18} className="btn-spinner" /> Sending Code...</> : 'Send Code'}
             </button>
           </form>
           

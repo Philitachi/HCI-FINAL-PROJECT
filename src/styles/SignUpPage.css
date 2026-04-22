@@ -342,6 +342,10 @@
 }
 
 .btn-signup-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   background-color: #0d94a1;
   /* Teal/Cyan button to match user design */
   color: white;
