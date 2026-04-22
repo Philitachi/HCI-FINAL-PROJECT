@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, BookOpenText } from 'lucide-react';
 import '../styles/HowItWorks.css';
 
 // Dark Mode Assets
@@ -12,6 +14,7 @@ import CreateAccountImgLight from '../assets/createanaccountLightmode.svg';
 import VerifyIdentityImgLight from '../assets/verifyyouridentityLightmode.svg';
 
 const HowItWorks = () => {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   
@@ -136,6 +139,21 @@ const HowItWorks = () => {
             </div>
           </div>
 
+        </div>
+
+        <div className="hiw-guide-cta fade-in-up" style={{ transitionDelay: '0.8s' }}>
+          <div>
+            <span className="hiw-guide-eyebrow">
+              <BookOpenText size={18} strokeWidth={2} />
+              Full Walkthrough
+            </span>
+            <h3>Need the complete application guide?</h3>
+            <p>Open the User Guide for account setup, requirements, status tracking, office payment notes, and Android APK installation.</p>
+          </div>
+          <button className="hiw-guide-link" onClick={() => navigate('/user-guide')}>
+            View User Guide
+            <ArrowRight size={18} strokeWidth={2} />
+          </button>
         </div>
       </div>
     </section>

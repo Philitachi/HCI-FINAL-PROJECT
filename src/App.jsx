@@ -73,6 +73,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Requirements from './pages/Requirements';
 import Complaint from './pages/Complaint';
 import PublicComplaint from './pages/PublicComplaint';
+import UserGuide from './pages/UserGuide';
 import PublicLayout from './components/PublicLayout';
 import ApplicationEvaluation from './pages/newapplication/ApplicationEvaluation';
 import ApplicationOccupancy from './pages/newapplication/ApplicationOccupancy';
@@ -132,6 +133,7 @@ function App() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<HomePage />} />
+          <Route path="/user-guide" element={<UserGuide />} />
           <Route path="/submit-complaint" element={<PublicComplaint />} />
         </Route>
         <Route path="/signin" element={<SignInPage />} />

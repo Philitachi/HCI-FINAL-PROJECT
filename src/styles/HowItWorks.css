@@ -129,6 +129,72 @@
   line-height: 1.6;
 }
 
+.hiw-guide-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 4rem auto 0;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hiw-guide-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #67e8f9;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.hiw-guide-cta h3 {
+  margin: 0.7rem 0 0.45rem;
+  color: #ffffff;
+  font-size: 1.45rem;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.hiw-guide-cta p {
+  max-width: 720px;
+  color: #9CA3AF;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.hiw-guide-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 46px;
+  flex: 0 0 auto;
+  padding: 0.8rem 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: #0284c7;
+  color: #ffffff;
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hiw-guide-link:hover {
+  transform: translateY(-2px);
+  background: #0369a1;
+  box-shadow: 0 12px 24px rgba(2, 132, 199, 0.24);
+}
+
+.hiw-guide-link svg {
+  flex: 0 0 auto;
+}
+
 /* Animations */
 .fade-in-up {
   opacity: 0;
@@ -153,6 +219,11 @@
     gap: 4rem;
   }
 
+  .hiw-guide-cta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .hiw-circle-bg {
     width: 220px;
     height: 220px;
@@ -167,6 +238,10 @@
   
   .hiw-section-subtitle {
     font-size: 1.2rem;
+  }
+
+  .hiw-guide-link {
+    width: 100%;
   }
 }
 
@@ -207,5 +282,23 @@
 }
 
 :root.light-mode .hiw-step-text p {
+  color: #4B5563;
+}
+
+:root.light-mode .hiw-guide-cta {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+:root.light-mode .hiw-guide-eyebrow {
+  color: #0369A1;
+}
+
+:root.light-mode .hiw-guide-cta h3 {
+  color: #111827;
+}
+
+:root.light-mode .hiw-guide-cta p {
   color: #4B5563;
 }

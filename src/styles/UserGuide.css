@@ -1,0 +1,598 @@
+.user-guide-page {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1540px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  background: #0b1120;
+  color: #f8fafc;
+  font-family: 'Outfit', sans-serif;
+}
+
+.user-guide-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.user-guide-hero {
+  min-height: max(680px, 100vh);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 8rem 0 4rem;
+  background: #111827;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-guide-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.7fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.user-guide-hero-copy h1 {
+  max-width: 800px;
+  margin: 1rem 0 1.25rem;
+  font-size: 3.7rem;
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: 0;
+  color: #ffffff;
+}
+
+.user-guide-hero-copy p {
+  max-width: 680px;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+.user-guide-eyebrow,
+.user-guide-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #67e8f9;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.user-guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.25rem;
+}
+
+.user-guide-primary-btn,
+.user-guide-secondary-btn,
+.user-guide-primary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 48px;
+  border-radius: 8px;
+  padding: 0.85rem 1.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.user-guide-primary-btn,
+.user-guide-primary-link {
+  color: #ffffff;
+  background: #0284c7;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 24px rgba(2, 132, 199, 0.2);
+}
+
+.user-guide-secondary-btn {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.user-guide-primary-btn:hover,
+.user-guide-primary-link:hover {
+  transform: translateY(-2px);
+  background: #0369a1;
+  box-shadow: 0 16px 30px rgba(2, 132, 199, 0.3);
+}
+
+.user-guide-secondary-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.user-guide-preview {
+  border-radius: 8px;
+  padding: 1.25rem;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.26);
+}
+
+.user-guide-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding-bottom: 1rem;
+  color: #f8fafc;
+  font-weight: 800;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-guide-preview-header svg {
+  color: #14b8a6;
+}
+
+.user-guide-preview-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.user-guide-preview-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+  color: #cbd5e1;
+}
+
+.user-guide-preview-row strong {
+  color: #67e8f9;
+  font-size: 0.95rem;
+  text-align: right;
+}
+
+.user-guide-section {
+  min-height: max(680px, 100vh);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 5.5rem 0;
+  background: #0b1120;
+}
+
+.user-guide-section-alt {
+  background: #1c2128;
+}
+
+.user-guide-section-header {
+  max-width: 760px;
+  margin-bottom: 3rem;
+}
+
+.user-guide-section-header h2,
+.user-guide-android-panel h2 {
+  margin: 0.75rem 0 1rem;
+  color: #ffffff;
+  font-size: 2.55rem;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.user-guide-section-header p,
+.user-guide-android-panel p {
+  color: #cbd5e1;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.user-guide-prepare-grid,
+.user-guide-support-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.62fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.user-guide-prepare-panel,
+.user-guide-info-panel {
+  border-radius: 8px;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-guide-prepare-panel > svg {
+  color: #14b8a6;
+}
+
+.user-guide-info-panel > svg {
+  color: #f59e0b;
+}
+
+.user-guide-prepare-panel h3,
+.user-guide-info-panel h3,
+.user-guide-step-card h3,
+.user-guide-type-card h3,
+.user-guide-status-item h3,
+.user-guide-support-list article h3 {
+  margin: 0.85rem 0 0.55rem;
+  color: #ffffff;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.user-guide-prepare-panel ul {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.user-guide-prepare-panel li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  color: #dbeafe;
+  line-height: 1.55;
+}
+
+.user-guide-prepare-panel li svg {
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+  color: #22c55e;
+}
+
+.user-guide-info-panel p,
+.user-guide-step-card p,
+.user-guide-type-card p,
+.user-guide-status-item p,
+.user-guide-support-list article p {
+  color: #cbd5e1;
+  line-height: 1.65;
+}
+
+.user-guide-step-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.user-guide-step-card,
+.user-guide-type-card,
+.user-guide-support-list article {
+  --guide-card-accent: #06b6d4;
+  border-radius: 8px;
+  padding: 1.3rem;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 3px solid var(--guide-card-accent);
+  transition: transform 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.user-guide-step-card:nth-child(2),
+.user-guide-type-card:nth-child(2),
+.user-guide-support-list article:nth-child(2) {
+  --guide-card-accent: #14b8a6;
+}
+
+.user-guide-step-card:nth-child(3),
+.user-guide-type-card:nth-child(3),
+.user-guide-support-list article:nth-child(3) {
+  --guide-card-accent: #f59e0b;
+}
+
+.user-guide-step-card:nth-child(4),
+.user-guide-type-card:nth-child(4),
+.user-guide-support-list article:nth-child(4) {
+  --guide-card-accent: #f43f5e;
+}
+
+.user-guide-step-card:hover,
+.user-guide-type-card:hover,
+.user-guide-support-list article:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.065);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.user-guide-step-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--guide-card-accent);
+}
+
+.user-guide-step-top span,
+.user-guide-type-index {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--guide-card-accent);
+}
+
+.user-guide-type-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.user-guide-status-list {
+  display: grid;
+  gap: 1rem;
+  position: relative;
+}
+
+.user-guide-status-item {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1.2rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-guide-status-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #0284c7;
+  font-weight: 800;
+}
+
+.user-guide-support-header {
+  margin-bottom: 0;
+}
+
+.user-guide-support-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.user-guide-support-list article svg {
+  color: var(--guide-card-accent);
+}
+
+.user-guide-android-section {
+  min-height: max(680px, 100vh);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 5.5rem 0;
+  background: #0b1120;
+}
+
+.user-guide-android-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 8px;
+  background: #0f766e;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.user-guide-android-panel h2 {
+  margin-bottom: 0.75rem;
+}
+
+.user-guide-android-panel p {
+  max-width: 700px;
+  color: #ecfeff;
+}
+
+.user-guide-primary-link {
+  flex: 0 0 auto;
+  background: #ffffff;
+  color: #0f172a;
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: none;
+}
+
+.user-guide-primary-link:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 1100px) {
+  .user-guide-hero-grid,
+  .user-guide-prepare-grid,
+  .user-guide-support-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-guide-preview {
+    max-width: 640px;
+  }
+
+  .user-guide-step-grid,
+  .user-guide-type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .user-guide-support-header {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-guide-container {
+    width: min(100% - 2rem, 1200px);
+  }
+
+  .user-guide-hero {
+    padding: 6.8rem 0 4rem;
+  }
+
+  .user-guide-hero-copy h1 {
+    font-size: 2.65rem;
+  }
+
+  .user-guide-hero-copy p,
+  .user-guide-section-header p,
+  .user-guide-android-panel p {
+    font-size: 1rem;
+  }
+
+  .user-guide-section {
+    padding: 4rem 0;
+  }
+
+  .user-guide-section-header h2,
+  .user-guide-android-panel h2 {
+    font-size: 2rem;
+  }
+
+  .user-guide-step-grid,
+  .user-guide-type-grid,
+  .user-guide-support-list {
+    grid-template-columns: 1fr;
+  }
+
+  .user-guide-android-panel {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .user-guide-actions {
+    flex-direction: column;
+  }
+
+  .user-guide-primary-btn,
+  .user-guide-secondary-btn,
+  .user-guide-primary-link {
+    width: 100%;
+  }
+
+  .user-guide-preview-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .user-guide-preview-row strong {
+    text-align: left;
+  }
+
+  .user-guide-status-item {
+    grid-template-columns: 1fr;
+  }
+}
+
+:root.light-mode .user-guide-page {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+:root.light-mode .user-guide-hero {
+  background: #ffffff;
+  border-bottom-color: rgba(15, 23, 42, 0.08);
+}
+
+:root.light-mode .user-guide-section {
+  background: #f8fafc;
+}
+
+:root.light-mode .user-guide-section-alt {
+  background: #f1f5f9;
+}
+
+:root.light-mode .user-guide-hero-copy h1,
+:root.light-mode .user-guide-section-header h2,
+:root.light-mode .user-guide-android-panel h2,
+:root.light-mode .user-guide-prepare-panel h3,
+:root.light-mode .user-guide-info-panel h3,
+:root.light-mode .user-guide-step-card h3,
+:root.light-mode .user-guide-type-card h3,
+:root.light-mode .user-guide-status-item h3,
+:root.light-mode .user-guide-support-list article h3 {
+  color: #0f172a;
+}
+
+:root.light-mode .user-guide-hero-copy p,
+:root.light-mode .user-guide-section-header p,
+:root.light-mode .user-guide-info-panel p,
+:root.light-mode .user-guide-step-card p,
+:root.light-mode .user-guide-type-card p,
+:root.light-mode .user-guide-status-item p,
+:root.light-mode .user-guide-support-list article p {
+  color: #475569;
+}
+
+:root.light-mode .user-guide-eyebrow,
+:root.light-mode .user-guide-kicker {
+  color: #0369a1;
+}
+
+:root.light-mode .user-guide-secondary-btn {
+  color: #0f172a;
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+:root.light-mode .user-guide-secondary-btn:hover {
+  background: #f1f5f9;
+  border-color: rgba(15, 23, 42, 0.2);
+}
+
+:root.light-mode .user-guide-preview,
+:root.light-mode .user-guide-prepare-panel,
+:root.light-mode .user-guide-info-panel,
+:root.light-mode .user-guide-step-card,
+:root.light-mode .user-guide-type-card,
+:root.light-mode .user-guide-status-item,
+:root.light-mode .user-guide-support-list article {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+}
+
+:root.light-mode .user-guide-preview-header {
+  color: #0f172a;
+  border-bottom-color: rgba(15, 23, 42, 0.08);
+}
+
+:root.light-mode .user-guide-preview-row {
+  background: #f8fafc;
+  color: #475569;
+}
+
+:root.light-mode .user-guide-preview-row strong {
+  color: #0369a1;
+}
+
+:root.light-mode .user-guide-prepare-panel li {
+  color: #334155;
+}
+
+:root.light-mode .user-guide-android-section {
+  background: #f8fafc;
+}
+
+:root.light-mode .user-guide-android-panel {
+  background: #ccfbf1;
+  border-color: rgba(15, 118, 110, 0.16);
+}
+
+:root.light-mode .user-guide-android-panel p {
+  color: #115e59;
+}

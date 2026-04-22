@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/Logo.svg';
 import './TopNavigationBar.css';
-import { Sun, Moon, Home, FileText, LogIn, UserPlus } from 'lucide-react';
+import { Sun, Moon, Home, FileText, LogIn, UserPlus, BookOpenText } from 'lucide-react';
 import { getUserSession } from '../utils/userSession';
 
 const TopNavigationBar = () => {
@@ -29,26 +29,17 @@ const TopNavigationBar = () => {
   }, [isDarkMode]);
 
   useEffect(() => {
-    const complaintEl = document.getElementById('submit-complaint');
-    if (complaintEl) {
-      const handleScroll = () => {
-        const rect = complaintEl.getBoundingClientRect();
-        if (rect.top <= window.innerHeight / 2) {
-          setActiveSection('submit-complaint');
-        } else {
-          setActiveSection('home');
-        }
-      };
-      window.addEventListener('scroll', handleScroll);
-      handleScroll();
-      return () => window.removeEventListener('scroll', handleScroll);
-    } else {
-      if (location.pathname === '/submit-complaint' || location.hash === '#submit-complaint') {
-        setActiveSection('submit-complaint');
-      } else {
-        setActiveSection('home');
-      }
+    if (location.pathname === '/user-guide') {
+      setActiveSection('user-guide');
+      return;
     }
+
+    if (location.pathname === '/submit-complaint' || location.hash === '#submit-complaint') {
+      setActiveSection('submit-complaint');
+      return;
+    }
+
+    setActiveSection('home');
   }, [location]);
 
   useEffect(() => {
@@ -97,8 +88,9 @@ const TopNavigationBar = () => {
       
       {/* Desktop Nav */}
       <nav className="navbar-controls desktop-nav">
-        <div ref={navRef} style={{ position: 'relative', display: 'flex', gap: '2rem' }}>
+        <div ref={navRef} className="nav-links-group">
           <a href="#home" className={`nav-link home ${activeSection === 'home' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); navigate('/'); }}>Home</a>
+          <a href="/user-guide" className={`nav-link user-guide ${activeSection === 'user-guide' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); navigate('/user-guide'); }}>User Guide</a>
           <a href="#submit-complaint" className={`nav-link submit-complaint ${activeSection === 'submit-complaint' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); navigate('/submit-complaint'); }}>Submit a Complaint</a>
           <div className="nav-slider" style={{ ...sliderStyle, position: 'absolute', bottom: '-4px', height: '2px', backgroundColor: isDarkMode ? '#06B6D4' : '#0369A1', transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)' }}></div>
         </div>
@@ -129,6 +121,10 @@ const TopNavigationBar = () => {
         <a className={`mobile-drawer-link ${activeSection === 'home' ? 'active' : ''}`} onClick={() => handleMobileNav('/')}>
           <Home size={18} strokeWidth={2} />
           Home
+        </a>
+        <a className={`mobile-drawer-link ${activeSection === 'user-guide' ? 'active' : ''}`} onClick={() => handleMobileNav('/user-guide')}>
+          <BookOpenText size={18} strokeWidth={2} />
+          User Guide
         </a>
         <a className={`mobile-drawer-link ${activeSection === 'submit-complaint' ? 'active' : ''}`} onClick={() => handleMobileNav('/submit-complaint')}>
           <FileText size={18} strokeWidth={2} />

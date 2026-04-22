@@ -54,6 +54,9 @@ const Payment = () => {
         <main className="dashboard-main-content payment-content">
           <div className="payment-header">
             <h1 className="payment-title">Payment History</h1>
+            <p className="payment-subtitle">
+              Payments are settled face-to-face through the office. This page only serves as your record of completed payments.
+            </p>
             
             {/* Custom Dropdown */}
             <div className="payment-dropdown-container" ref={dropdownRef}>

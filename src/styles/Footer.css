@@ -116,22 +116,6 @@
   font-weight: 400;
 }
 
-/* Blue highlight for BSP similar to Youtube link */
-.bsp-link {
-  color: #60a5fa;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-  padding-left: 2px;
-  padding-right: 2px;
-}
-
-.bsp-link:hover {
-  color: #93c5fd;
-  text-decoration: underline;
-  text-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
-}
-
 @media (max-width: 768px) {
   .fsis-footer {
     padding: 3rem 1.5rem 1.5rem;

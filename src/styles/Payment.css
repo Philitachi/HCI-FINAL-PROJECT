@@ -10,9 +10,17 @@
 .payment-title {
   font-size: 1.75rem;
   font-weight: 700;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 0.5rem 0;
   color: var(--text-primary-color, #111827);
   letter-spacing: -0.5px;
+}
+
+.payment-subtitle {
+  max-width: 760px;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-secondary-color, #4b5563);
+  font-size: 0.98rem;
+  line-height: 1.6;
 }
 
 /* Custom Dropdown Styling to match image */
@@ -206,6 +214,9 @@
 /* Dark mode overrides */
 :root:not(.light-mode) .payment-title {
   color: #ffffff;
+}
+:root:not(.light-mode) .payment-subtitle {
+  color: #cbd5e1;
 }
 :root:not(.light-mode) .payment-dropdown-trigger {
   background-color: #1e293b;

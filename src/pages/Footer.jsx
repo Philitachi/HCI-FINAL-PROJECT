@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import '../styles/Footer.css';
 import logo from '../assets/Logo.svg';
 
@@ -31,7 +30,7 @@ const Footer = () => {
         <p className="copyright">© 2026 Fire Safety Inspection System. All rights reserved.</p>
         <p className="disclaimer">
           We are dedicated to enforcing the Fire Code and related laws, and to responding swiftly to emergencies and disasters.<br />
-          Registered with <a href="https://www.bsp.gov.ph" target="_blank" rel="noopener noreferrer" className="bsp-link">Bangko Sentral ng Pilipinas</a> as an Operator of Payment Services under the National Payment Systems Act.
+          Payments, when required, are settled face-to-face through the appropriate Bureau of Fire Protection office.
         </p>
       </div>
     </footer>

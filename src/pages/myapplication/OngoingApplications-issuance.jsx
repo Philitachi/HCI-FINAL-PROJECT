@@ -224,7 +224,7 @@ const OngoingApplicationsIssuance = () => {
                   </div>
 
                   <p className="payment-notice">
-                    💡 Please proceed to the **Payment Section** to settle fees online or offline before the certificate is officially issued and sent to you.
+                    Please proceed to the office to settle fees face-to-face before the certificate is officially issued. The Payment page is for viewing payment records only.
                   </p>
 
                   <div className="modal-actions-buttons">
@@ -232,7 +232,7 @@ const OngoingApplicationsIssuance = () => {
                       Access Full Information
                     </button>
                     <button className="primary-pay-btn" onClick={() => navigate('/payment')}>
-                      Proceed to Payment
+                      View Payment Records
                     </button>
                   </div>
                 </div>
