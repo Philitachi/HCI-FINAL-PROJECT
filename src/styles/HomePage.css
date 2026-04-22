@@ -70,6 +70,10 @@ body {
 }
 
 .btn-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
   background-color: #E5E7EB;
   /* Light gray */
   color: #111827;
@@ -85,6 +89,13 @@ body {
   /* Matched transition */
   font-family: inherit;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.android-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: 0 0 auto;
+  fill: currentColor;
 }
 
 .btn-download:hover {
