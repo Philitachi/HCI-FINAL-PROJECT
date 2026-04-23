@@ -194,7 +194,8 @@
 }
 
 .user-guide-prepare-grid,
-.user-guide-support-grid {
+.user-guide-support-grid,
+.user-guide-complaint-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 0.62fr);
   gap: 1.25rem;
@@ -222,7 +223,8 @@
 .user-guide-step-card h3,
 .user-guide-type-card h3,
 .user-guide-status-item h3,
-.user-guide-support-list article h3 {
+.user-guide-support-list article h3,
+.user-guide-complaint-notice h3 {
   margin: 0.85rem 0 0.55rem;
   color: #ffffff;
   font-size: 1.25rem;
@@ -257,7 +259,9 @@
 .user-guide-step-card p,
 .user-guide-type-card p,
 .user-guide-status-item p,
-.user-guide-support-list article p {
+.user-guide-support-list article p,
+.user-guide-complaint-step p,
+.user-guide-complaint-notice p {
   color: #cbd5e1;
   line-height: 1.65;
 }
@@ -270,7 +274,8 @@
 
 .user-guide-step-card,
 .user-guide-type-card,
-.user-guide-support-list article {
+.user-guide-support-list article,
+.user-guide-complaint-step {
   --guide-card-accent: #06b6d4;
   border-radius: 8px;
   padding: 1.3rem;
@@ -282,13 +287,15 @@
 
 .user-guide-step-card:nth-child(2),
 .user-guide-type-card:nth-child(2),
-.user-guide-support-list article:nth-child(2) {
+.user-guide-support-list article:nth-child(2),
+.user-guide-complaint-step:nth-child(2) {
   --guide-card-accent: #14b8a6;
 }
 
 .user-guide-step-card:nth-child(3),
 .user-guide-type-card:nth-child(3),
-.user-guide-support-list article:nth-child(3) {
+.user-guide-support-list article:nth-child(3),
+.user-guide-complaint-step:nth-child(3) {
   --guide-card-accent: #f59e0b;
 }
 
@@ -300,7 +307,8 @@
 
 .user-guide-step-card:hover,
 .user-guide-type-card:hover,
-.user-guide-support-list article:hover {
+.user-guide-support-list article:hover,
+.user-guide-complaint-step:hover {
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.065);
   border-color: rgba(255, 255, 255, 0.16);
@@ -370,6 +378,96 @@
   color: var(--guide-card-accent);
 }
 
+.user-guide-complaint-grid {
+  grid-template-columns: minmax(320px, 0.72fr) minmax(0, 1fr);
+}
+
+.user-guide-complaint-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 8px;
+  padding: 1.3rem;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-guide-complaint-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #dc2626;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.user-guide-complaint-ribbon svg {
+  flex: 0 0 auto;
+}
+
+.user-guide-complaint-notice {
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+.user-guide-complaint-notice h3 {
+  margin-top: 0;
+}
+
+.user-guide-complaint-notice p {
+  margin: 0;
+}
+
+.user-guide-complaint-access {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.user-guide-complaint-access div {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.85rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-guide-complaint-access strong {
+  color: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.user-guide-complaint-access span {
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.user-guide-complaint-steps {
+  display: grid;
+  gap: 1rem;
+}
+
+.user-guide-complaint-step h3 {
+  margin: 0;
+}
+
+.user-guide-complaint-step .user-guide-step-top {
+  margin-bottom: 0.85rem;
+}
+
+.user-guide-complaint-step .user-guide-step-top span {
+  font-size: 1.05rem;
+}
+
+.user-guide-complaint-step svg {
+  color: var(--guide-card-accent);
+}
+
 .user-guide-android-section {
   min-height: max(680px, 100vh);
   width: 100%;
@@ -414,7 +512,8 @@
 @media (max-width: 1100px) {
   .user-guide-hero-grid,
   .user-guide-prepare-grid,
-  .user-guide-support-grid {
+  .user-guide-support-grid,
+  .user-guide-complaint-grid {
     grid-template-columns: 1fr;
   }
 
@@ -496,6 +595,10 @@
   .user-guide-status-item {
     grid-template-columns: 1fr;
   }
+
+  .user-guide-complaint-ribbon {
+    align-items: flex-start;
+  }
 }
 
 :root.light-mode .user-guide-page {
@@ -524,7 +627,8 @@
 :root.light-mode .user-guide-step-card h3,
 :root.light-mode .user-guide-type-card h3,
 :root.light-mode .user-guide-status-item h3,
-:root.light-mode .user-guide-support-list article h3 {
+:root.light-mode .user-guide-support-list article h3,
+:root.light-mode .user-guide-complaint-notice h3 {
   color: #0f172a;
 }
 
@@ -534,7 +638,9 @@
 :root.light-mode .user-guide-step-card p,
 :root.light-mode .user-guide-type-card p,
 :root.light-mode .user-guide-status-item p,
-:root.light-mode .user-guide-support-list article p {
+:root.light-mode .user-guide-support-list article p,
+:root.light-mode .user-guide-complaint-step p,
+:root.light-mode .user-guide-complaint-notice p {
   color: #475569;
 }
 
@@ -560,7 +666,9 @@
 :root.light-mode .user-guide-step-card,
 :root.light-mode .user-guide-type-card,
 :root.light-mode .user-guide-status-item,
-:root.light-mode .user-guide-support-list article {
+:root.light-mode .user-guide-support-list article,
+:root.light-mode .user-guide-complaint-panel,
+:root.light-mode .user-guide-complaint-step {
   background: #ffffff;
   border-color: rgba(15, 23, 42, 0.08);
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
@@ -582,6 +690,24 @@
 
 :root.light-mode .user-guide-prepare-panel li {
   color: #334155;
+}
+
+:root.light-mode .user-guide-complaint-notice {
+  background: #fff1f2;
+  border-color: rgba(220, 38, 38, 0.14);
+}
+
+:root.light-mode .user-guide-complaint-access div {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+:root.light-mode .user-guide-complaint-access strong {
+  color: #0f172a;
+}
+
+:root.light-mode .user-guide-complaint-access span {
+  color: #475569;
 }
 
 :root.light-mode .user-guide-android-section {

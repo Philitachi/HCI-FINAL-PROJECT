@@ -32,15 +32,15 @@ const guideSteps = [
   },
   {
     number: '02',
-    icon: Building,
-    title: 'Add your establishment details',
-    text: 'Prepare the business name, address, occupancy information, and contact details that identify the establishment.'
-  },
-  {
-    number: '03',
     icon: FileText,
     title: 'Choose the application type',
     text: 'Start a new application for evaluation, occupancy permit, certificate, or another fire safety clearance.'
+  },
+  {
+    number: '03',
+    icon: Building,
+    title: 'Add your establishment details',
+    text: 'Prepare the business name, address, occupancy information, and contact details that identify the establishment.'
   },
   {
     number: '04',
@@ -104,6 +104,24 @@ const statusFlow = [
   }
 ];
 
+const complaintGuideSteps = [
+  {
+    icon: FileText,
+    title: 'Complainant information',
+    text: 'Prepare your name, address, email, contact number, and gender before moving to the concern details.'
+  },
+  {
+    icon: Building,
+    title: 'Office and concern details',
+    text: 'Select the region, fire station, official involved, and the nature of the complaint or concern.'
+  },
+  {
+    icon: Send,
+    title: 'Narration and consent',
+    text: 'Write a clear narration of what happened, review the information, agree to the privacy consent, and submit.'
+  }
+];
+
 const preparationItems = [
   'A verified email account for signing in and receiving account notices.',
   'Complete establishment information, including address and occupancy details.',
@@ -130,7 +148,7 @@ const UserGuide = () => {
             <h1 data-route-focus="true">How to use FSIS from sign up to certificate</h1>
             <p>
               A complete public walkthrough for preparing requirements, submitting a fire safety application,
-              tracking its status, and installing the Android APK.
+              tracking its status, sending complaints or concerns, and installing the Android APK.
             </p>
 
             <div className="user-guide-actions">
@@ -166,6 +184,10 @@ const UserGuide = () => {
               <div className="user-guide-preview-row">
                 <span>Certificate</span>
                 <strong>Ready when completed</strong>
+              </div>
+              <div className="user-guide-preview-row">
+                <span>Concerns</span>
+                <strong>Public and in-app</strong>
               </div>
             </div>
           </div>
@@ -283,6 +305,64 @@ const UserGuide = () => {
       </section>
 
       <section className="user-guide-section">
+        <div className="user-guide-container">
+          <div className="user-guide-section-header">
+            <span className="user-guide-kicker">Complaint Guide</span>
+            <h2>How to submit a complaint or concern</h2>
+            <p>
+              The complaint form is available from the public landing page and from inside the signed-in app.
+            </p>
+          </div>
+
+          <div className="user-guide-complaint-grid">
+            <div className="user-guide-complaint-panel">
+              <div className="user-guide-complaint-ribbon">
+                <HelpCircle size={22} strokeWidth={2} />
+                <span>Concerns can be sent through FSIS</span>
+              </div>
+              <div className="user-guide-complaint-notice">
+                <h3>Use this when you need to report a service concern</h3>
+                <p>
+                  Open Submit a Complaint from the public navigation if you are not signed in, or use the Complaint
+                  page inside the app when you are already in your workspace.
+                </p>
+              </div>
+              <div className="user-guide-complaint-access">
+                <div>
+                  <strong>Public access</strong>
+                  <span>Available before signing in from the landing page.</span>
+                </div>
+                <div>
+                  <strong>Inside the app</strong>
+                  <span>Available after signing in from the app navigation.</span>
+                </div>
+              </div>
+              <button className="user-guide-primary-btn" onClick={() => navigate('/submit-complaint')}>
+                <FileText size={20} strokeWidth={2} />
+                Open Complaint Page
+                <ArrowRight size={18} strokeWidth={2} />
+              </button>
+            </div>
+
+            <div className="user-guide-complaint-steps">
+              {complaintGuideSteps.map((step) => {
+                const Icon = step.icon;
+                return (
+                  <article className="user-guide-complaint-step" key={step.title}>
+                    <div className="user-guide-step-top">
+                      <span>{step.title}</span>
+                      <Icon size={24} strokeWidth={2} />
+                    </div>
+                    <p>{step.text}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="user-guide-section user-guide-section-alt">
         <div className="user-guide-container user-guide-support-grid">
           <div className="user-guide-section-header user-guide-support-header">
             <span className="user-guide-kicker">After Submission</span>
