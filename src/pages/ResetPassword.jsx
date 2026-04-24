@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import emailjs from '@emailjs/browser';
-import { Loader2 } from 'lucide-react';
+import { AlertCircle, Loader2 } from 'lucide-react';
 import '../styles/ResetPassword.css';
 import verifyEmailDark from '../assets/verifyyouemailaddress.svg';
 import verifyEmailLight from '../assets/verifyyouemailaddress.svg';
@@ -191,6 +191,11 @@ const ResetPassword = () => {
         <h1 className="reset-password-title">Enter Reset Code</h1>
         <p className="reset-password-description">
           We sent a 6-digit code to <span className="email-highlight">{userEmail}</span>. Enter it below to verify your identity.
+        </p>
+
+        <p className="reset-delivery-note">
+          <AlertCircle size={18} className="delivery-note-icon" aria-hidden="true" />
+          <span>If you do not see the code in your inbox, please check your spam or junk folder.</span>
         </p>
 
         <div className="code-input-container">

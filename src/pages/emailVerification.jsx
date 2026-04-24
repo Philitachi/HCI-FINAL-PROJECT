@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { AlertCircle } from 'lucide-react';
 import { auth, db } from '../firebase';
 import emailjs from '@emailjs/browser';
 import '../styles/emailVerification.css';
@@ -218,6 +219,11 @@ const EmailVerification = () => {
         
         <p className="email-verification-description">
           We have sent a 6-digit verification code to <span className="email-highlight">{userEmail}</span>. Enter the code below to complete your registration.
+        </p>
+
+        <p className="email-delivery-note">
+          <AlertCircle size={18} className="delivery-note-icon" aria-hidden="true" />
+          <span>If you do not see the code in your inbox, please check your spam or junk folder.</span>
         </p>
 
         {/* 6-Digit Code Input */}
