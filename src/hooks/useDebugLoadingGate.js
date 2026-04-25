@@ -1,32 +1,33 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const DEFAULT_DEV_SKELETON_DELAY_MS = 1500;
-export const DEBUG_SKELETON_STORAGE_KEY = 'debugSkeletons';
+export const DEBUG_SKELETON_STORAGE_KEY = 'fsis-debug-skeletons';
 
-export const getDebugSkeletonDelay = () => {
-  if (typeof window !== 'undefined') {
-    const storedMode = window.localStorage.getItem(DEBUG_SKELETON_STORAGE_KEY);
+const DEV_SKELETON_DELAY_MS = 1500;
 
-    if (storedMode === 'off') {
-      return 0;
-    }
-
-    if (storedMode === 'on') {
-      return DEFAULT_DEV_SKELETON_DELAY_MS;
-    }
+const getDebugSkeletonDelay = () => {
+  if (!import.meta.env.DEV) {
+    return 0;
   }
 
-  return import.meta.env.DEV ? DEFAULT_DEV_SKELETON_DELAY_MS : 0;
+  if (typeof window === 'undefined') {
+    return DEV_SKELETON_DELAY_MS;
+  }
+
+  return window.localStorage.getItem(DEBUG_SKELETON_STORAGE_KEY) === 'off'
+    ? 0
+    : DEV_SKELETON_DELAY_MS;
 };
 
 const useDebugLoadingGate = (loading) => {
   const [showLoading, setShowLoading] = useState(loading);
-  const loadStartedAtRef = useRef(loading ? Date.now() : 0);
+  const loadStartedAtRef = useRef(0);
 
   useEffect(() => {
     const debugDelayMs = getDebugSkeletonDelay();
 
     if (debugDelayMs === 0) {
+      // Keep loading state synchronized when the debug skeleton delay is disabled.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowLoading(loading);
       return undefined;
     }
