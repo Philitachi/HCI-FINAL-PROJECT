@@ -16,10 +16,10 @@ import {
   MonitorSmartphone,
   Send,
   ShieldCheck,
-  Smartphone,
   UploadCloud,
   UserPlus
 } from 'lucide-react';
+import AndroidIcon from '../components/AndroidIcon';
 import { getUserSession } from '../utils/userSession';
 import '../styles/UserGuide.css';
 
@@ -156,9 +156,10 @@ const UserGuide = () => {
                 <LogIn size={20} strokeWidth={2} />
                 {hasActiveSession ? 'Open Dashboard' : 'Sign In to Start'}
               </button>
-              <a className="user-guide-secondary-btn" href={apkDownloadPath} download="fsis-mobile-app.apk">
-                <Download size={20} strokeWidth={2} />
-                Download Android APK
+              <a className="user-guide-secondary-btn apk-download-button" href={apkDownloadPath} download="fsis-mobile-app.apk">
+                <AndroidIcon />
+                <span className="apk-download-label">Download Android APK</span>
+                <Download className="apk-download-icon" size={20} strokeWidth={2.2} aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -407,10 +408,10 @@ const UserGuide = () => {
               then open the installed app and sign in with your FSIS account.
             </p>
           </div>
-          <a className="user-guide-primary-link" href={apkDownloadPath} download="fsis-mobile-app.apk">
-            <Smartphone size={20} strokeWidth={2} />
-            Download Android APK
-            <ArrowRight size={18} strokeWidth={2} />
+          <a className="user-guide-primary-link apk-download-button" href={apkDownloadPath} download="fsis-mobile-app.apk">
+            <AndroidIcon />
+            <span className="apk-download-label">Download Android APK</span>
+            <Download className="apk-download-icon" size={20} strokeWidth={2.2} aria-hidden="true" />
           </a>
         </div>
       </section>

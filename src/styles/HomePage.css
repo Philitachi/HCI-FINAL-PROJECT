@@ -73,36 +73,26 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  background-color: #E5E7EB;
-  /* Light gray */
+  gap: 0.7rem;
+  min-height: 52px;
+  background-color: #ffffff;
   color: #111827;
-  /* Dark text */
-  border: none;
+  border: 1px solid rgba(17, 24, 39, 0.12);
   border-radius: 8px;
-  /* Matched to 8px like the primary button */
-  padding: 0.875rem 1.5rem;
+  padding: 0.875rem 1.25rem;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  /* Matched transition */
   font-family: inherit;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.android-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  flex: 0 0 auto;
-  fill: currentColor;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
 }
 
 .btn-download:hover {
-  background-color: #D1D5DB;
+  background-color: #f8fafc;
   transform: translateY(-2px);
-  /* Matched lift animation */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-color: rgba(17, 24, 39, 0.2);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.14);
 }
 
 .btn-download:active {

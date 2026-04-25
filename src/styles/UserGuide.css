@@ -95,9 +95,9 @@
 }
 
 .user-guide-secondary-btn {
-  color: #f8fafc;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
 }
 
 .user-guide-primary-btn:hover,
@@ -109,8 +109,9 @@
 
 .user-guide-secondary-btn:hover {
   transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.25);
+  color: #0f172a;
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.2);
 }
 
 .user-guide-preview {
