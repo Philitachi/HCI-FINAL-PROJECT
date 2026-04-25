@@ -148,7 +148,7 @@ const HowItWorks = () => {
               Full Walkthrough
             </span>
             <h3>Need the complete application guide?</h3>
-            <p>Open the User Guide for account setup, requirements, status tracking, office payment notes, and Android APK installation.</p>
+            <p>Open the User Guide for account setup, requirements, status tracking, office payment notes, submitting complaints or concerns, and Android APK installation.</p>
           </div>
           <button className="hiw-guide-link" onClick={() => navigate('/user-guide')}>
             View User Guide
