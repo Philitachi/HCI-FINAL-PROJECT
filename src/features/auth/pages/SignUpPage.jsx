@@ -13,6 +13,7 @@ import { Loader2 } from 'lucide-react';
 
 const SIGNUP_DRAFT_STORAGE_KEY = 'signup-form-draft';
 const SIGNUP_DRAFT_SESSION_KEY = 'signup-form-session-active';
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -40,9 +41,13 @@ const SignUpPage = () => {
   const [isEmailTyping, setIsEmailTyping] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firebaseError, setFirebaseError] = useState('');
+  const [recaptchaToken, setRecaptchaToken] = useState('');
+  const [recaptchaError, setRecaptchaError] = useState('');
 
   // Refs for focusing
   const emailTypingTimeoutId = useRef(null);
+  const recaptchaContainerRef = useRef(null);
+  const recaptchaWidgetIdRef = useRef(null);
   const refs = {
     firstName: useRef(null),
     lastName: useRef(null),
@@ -112,6 +117,98 @@ const SignUpPage = () => {
       clearTimeout(emailTypingTimeoutId.current);
     }
   }, []);
+
+  useEffect(() => {
+    if (!RECAPTCHA_SITE_KEY) return undefined;
+
+    let isCancelled = false;
+
+    const renderRecaptcha = () => {
+      if (
+        isCancelled ||
+        !window.grecaptcha ||
+        !recaptchaContainerRef.current ||
+        recaptchaWidgetIdRef.current !== null
+      ) {
+        return;
+      }
+
+      recaptchaWidgetIdRef.current = window.grecaptcha.render(recaptchaContainerRef.current, {
+        sitekey: RECAPTCHA_SITE_KEY,
+        callback: (token) => {
+          setRecaptchaToken(token);
+          setRecaptchaError('');
+        },
+        'expired-callback': () => {
+          setRecaptchaToken('');
+          setRecaptchaError('Please complete the robot check again.');
+        },
+        'error-callback': () => {
+          setRecaptchaToken('');
+          setRecaptchaError('Robot check failed to load. Please try again.');
+        },
+      });
+    };
+
+    const existingScript = document.querySelector('script[src^="https://www.google.com/recaptcha/api.js"]');
+    if (existingScript) {
+      const intervalId = window.setInterval(() => {
+        if (window.grecaptcha) {
+          window.clearInterval(intervalId);
+          renderRecaptcha();
+        }
+      }, 100);
+
+      return () => {
+        isCancelled = true;
+        window.clearInterval(intervalId);
+      };
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
+    script.async = true;
+    script.defer = true;
+    script.onload = renderRecaptcha;
+    script.onerror = () => {
+      if (!isCancelled) {
+        setRecaptchaError('Robot check failed to load. Please refresh the page.');
+      }
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
+  const resetRecaptcha = () => {
+    setRecaptchaToken('');
+    if (window.grecaptcha && recaptchaWidgetIdRef.current !== null) {
+      window.grecaptcha.reset(recaptchaWidgetIdRef.current);
+    }
+  };
+
+  const verifyRecaptcha = async () => {
+    if (import.meta.env.DEV) {
+      return true;
+    }
+
+    const response = await fetch('/api/verify-recaptcha', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token: recaptchaToken }),
+    });
+
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || 'Robot check failed. Please try again.');
+    }
+
+    return true;
+  };
 
   const isPasswordValid = password.length >= 8 && /[a-z]/.test(password) && /[A-Z]/.test(password) && /\d/.test(password);
 
@@ -279,10 +376,22 @@ const SignUpPage = () => {
         return; // Stop here if invalid
       }
     }
+
+    if (!RECAPTCHA_SITE_KEY) {
+      setRecaptchaError('Robot check is not configured. Please contact support.');
+      return;
+    }
+
+    if (!recaptchaToken) {
+      setRecaptchaError('Please confirm that you are not a robot before signing up.');
+      return;
+    }
     
     // If we reach here, form is valid — proceed with Firebase
     setIsSubmitting(true);
     try {
+      await verifyRecaptcha();
+
       // 1. Create user account with Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, password);
       const user = userCredential.user;
@@ -329,6 +438,13 @@ const SignUpPage = () => {
       navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
     } catch (error) {
       console.error('Sign-up error:', error);
+      resetRecaptcha();
+
+      if (!error.code && error.message) {
+        setRecaptchaError(error.message);
+        return;
+      }
+
       // Map Firebase error codes to user-friendly messages
       switch (error.code) {
         case 'auth/email-already-in-use':
@@ -575,6 +691,13 @@ const SignUpPage = () => {
                   </p>
                 )}
               </div>
+            </div>
+
+            <div className="recaptcha-group">
+              <div ref={recaptchaContainerRef} className="recaptcha-widget" />
+              {recaptchaError && (
+                <p className="field-error-text recaptcha-error-text">{recaptchaError}</p>
+              )}
             </div>
 
             <p className="terms-text">

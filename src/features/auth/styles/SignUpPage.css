@@ -313,6 +313,23 @@
   align-items: center;
 }
 
+.recaptcha-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 78px;
+}
+
+.recaptcha-widget {
+  min-height: 78px;
+  display: flex;
+  justify-content: center;
+}
+
+.recaptcha-error-text {
+  text-align: center;
+}
+
 
 /* Terms Text */
 .terms-text {
