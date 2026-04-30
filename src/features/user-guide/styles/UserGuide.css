@@ -327,6 +327,7 @@
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.065);
   border-color: rgba(255, 255, 255, 0.16);
+  border-top-color: var(--guide-card-accent);
 }
 
 .user-guide-step-top {
@@ -679,14 +680,20 @@
 :root.light-mode .user-guide-preview,
 :root.light-mode .user-guide-prepare-panel,
 :root.light-mode .user-guide-info-panel,
+:root.light-mode .user-guide-status-item,
+:root.light-mode .user-guide-complaint-panel {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+}
+
 :root.light-mode .user-guide-step-card,
 :root.light-mode .user-guide-type-card,
-:root.light-mode .user-guide-status-item,
 :root.light-mode .user-guide-support-list article,
-:root.light-mode .user-guide-complaint-panel,
 :root.light-mode .user-guide-complaint-step {
   background: #ffffff;
   border-color: rgba(15, 23, 42, 0.08);
+  border-top-color: var(--guide-card-accent);
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
 }
 
