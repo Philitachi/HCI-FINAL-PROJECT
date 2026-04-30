@@ -327,7 +327,7 @@
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.065);
   border-color: rgba(255, 255, 255, 0.16);
-  border-top-color: var(--guide-card-accent);
+  border-top-color: rgba(255, 255, 255, 0.16);
 }
 
 .user-guide-step-top {
@@ -703,7 +703,7 @@
 :root.light-mode .user-guide-complaint-step:hover {
   background: #f8fafc;
   border-color: rgba(15, 23, 42, 0.16);
-  border-top-color: var(--guide-card-accent);
+  border-top-color: rgba(15, 23, 42, 0.16);
   box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
 }
 
