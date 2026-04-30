@@ -43,7 +43,7 @@
 
 .footer-logo h2 {
   font-size: 2.2rem;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
   letter-spacing: -0.02em;
   background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
@@ -58,7 +58,7 @@
   line-height: 1.6;
   max-width: 500px;
   margin: 0;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .contact-section {
@@ -70,7 +70,7 @@
 
 .contact-section h3 {
   font-size: 1.3rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 1.25rem;
   color: #f1f5f9;
   letter-spacing: -0.01em;
@@ -82,7 +82,7 @@
   line-height: 1.6;
   max-width: 400px;
   margin: 0;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .footer-bottom {
@@ -102,18 +102,28 @@
 
 .copyright {
   color: #e2e8f0;
-  font-size: 0.85rem;
+  font-size: 1rem;
   margin: 0 0 0.75rem 0;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .disclaimer {
   color: #94a3b8;
-  font-size: 0.75rem;
-  line-height: 1.4;
+  font-size: 0.9rem;
+  line-height: 1.5;
   margin: 0;
   max-width: 900px;
-  font-weight: 400;
+  font-weight: 500;
+}
+
+.bsp-link {
+  color: #60a5fa;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.bsp-link:hover {
+  color: #93c5fd;
 }
 
 @media (max-width: 768px) {

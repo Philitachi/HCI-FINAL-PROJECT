@@ -89,7 +89,7 @@
 
 .youtube-title {
   font-size: 2.8rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 1.2rem;
   background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
   -webkit-background-clip: text;
@@ -189,7 +189,7 @@
 .yt-card-title {
   flex: 1;
   min-width: 0;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.1rem;
   color: #fff;
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
@@ -236,7 +236,7 @@
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.5px;
   color: #fff;
   backdrop-filter: blur(4px);
@@ -256,7 +256,7 @@
 .youtube-link {
   color: #60a5fa;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   transition: color 0.3s ease, text-shadow 0.3s ease;
   padding-left: 6px;
 }

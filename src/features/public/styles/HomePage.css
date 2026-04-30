@@ -80,7 +80,7 @@ body {
   border: 1px solid rgba(17, 24, 39, 0.12);
   border-radius: 8px;
   padding: 0.875rem 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
@@ -107,7 +107,7 @@ body {
   gap: 10px;
   padding: 12px 28px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #ffffff;
   background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
   /* Premium teal/blue gradient */

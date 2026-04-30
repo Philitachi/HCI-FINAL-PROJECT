@@ -697,6 +697,16 @@
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
 }
 
+:root.light-mode .user-guide-step-card:hover,
+:root.light-mode .user-guide-type-card:hover,
+:root.light-mode .user-guide-support-list article:hover,
+:root.light-mode .user-guide-complaint-step:hover {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.16);
+  border-top-color: var(--guide-card-accent);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+}
+
 :root.light-mode .user-guide-preview-header {
   color: #0f172a;
   border-bottom-color: rgba(15, 23, 42, 0.08);

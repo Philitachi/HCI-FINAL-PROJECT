@@ -130,7 +130,7 @@
 /* Text styles enhancements */
 .feature-title {
   font-size: 1.8rem; /* Made bigger to encourage 2 lines */
-  font-weight: 600; /* Bolder for impact */
+  font-weight: 800; /* Bolder for impact */
   color: #f8fafc;
   line-height: 1.25;
   margin: 0; /* Remove bottom margin since header container handles it */

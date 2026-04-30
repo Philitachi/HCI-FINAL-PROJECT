@@ -46,7 +46,7 @@
   font-size: 1.25rem;
   line-height: 1.8;
   color: #9CA3AF; /* Softer, highly legible gray */
-  font-weight: 400;
+  font-weight: 500;
 }
 
 /* Steps Layout */
@@ -118,7 +118,7 @@
 
 .hiw-step-text h3 {
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: 700;
   margin-bottom: 0.75rem;
   color: white;
 }
@@ -147,9 +147,11 @@
 .hiw-guide-cta::before {
   content: '';
   position: absolute;
-  inset: 1rem auto 1rem 0;
-  width: 3px;
-  border-radius: 999px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  border-radius: 8px 0 0 8px;
   background: #06b6d4;
 }
 
