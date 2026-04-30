@@ -7,6 +7,12 @@ import emailjs from '@emailjs/browser';
 import '../styles/EmailVerification.css';
 import verifyEmailIcon from '../../../assets/verifyyouemailaddress.svg';
 
+const getResendDelaySeconds = (resendAttempt) => {
+  if (resendAttempt <= 1) return 60;
+  if (resendAttempt === 2) return 5 * 60;
+  return Math.min(resendAttempt * 5 * 60, 30 * 60);
+};
+
 const EmailVerification = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -20,6 +26,7 @@ const EmailVerification = () => {
   const [verifyError, setVerifyError] = useState('');
   const [verifySuccess, setVerifySuccess] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const [resendStatus, setResendStatus] = useState('');
 
   const inputRefs = useRef([]);
@@ -152,11 +159,8 @@ const EmailVerification = () => {
   };
 
   const handleResend = async () => {
-    if (!isTimerActive) {
-      const newCount = resendCount + 1;
-      setResendCount(newCount);
-      setTimer(60);
-      setIsTimerActive(true);
+    if (!isTimerActive && !isResending) {
+      setIsResending(true);
       setResendStatus('');
       setVerifyError('');
 
@@ -172,9 +176,18 @@ const EmailVerification = () => {
 
         if (!querySnapshot.empty) {
           const userDoc = querySnapshot.docs[0];
+          const userData = userDoc.data();
+          const newCount = (Number(userData.verificationResendCount) || resendCount) + 1;
+          const cooldownSeconds = getResendDelaySeconds(newCount);
+
+          setResendCount(newCount);
+          setTimer(cooldownSeconds);
+          setIsTimerActive(true);
+
           await updateDoc(doc(db, 'users', userDoc.id), {
             verificationCode: newCode,
-            codeExpiresAt: newExpiry.toISOString()
+            codeExpiresAt: newExpiry.toISOString(),
+            verificationResendCount: newCount
           });
 
           // Send via EmailJS
@@ -184,7 +197,7 @@ const EmailVerification = () => {
             {
               to_email: userEmail,
               verification_code: newCode,
-              to_name: 'User',
+              to_name: userData.firstName || 'User',
             },
             'TkdpHziryGZ1SETq9'
           );
@@ -196,6 +209,8 @@ const EmailVerification = () => {
       } catch (error) {
         console.error('Resend error:', error);
         setResendStatus('Failed to resend code. Please try again.');
+      } finally {
+        setIsResending(false);
       }
     }
   };
@@ -267,9 +282,9 @@ const EmailVerification = () => {
           <button 
             className="email-resend-button" 
             onClick={handleResend}
-            disabled={isTimerActive}
+            disabled={isTimerActive || isResending}
           >
-            {isTimerActive ? `Resend available in` : 'Resend code'}
+            {isResending ? 'Sending...' : isTimerActive ? `Resend available in` : 'Resend code'}
           </button>
           {isTimerActive && (
             <span className="timer-text">{formatTime(timer)}</span>
