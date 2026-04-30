@@ -41,6 +41,7 @@ const SignUpPage = () => {
   const [isEmailTyping, setIsEmailTyping] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firebaseError, setFirebaseError] = useState('');
+  const [recaptchaSiteKey, setRecaptchaSiteKey] = useState(RECAPTCHA_SITE_KEY || '');
   const [recaptchaToken, setRecaptchaToken] = useState('');
   const [recaptchaError, setRecaptchaError] = useState('');
 
@@ -119,7 +120,46 @@ const SignUpPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!RECAPTCHA_SITE_KEY) return undefined;
+    if (recaptchaSiteKey || import.meta.env.DEV) {
+      return undefined;
+    }
+
+    let isCancelled = false;
+
+    const loadRuntimeSiteKey = async () => {
+      try {
+        const response = await fetch('/api/recaptcha-config');
+        const config = await response.json().catch(() => ({}));
+
+        if (isCancelled) return;
+
+        if (response.ok && config.siteKey) {
+          setRecaptchaSiteKey(config.siteKey);
+          setRecaptchaError('');
+        } else {
+          setRecaptchaError('Robot check is not configured for this deployment.');
+        }
+      } catch (error) {
+        if (!isCancelled) {
+          setRecaptchaError('Robot check configuration failed to load.');
+        }
+      }
+    };
+
+    loadRuntimeSiteKey();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [recaptchaSiteKey]);
+
+  useEffect(() => {
+    if (!recaptchaSiteKey) {
+      if (!import.meta.env.DEV) {
+        setRecaptchaError('Robot check is not configured for this deployment.');
+      }
+      return undefined;
+    }
 
     let isCancelled = false;
 
@@ -133,27 +173,45 @@ const SignUpPage = () => {
         return;
       }
 
-      recaptchaWidgetIdRef.current = window.grecaptcha.render(recaptchaContainerRef.current, {
-        sitekey: RECAPTCHA_SITE_KEY,
-        callback: (token) => {
-          setRecaptchaToken(token);
-          setRecaptchaError('');
-        },
-        'expired-callback': () => {
-          setRecaptchaToken('');
-          setRecaptchaError('Please complete the robot check again.');
-        },
-        'error-callback': () => {
-          setRecaptchaToken('');
-          setRecaptchaError('Robot check failed to load. Please try again.');
-        },
-      });
+      const renderWidget = () => {
+        if (
+          isCancelled ||
+          !window.grecaptcha?.render ||
+          !recaptchaContainerRef.current ||
+          recaptchaWidgetIdRef.current !== null
+        ) {
+          return;
+        }
+
+        recaptchaWidgetIdRef.current = window.grecaptcha.render(recaptchaContainerRef.current, {
+          sitekey: recaptchaSiteKey,
+          callback: (token) => {
+            setRecaptchaToken(token);
+            setRecaptchaError('');
+          },
+          'expired-callback': () => {
+            setRecaptchaToken('');
+            setRecaptchaError('Please complete the robot check again.');
+          },
+          'error-callback': () => {
+            setRecaptchaToken('');
+            setRecaptchaError('Robot check failed to load. Please try again.');
+          },
+        });
+      };
+
+      if (window.grecaptcha.ready) {
+        window.grecaptcha.ready(renderWidget);
+        return;
+      }
+
+      renderWidget();
     };
 
     const existingScript = document.querySelector('script[src^="https://www.google.com/recaptcha/api.js"]');
     if (existingScript) {
       const intervalId = window.setInterval(() => {
-        if (window.grecaptcha) {
+        if (window.grecaptcha?.render) {
           window.clearInterval(intervalId);
           renderRecaptcha();
         }
@@ -180,7 +238,7 @@ const SignUpPage = () => {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [recaptchaSiteKey]);
 
   const resetRecaptcha = () => {
     setRecaptchaToken('');
@@ -377,7 +435,7 @@ const SignUpPage = () => {
       }
     }
 
-    if (!RECAPTCHA_SITE_KEY) {
+    if (!recaptchaSiteKey) {
       setRecaptchaError('Robot check is not configured. Please contact support.');
       return;
     }
