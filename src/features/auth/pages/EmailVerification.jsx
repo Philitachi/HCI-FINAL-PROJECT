@@ -9,8 +9,7 @@ import verifyEmailIcon from '../../../assets/verifyyouemailaddress.svg';
 
 const getResendDelaySeconds = (resendAttempt) => {
   if (resendAttempt <= 1) return 60;
-  if (resendAttempt === 2) return 5 * 60;
-  return Math.min(resendAttempt * 5 * 60, 30 * 60);
+  return 5 * 60;
 };
 
 const EmailVerification = () => {
