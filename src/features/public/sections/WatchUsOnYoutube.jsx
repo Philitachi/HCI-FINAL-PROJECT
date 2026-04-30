@@ -24,6 +24,7 @@ const WatchUsOnYoutube = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [playingVideoId, setPlayingVideoId] = useState(null);
   const sectionRef = useRef(null);
+  const cardRefs = useRef({});
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -47,6 +48,27 @@ const WatchUsOnYoutube = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!playingVideoId || !cardRefs.current[playingVideoId]) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          setPlayingVideoId(null);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(cardRefs.current[playingVideoId]);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [playingVideoId]);
+
   return (
     <section id="youtube-section" className="youtube-section" ref={sectionRef}>
       <div className={`youtube-container ${isVisible ? 'is-visible' : ''}`}>
@@ -66,6 +88,9 @@ const WatchUsOnYoutube = () => {
             <div 
               className="youtube-card fade-in-up" 
               key={index} 
+              ref={(element) => {
+                cardRefs.current[video.videoId] = element;
+              }}
               style={{ transitionDelay: `${0.2 + (index * 0.15)}s` }}
             >
               {playingVideoId === video.videoId ? (

@@ -12,6 +12,7 @@ const AboutFSIS = ({ standalone = true }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const sectionRef = useRef(null);
+  const videoWrapperRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -35,6 +36,28 @@ const AboutFSIS = ({ standalone = true }) => {
       observer.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    if (!isVideoPlaying || !videoWrapperRef.current) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          setIsVideoPlaying(false);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(videoWrapperRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isVideoPlaying]);
+
   return (
     <>
       {standalone && <TopNavigationBar />}
@@ -53,7 +76,7 @@ const AboutFSIS = ({ standalone = true }) => {
           </div>
 
           {/* Right Column: Video */}
-          <div className="about-fsis-video-wrapper">
+          <div className="about-fsis-video-wrapper" ref={videoWrapperRef}>
             {isVideoPlaying ? (
               <iframe
                 src={ABOUT_FSIS_EMBED_URL}
