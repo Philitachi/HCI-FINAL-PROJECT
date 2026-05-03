@@ -30,7 +30,7 @@ const Footer = () => {
         <p className="copyright">© 2026 Fire Safety Inspection System. All rights reserved.</p>
         <p className="disclaimer">
           We are dedicated to enforcing the Fire Code and related laws, and to responding swiftly to emergencies and disasters.<br />
-          Registered with <a href="#" className="bsp-link">Bangko Sentral ng Pilipinas</a> as an Operator of Payment Services under the National Payment Systems Act.
+          Registered with <a href="https://www.bsp.gov.ph/SitePages/Default.aspx" target='blank' className="bsp-link">Bangko Sentral ng Pilipinas</a> as an Operator of Payment Services under the National Payment Systems Act.
         </p>
       </div>
     </footer>
