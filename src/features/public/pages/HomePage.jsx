@@ -9,7 +9,7 @@ import FeaturePage from '../sections/FeaturePage';
 import WatchUsOnYoutube from '../sections/WatchUsOnYoutube';
 import CTA from '../sections/CTA';
 import Footer from '../sections/Footer';
-import { ArrowRight, Download } from 'lucide-react';
+import { ArrowRight, Download, ChevronDown } from 'lucide-react';
 import AndroidIcon from '../../../components/ui/AndroidIcon';
 import { getUserSession } from '../../../utils/userSession';
 
@@ -83,6 +83,15 @@ const HomePage = () => {
               <ArrowRight size={20} strokeWidth={2} className="arrow-icon" />
             </button>
           </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div 
+          className="scroll-indicator" 
+          onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+          aria-label="Scroll down"
+        >
+          <ChevronDown className="scroll-icon" size={36} strokeWidth={2} />
         </div>
       </main>
       
