@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
 import '../styles/HomePage.css';
@@ -13,19 +13,31 @@ import { ArrowRight, Download, ChevronDown } from 'lucide-react';
 import AndroidIcon from '../../../components/ui/AndroidIcon';
 import { getUserSession } from '../../../utils/userSession';
 
+const APK_DOWNLOAD_FILENAME = 'FSIS-Mobile-App.apk';
+const APK_DOWNLOAD_PATH = `${import.meta.env.BASE_URL}fsis-mobile-app.apk`;
+const DOWNLOAD_STATUS_TIMEOUT_MS = 3500;
+
 const HomePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isNativeApp = Capacitor.isNativePlatform();
   const hasActiveSession = Boolean(getUserSession());
-  // Place the real APK at public/fsis-mobile-app.apk.
-  const apkDownloadPath = `${import.meta.env.BASE_URL}fsis-mobile-app.apk`;
+  const [isApkDownloadStarting, setIsApkDownloadStarting] = useState(false);
+  const downloadStatusTimerRef = useRef(null);
 
   useEffect(() => {
     if (isNativeApp && hasActiveSession) {
       navigate('/dashboard', { replace: true });
     }
   }, [hasActiveSession, isNativeApp, navigate]);
+
+  useEffect(() => {
+    return () => {
+      if (downloadStatusTimerRef.current) {
+        window.clearTimeout(downloadStatusTimerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (location.hash === '#about') {
@@ -39,12 +51,16 @@ const HomePage = () => {
   }, [location]);
 
   const handleApkDownload = () => {
-    const downloadLink = document.createElement('a');
-    downloadLink.href = apkDownloadPath;
-    downloadLink.download = 'fsis-mobile-app.apk';
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    setIsApkDownloadStarting(true);
+
+    if (downloadStatusTimerRef.current) {
+      window.clearTimeout(downloadStatusTimerRef.current);
+    }
+
+    downloadStatusTimerRef.current = window.setTimeout(() => {
+      setIsApkDownloadStarting(false);
+      downloadStatusTimerRef.current = null;
+    }, DOWNLOAD_STATUS_TIMEOUT_MS);
   };
 
   return (
@@ -68,15 +84,17 @@ const HomePage = () => {
           </p>
           <div className="hero-actions">
             {!isNativeApp && (
-              <button
+              <a
                 className="btn-download apk-download-button"
+                href={APK_DOWNLOAD_PATH}
+                download={APK_DOWNLOAD_FILENAME}
                 onClick={handleApkDownload}
-                aria-label="Download Android APK"
+                aria-label={`Download ${APK_DOWNLOAD_FILENAME} for Android`}
               >
                 <AndroidIcon />
                 <span className="apk-download-label">Download Android APK</span>
                 <Download className="apk-download-icon" size={20} strokeWidth={2.2} aria-hidden="true" />
-              </button>
+              </a>
             )}
             <button className="btn-start" onClick={() => navigate(hasActiveSession ? '/dashboard' : '/signin')}>
               Start your Application
@@ -84,6 +102,12 @@ const HomePage = () => {
             </button>
           </div>
         </div>
+
+        {isApkDownloadStarting && (
+          <div className="apk-download-status" role="status" aria-live="polite">
+            Downloading {APK_DOWNLOAD_FILENAME}...
+          </div>
+        )}
 
         {/* Scroll Indicator */}
         <div 
