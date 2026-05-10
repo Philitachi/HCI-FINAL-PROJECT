@@ -130,14 +130,48 @@ const preparationItems = [
   'Access to the dashboard so you can check status changes and final documents.'
 ];
 
+const guideSections = [
+  { id: 'guide-preparation', label: 'Start Here' },
+  { id: 'guide-walkthrough', label: 'Walkthrough' },
+  { id: 'guide-application-types', label: 'Application Types' },
+  { id: 'guide-status-tracking', label: 'Status Tracking' },
+  { id: 'guide-complaint', label: 'Complaint Guide' },
+  { id: 'guide-after-submission', label: 'After Submission' },
+  { id: 'guide-android', label: 'Android App' }
+];
+
 const UserGuide = () => {
   const navigate = useNavigate();
   const hasActiveSession = Boolean(getUserSession());
   const signInTarget = hasActiveSession ? '/dashboard' : '/signin';
   const apkDownloadPath = `${import.meta.env.BASE_URL}fsis-mobile-app.apk`;
+  const handleGuideAnchorClick = (event, sectionId) => {
+    event.preventDefault();
+
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    section.scrollIntoView({
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      block: 'start'
+    });
+    window.history.pushState(null, '', `#${sectionId}`);
+  };
 
   return (
     <main className="user-guide-page">
+      <nav className="user-guide-anchor-nav" aria-label="User guide section shortcuts">
+        <p className="user-guide-anchor-title">Quick Links:</p>
+        <div className="user-guide-container user-guide-anchor-inner">
+          {guideSections.map((section) => (
+            <a key={section.id} href={`#${section.id}`} onClick={(event) => handleGuideAnchorClick(event, section.id)}>
+              {section.label}
+            </a>
+          ))}
+        </div>
+      </nav>
+
       <section className="user-guide-hero">
         <div className="user-guide-container user-guide-hero-grid">
           <div className="user-guide-hero-copy">
@@ -195,7 +229,7 @@ const UserGuide = () => {
         </div>
       </section>
 
-      <section className="user-guide-section">
+      <section id="guide-preparation" className="user-guide-section">
         <div className="user-guide-container">
           <div className="user-guide-section-header">
             <span className="user-guide-kicker">Start Here</span>
@@ -231,7 +265,7 @@ const UserGuide = () => {
         </div>
       </section>
 
-      <section className="user-guide-section user-guide-section-alt">
+      <section id="guide-walkthrough" className="user-guide-section user-guide-section-alt">
         <div className="user-guide-container">
           <div className="user-guide-section-header">
             <span className="user-guide-kicker">Walkthrough</span>
@@ -259,7 +293,7 @@ const UserGuide = () => {
         </div>
       </section>
 
-      <section className="user-guide-section">
+      <section id="guide-application-types" className="user-guide-section">
         <div className="user-guide-container">
           <div className="user-guide-section-header">
             <span className="user-guide-kicker">Application Types</span>
@@ -281,7 +315,7 @@ const UserGuide = () => {
         </div>
       </section>
 
-      <section className="user-guide-section user-guide-section-alt">
+      <section id="guide-status-tracking" className="user-guide-section user-guide-section-alt">
         <div className="user-guide-container">
           <div className="user-guide-section-header">
             <span className="user-guide-kicker">Status Tracking</span>
@@ -305,7 +339,7 @@ const UserGuide = () => {
         </div>
       </section>
 
-      <section className="user-guide-section">
+      <section id="guide-complaint" className="user-guide-section">
         <div className="user-guide-container">
           <div className="user-guide-section-header">
             <span className="user-guide-kicker">Complaint Guide</span>
@@ -363,7 +397,7 @@ const UserGuide = () => {
         </div>
       </section>
 
-      <section className="user-guide-section user-guide-section-alt">
+      <section id="guide-after-submission" className="user-guide-section user-guide-section-alt">
         <div className="user-guide-container user-guide-support-grid">
           <div className="user-guide-section-header user-guide-support-header">
             <span className="user-guide-kicker">After Submission</span>
@@ -398,7 +432,7 @@ const UserGuide = () => {
         </div>
       </section>
 
-      <section className="user-guide-android-section">
+      <section id="guide-android" className="user-guide-android-section">
         <div className="user-guide-container user-guide-android-panel">
           <div>
             <span className="user-guide-kicker">Android APK</span>
