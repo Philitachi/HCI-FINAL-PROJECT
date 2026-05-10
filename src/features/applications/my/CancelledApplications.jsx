@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, query, where, onSnapshot, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, doc, updateDoc, deleteDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../../services/firebase';
+import { CheckCircle, Trash2, XCircle } from 'lucide-react';
 import Sidebar from '../../../components/layout/Sidebar';
 import TopNavigationBar2 from '../../../components/layout/TopNavigationBar2';
 import MyApplicationsNav from '../components/MyApplicationsNav';
 import Pagination from '../../../components/ui/Pagination';
 import EmptyState from '../../../components/ui/EmptyState';
+import ActionLoadingIndicator from '../../../components/ui/ActionLoadingIndicator';
 import useDebugLoadingGate from '../../../hooks/useDebugLoadingGate';
+import useModalFocusTrap from '../../../hooks/useModalFocusTrap';
 import { ApplicationsListSkeleton } from '../../../components/ui/PageSkeletons';
 import './CancelledApplications.css';
+import '../../../styles/ConfirmModal.css';
 import '../../dashboard/styles/dashboard.css';
 
 const CancelledApplications = () => {
@@ -23,7 +27,16 @@ const CancelledApplications = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedType, setSelectedType] = useState('All Types');
   const [isTypeMenuOpen, setIsTypeMenuOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [deleteSuccess, setDeleteSuccess] = useState(null);
+  const [deletingApplicationId, setDeletingApplicationId] = useState(null);
   const typeMenuRef = useRef(null);
+  const isDeletingApplication = Boolean(deletingApplicationId);
+  const deleteModalRef = useModalFocusTrap(Boolean(deleteConfirm), {
+    onEscape: () => {
+      if (!isDeletingApplication) setDeleteConfirm(null);
+    },
+  });
 
   const occupancyOptions = ['All Types', 'Residential', 'Commercial', 'Industrial', 'Institutional', 'Assembly', 'Educational', 'Storage', 'Mixed Occupancy'];
 
@@ -114,6 +127,37 @@ const CancelledApplications = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentApplications = filteredApplications.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handleDeleteApplication = async (applicationId) => {
+    if (isDeletingApplication) return;
+
+    setDeletingApplicationId(applicationId);
+    try {
+      const applicationInfo = allApps.find(app => app.id === applicationId);
+      const normalizedStatus = applicationInfo?.status?.trim().toLowerCase();
+
+      await deleteDoc(doc(db, 'applications', applicationId));
+
+      const session = JSON.parse(localStorage.getItem('userSession') || '{}');
+      await addDoc(collection(db, 'activityLogs'), {
+        userEmail: session.email || '',
+        action: normalizedStatus === 'declined' ? 'Deleted Declined Application' : 'Deleted Cancelled Application',
+        referenceNumber: applicationInfo?.refNo || '---',
+        establishmentName: applicationInfo?.title || '---',
+        applicationType: applicationInfo?.type || '---',
+        timestamp: serverTimestamp()
+      });
+
+      setDeleteConfirm(null);
+      setDeleteSuccess(applicationInfo?.title || 'Application');
+      setTimeout(() => setDeleteSuccess(null), 2500);
+    } catch (error) {
+      console.error('Error deleting application:', error);
+      alert('Failed to delete application. Please try again.');
+    } finally {
+      setDeletingApplicationId(null);
+    }
+  };
 
   return (
     <div className="dashboard-container">
@@ -264,7 +308,7 @@ const CancelledApplications = () => {
                     </div>
                   </div>
 
-                  <div className="app-card-actions">
+                  <div className="app-card-actions cancelled-app-actions">
                     <button className="btn-continue" onClick={() => navigate(`/applications/${app.id}`)}>Access full details</button>
                     <button className="btn-reattempt" onClick={async () => {
                       try {
@@ -279,6 +323,10 @@ const CancelledApplications = () => {
                         <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
                       </svg>
                       Reattempt submission
+                    </button>
+                    <button className="btn-cancelled-delete" onClick={() => setDeleteConfirm(app)}>
+                      <Trash2 size={16} strokeWidth={2} />
+                      Delete application
                     </button>
                   </div>
                 </div>
@@ -297,6 +345,44 @@ const CancelledApplications = () => {
           />
         </main>
       </div>
+
+      {deleteConfirm && (
+        <div className="delete-confirm-overlay" onClick={() => {
+          if (!isDeletingApplication) setDeleteConfirm(null);
+        }}>
+          <div
+            className="delete-confirm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-cancelled-modal-title"
+            aria-describedby="delete-cancelled-modal-description"
+            tabIndex="-1"
+            ref={deleteModalRef}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="delete-confirm-icon" aria-hidden="true">
+              <XCircle size={48} color="#ef4444" strokeWidth={1.5} />
+            </div>
+            <h3 className="delete-confirm-title" id="delete-cancelled-modal-title">Delete Application?</h3>
+            <p className="delete-confirm-text" id="delete-cancelled-modal-description">
+              Are you sure you want to delete the application for <strong>"{deleteConfirm.title}"</strong>? This action cannot be undone.
+            </p>
+            <div className="delete-confirm-actions">
+              <button type="button" className="btn-confirm-no" onClick={() => setDeleteConfirm(null)} disabled={isDeletingApplication}>No, Keep it</button>
+              <button type="button" className="btn-confirm-yes" onClick={() => handleDeleteApplication(deleteConfirm.id)} disabled={isDeletingApplication} aria-busy={isDeletingApplication}>
+                {isDeletingApplication ? <ActionLoadingIndicator label="Deleting..." /> : 'Yes, Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {deleteSuccess && (
+        <div className="cancelled-delete-toast">
+          <CheckCircle size={20} stroke="#10b981" strokeWidth={2} />
+          <span>"{deleteSuccess}" has been deleted successfully.</span>
+        </div>
+      )}
     </div>
   );
 };

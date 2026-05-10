@@ -6,6 +6,7 @@ import { CheckCircle } from 'lucide-react';
 import Sidebar from '../../../components/layout/Sidebar';
 import TopNavigationBar2 from '../../../components/layout/TopNavigationBar2';
 import { FullDetailsSkeleton } from '../../../components/ui/PageSkeletons';
+import ActionLoadingIndicator from '../../../components/ui/ActionLoadingIndicator';
 import useDebugLoadingGate from '../../../hooks/useDebugLoadingGate';
 import useModalFocusTrap from '../../../hooks/useModalFocusTrap';
 import '../styles/FullDetails.css';
@@ -334,7 +335,9 @@ const FullDetails = () => {
 
       {/* Cancel Confirmation Modal */}
       {cancelConfirm && (
-        <div className="delete-confirm-overlay" onClick={() => setCancelConfirm(false)}>
+        <div className="delete-confirm-overlay" onClick={() => {
+          if (!isCancelling) setCancelConfirm(false);
+        }}>
           <div
             className="delete-confirm-modal"
             role="dialog"
@@ -357,9 +360,9 @@ const FullDetails = () => {
               Are you sure you want to cancel the application for <strong>"{appData.establishmentName}"</strong>? This action cannot be undone.
             </p>
             <div className="delete-confirm-actions">
-              <button type="button" className="btn-confirm-no" onClick={() => setCancelConfirm(false)}>No, Keep it</button>
-              <button type="button" className="btn-confirm-yes" onClick={handleCancelApplication} disabled={isCancelling}>
-                {isCancelling ? 'Cancelling...' : 'Yes, Cancel'}
+              <button type="button" className="btn-confirm-no" onClick={() => setCancelConfirm(false)} disabled={isCancelling}>No, Keep it</button>
+              <button type="button" className="btn-confirm-yes" onClick={handleCancelApplication} disabled={isCancelling} aria-busy={isCancelling}>
+                {isCancelling ? <ActionLoadingIndicator label="Cancelling..." /> : 'Yes, Cancel'}
               </button>
             </div>
           </div>

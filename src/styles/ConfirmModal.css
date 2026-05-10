@@ -104,6 +104,26 @@
   filter: brightness(1.1);
 }
 
+.btn-confirm-no:disabled,
+.btn-confirm-yes:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.btn-confirm-no:disabled:hover,
+.btn-confirm-yes:disabled:hover {
+  transform: none;
+  filter: none;
+}
+
+.btn-confirm-yes:disabled:hover {
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+.btn-confirm-no:disabled:hover {
+  background: transparent;
+}
+
 @keyframes modalPop {
   0% { transform: scale(0.9); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }

@@ -1,0 +1,25 @@
+@keyframes action-loading-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.action-loading-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-width: 0;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.action-loading-icon {
+  flex-shrink: 0;
+  animation: action-loading-spin 0.75s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action-loading-icon {
+    animation-duration: 1.5s;
+  }
+}

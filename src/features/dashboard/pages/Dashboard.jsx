@@ -176,11 +176,11 @@ const Dashboard = () => {
               <button
                 type="button"
                 className="card apply-card"
-                aria-label="Apply for new application"
+                aria-label="Start new application"
                 onClick={() => navigate('/new-application/evaluation')}
               >
                 <FolderPlus className="card-icon" size={64} stroke="white" strokeWidth={1.5} />
-                <h3>Apply for New Application</h3>
+                <h3>Start New Application</h3>
               </button>
             </div>
 

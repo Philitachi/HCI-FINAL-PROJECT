@@ -6,6 +6,7 @@ import Sidebar from '../../../components/layout/Sidebar';
 import TopNavigationBar2 from '../../../components/layout/TopNavigationBar2';
 import EmptyState from '../../../components/ui/EmptyState';
 import Pagination from '../../../components/ui/Pagination';
+import ActionLoadingIndicator from '../../../components/ui/ActionLoadingIndicator';
 import useDebugLoadingGate from '../../../hooks/useDebugLoadingGate';
 import useModalFocusTrap from '../../../hooks/useModalFocusTrap';
 import { DraftListSkeleton } from '../../../components/ui/PageSkeletons';
@@ -21,11 +22,15 @@ const Drafts = () => {
   const showLoading = useDebugLoadingGate(loading);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [deleteSuccess, setDeleteSuccess] = useState(null);
+  const [deletingDraftId, setDeletingDraftId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const isDeletingDraft = Boolean(deletingDraftId);
   const deleteModalRef = useModalFocusTrap(Boolean(deleteConfirm), {
-    onEscape: () => setDeleteConfirm(null),
+    onEscape: () => {
+      if (!isDeletingDraft) setDeleteConfirm(null);
+    },
   });
 
   useEffect(() => {
@@ -90,6 +95,9 @@ const Drafts = () => {
   }, [searchQuery]);
 
   const handleDeleteDraft = async (draftId) => {
+    if (isDeletingDraft) return;
+
+    setDeletingDraftId(draftId);
     try {
       // Capture draft info before deleting
       const draftInfo = draftsList.find(d => d.id === draftId);
@@ -113,6 +121,8 @@ const Drafts = () => {
     } catch (error) {
       console.error('Error deleting draft:', error);
       alert('Failed to delete draft. Please try again.');
+    } finally {
+      setDeletingDraftId(null);
     }
   };
 
@@ -246,7 +256,9 @@ const Drafts = () => {
 
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
-        <div className="delete-confirm-overlay" onClick={() => setDeleteConfirm(null)}>
+        <div className="delete-confirm-overlay" onClick={() => {
+          if (!isDeletingDraft) setDeleteConfirm(null);
+        }}>
           <div
             className="delete-confirm-modal"
             role="dialog"
@@ -265,8 +277,10 @@ const Drafts = () => {
               Are you sure you want to delete the draft for <strong>"{deleteConfirm.title}"</strong>? This action cannot be undone.
             </p>
             <div className="delete-confirm-actions">
-              <button type="button" className="btn-confirm-no" onClick={() => setDeleteConfirm(null)}>No, Keep it</button>
-              <button type="button" className="btn-confirm-yes" onClick={() => handleDeleteDraft(deleteConfirm.id)}>Yes, Delete</button>
+              <button type="button" className="btn-confirm-no" onClick={() => setDeleteConfirm(null)} disabled={isDeletingDraft}>No, Keep it</button>
+              <button type="button" className="btn-confirm-yes" onClick={() => handleDeleteDraft(deleteConfirm.id)} disabled={isDeletingDraft} aria-busy={isDeletingDraft}>
+                {isDeletingDraft ? <ActionLoadingIndicator label="Deleting..." /> : 'Yes, Delete'}
+              </button>
             </div>
           </div>
         </div>

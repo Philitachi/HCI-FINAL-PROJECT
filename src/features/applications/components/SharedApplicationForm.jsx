@@ -6,6 +6,7 @@ import '../styles/NewApplication.css';
 import '../../complaints/styles/Complaint.css';
 import EmailVerifiedSVG from '../../../assets/EmailVerified.svg';
 import ExitButton from '../../../components/ui/ExitButton';
+import ActionLoadingIndicator from '../../../components/ui/ActionLoadingIndicator';
 import PezaModal from '../../../components/feedback/PezaModal';
 import { FileText, Home, Check, User, MapPin, Calendar, ChevronRight, Info, ArrowLeft, ArrowRight, FileCheck, Eye, X, UploadCloud, Send, XCircle, CheckCircle } from 'lucide-react';
 import regionsData from '../../../data/regions.json';
@@ -218,6 +219,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
   const [dragActiveId, setDragActiveId] = useState(null);
   const [showPezaModal, setShowPezaModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pendingSubmitAction, setPendingSubmitAction] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [submittedRef, setSubmittedRef] = useState('');
   const [successType, setSuccessType] = useState('Submit'); // 'Submit', 'Draft', or 'Error'
@@ -318,7 +320,11 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
 
   // Save application data to Firestore
   const handleSubmitToFirebase = async (status = 'Completeness Check') => {
+    if (isSubmitting) return;
+
+    const nextSubmitAction = status === 'Draft' ? 'draft' : 'submit';
     setIsSubmitting(true);
+    setPendingSubmitAction(nextSubmitAction);
     try {
       const session = JSON.parse(localStorage.getItem('userSession') || '{}');
       const refNumber = draftId ? (draftData?.referenceNumber || generateRefNumber()) : generateRefNumber();
@@ -385,6 +391,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
       setShowSuccessModal(true);
     } finally {
       setIsSubmitting(false);
+      setPendingSubmitAction(null);
     }
   };
 
@@ -435,11 +442,6 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
     regionsData.forEach(r => { map[r.name] = r.code; });
     return map;
   }, []);
-  const regionNameMap = useMemo(() => {
-    const map = {};
-    regionsData.forEach(r => { map[r.code] = r.name; });
-    return map;
-  }, []);
 
   const provinceOptions = useMemo(() => {
     if (!formData.regionCode) return [];
@@ -469,24 +471,6 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
   }, [formData.cityCode]);
 
   const stationOptions = ['Main Fire Station', 'Sub Station 1', 'Sub Station 2', 'Central District Station'];
-
-  // Helper to get display names from codes
-  const getRegionName = () => regionNameMap[formData.regionCode] || '';
-  const getProvinceName = () => {
-    if (!formData.regionCode || !formData.provinceCode) return '';
-    const prov = (provincesData[formData.regionCode] || []).find(p => p.code === formData.provinceCode);
-    return prov ? prov.name : '';
-  };
-  const getCityName = () => {
-    if (!formData.provinceCode || !formData.cityCode) return '';
-    const city = (citiesData[formData.provinceCode] || []).find(c => c.code === formData.cityCode);
-    return city ? city.name : '';
-  };
-  const getBarangayName = () => {
-    if (!formData.cityCode || !formData.barangayCode) return '';
-    const brgy = (barangaysData[formData.cityCode] || []).find(b => b.code === formData.barangayCode);
-    return brgy ? brgy.name : '';
-  };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -620,6 +604,12 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
       }
     }
   };
+
+  const isSavingDraft = isSubmitting && pendingSubmitAction === 'draft';
+  const isSubmittingApplication = isSubmitting && pendingSubmitAction === 'submit';
+  const draftButtonContent = isSavingDraft ? (
+    <ActionLoadingIndicator label="Saving draft..." />
+  ) : 'Save to draft';
 
   return (
     <div className="new-app-card" onKeyDown={handleEnterToNext}>
@@ -1038,11 +1028,11 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
                 </button>
 
                 <div className="app-form-actions-right">
-                  <button type="button" className="btn-draft" onClick={() => handleSubmitToFirebase('Draft')} disabled={isSubmitting}>
-                    Save to draft
+                  <button type="button" className="btn-draft" onClick={() => handleSubmitToFirebase('Draft')} disabled={isSubmitting} aria-busy={isSavingDraft}>
+                    {draftButtonContent}
                   </button>
 
-                  <button type="button" className="btn-submit" onClick={handleNextStep}>
+                  <button type="button" className="btn-submit" onClick={handleNextStep} disabled={isSubmitting}>
                     Next Step
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                   </button>
@@ -1193,10 +1183,10 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
             </button>
 
             <div className="app-form-actions-right">
-              <button type="button" className="btn-draft" onClick={() => handleSubmitToFirebase('Draft')} disabled={isSubmitting}>
-                Save to draft
+              <button type="button" className="btn-draft" onClick={() => handleSubmitToFirebase('Draft')} disabled={isSubmitting} aria-busy={isSavingDraft}>
+                {draftButtonContent}
               </button>
-              <button type="button" className="btn-submit" onClick={handleNextStep}>
+              <button type="button" className="btn-submit" onClick={handleNextStep} disabled={isSubmitting}>
                 Next Step
                 <ArrowRight size={18} strokeWidth={2} />
               </button>
@@ -1324,12 +1314,18 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
             </button>
 
             <div className="app-form-actions-right">
-              <button type="button" className="btn-draft" onClick={() => handleSubmitToFirebase('Draft')} disabled={isSubmitting}>
-                Save to draft
+              <button type="button" className="btn-draft" onClick={() => handleSubmitToFirebase('Draft')} disabled={isSubmitting} aria-busy={isSavingDraft}>
+                {draftButtonContent}
               </button>
-              <button type="button" className="btn-submit" onClick={() => handleSubmitToFirebase()} disabled={isSubmitting}>
-                <Send size={18} strokeWidth={2} />
-                Submit Application
+              <button type="button" className="btn-submit" onClick={() => handleSubmitToFirebase()} disabled={isSubmitting} aria-busy={isSubmittingApplication}>
+                {isSubmittingApplication ? (
+                  <ActionLoadingIndicator label="Submitting application..." />
+                ) : (
+                  <>
+                    <Send size={18} strokeWidth={2} />
+                    Submit Application
+                  </>
+                )}
               </button>
             </div>
           </div>
