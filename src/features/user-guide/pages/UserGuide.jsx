@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Archive,
@@ -142,6 +142,7 @@ const guideSections = [
 
 const UserGuide = () => {
   const navigate = useNavigate();
+  const [isQuickLinksOpen, setIsQuickLinksOpen] = useState(false);
   const hasActiveSession = Boolean(getUserSession());
   const signInTarget = hasActiveSession ? '/dashboard' : '/signin';
   const apkDownloadPath = `${import.meta.env.BASE_URL}fsis-mobile-app.apk`;
@@ -161,9 +162,20 @@ const UserGuide = () => {
 
   return (
     <main className="user-guide-page">
-      <nav className="user-guide-anchor-nav" aria-label="User guide section shortcuts">
-        <p className="user-guide-anchor-title">Quick Links:</p>
-        <div className="user-guide-container user-guide-anchor-inner">
+      <nav className={`user-guide-anchor-nav ${isQuickLinksOpen ? 'is-open' : ''}`} aria-label="User guide section shortcuts">
+        <button
+          type="button"
+          className="user-guide-anchor-title"
+          aria-label="Toggle quick links"
+          aria-expanded={isQuickLinksOpen}
+          aria-controls="user-guide-quick-links"
+          onClick={() => setIsQuickLinksOpen((current) => !current)}
+        >
+          <ListChecks size={20} strokeWidth={2.2} aria-hidden="true" />
+          <span className="user-guide-anchor-label">Quick Links</span>
+        </button>
+        <div id="user-guide-quick-links" className="user-guide-container user-guide-anchor-inner">
+          <span className="user-guide-anchor-heading">Quick Links:</span>
           {guideSections.map((section) => (
             <a key={section.id} href={`#${section.id}`} onClick={(event) => handleGuideAnchorClick(event, section.id)}>
               {section.label}
