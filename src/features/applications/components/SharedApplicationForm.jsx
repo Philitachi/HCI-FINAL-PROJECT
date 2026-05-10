@@ -136,6 +136,10 @@ export const CustomSelect = ({ name, value, options, onChange, placeholder, disa
   );
 };
 
+const getDisplayApplicationTitle = (title = '') => (
+  title.replace(/^FSIC\b/i, 'Fire Safety Inspection Certificate (FSIC)')
+);
+
 const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftData }) => {
   const navigate = useNavigate();
   // We'll map the previous steps 2,3,4 to 1,2,3 for this shared component
@@ -143,6 +147,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
 
   // Detect if this is a renewal application
   const isRenewal = selectedCategoryTitle?.toUpperCase().includes('RENEWAL');
+  const displayCategoryTitle = getDisplayApplicationTitle(selectedCategoryTitle);
   const [selectedApplication, setSelectedApplication] = useState(null);
 
   // Mock previous applications data for renewal
@@ -1047,7 +1052,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
       {step === 2 && (
         <div className="step-content animate-fade-in">
           <div className="upload-req-header">
-            <h3 className="upload-req-title">{selectedCategoryTitle}</h3>
+            <h3 className="upload-req-title">{displayCategoryTitle}</h3>
             <p className="upload-req-subtitle">Type of application</p>
           </div>
 
@@ -1206,7 +1211,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
               <FileText size={28} color="#ef4444" strokeWidth={2} />
             </div>
             <div className="confirm-info-text">
-              <h4>Application for {selectedCategoryTitle}</h4>
+              <h4>Application for {displayCategoryTitle}</h4>
               <p>Type of Application</p>
             </div>
           </div>
@@ -1302,7 +1307,7 @@ const SharedApplicationForm = ({ selectedCategoryTitle, onBack, draftId, draftDa
 
           {/* Disclaimer */}
           <div className="confirm-disclaimer">
-            <p><em>There are two options corresponding to the issuance of permit for the applied establishment / project. If your application is non-compliant to all the processes for the said application, Notice Of Disapproval (NOD) may be issued when applying for Fire Safety Evaluation Clearance (FSEC) or Fire Safety Inspection Certificate (FSIC for Occupancy Permit) and Notice To Comply (NTC) when applying for Fire Safety Inspection Certificate (For Business Permit), which may be followed by other issuances if still non-compliant.</em></p>
+            <p><em>There are two options corresponding to the issuance of permit for the applied establishment / project. If your application is non-compliant to all the processes for the said application, Notice Of Disapproval (NOD) may be issued when applying for Fire Safety Evaluation Clearance (FSEC) or Fire Safety Inspection Certificate (FSIC) for Occupancy Permit and Notice To Comply (NTC) when applying for Fire Safety Inspection Certificate for Business Permit, which may be followed by other issuances if still non-compliant.</em></p>
             <p style={{ marginTop: '1.5rem' }}>By submitting the application, a message will appear displaying the generated reference number.</p>
           </div>
 

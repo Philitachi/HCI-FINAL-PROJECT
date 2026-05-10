@@ -44,7 +44,7 @@ const CTA = () => {
           <h2 className="cta-title">Ready to get started?</h2>
           
           <p className="cta-subtitle">
-            Join hundreds of businesses already using FSIS to streamline their fire safety compliance. 
+            Join hundreds of businesses already using the Fire Safety Inspection System (FSIS) to streamline their fire safety compliance. 
             Start your application today and experience the difference.
           </p>
 

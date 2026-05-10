@@ -78,7 +78,7 @@ const HowItWorks = () => {
         <div className="hiw-header fade-in-up">
           <h2 className="hiw-section-title">How it works</h2>
           <p className="hiw-section-subtitle">
-            Getting started with the Fire Safety Inspection System is quick and simple.
+            Getting started with the Fire Safety Inspection System (FSIS) is quick and simple.
           </p>
         </div>
 
@@ -148,7 +148,7 @@ const HowItWorks = () => {
               Full Walkthrough
             </span>
             <h3>Need the complete application guide?</h3>
-            <p>Open the User Guide for account setup, requirements, status tracking, office payment notes, submitting complaints or concerns, and Android APK installation.</p>
+            <p>Open the User Guide for account setup, requirements, status tracking, office payment notes, submitting complaints or concerns, and Android application package (APK) installation.</p>
           </div>
           <button className="hiw-guide-link" onClick={() => navigate('/user-guide')}>
             View User Guide

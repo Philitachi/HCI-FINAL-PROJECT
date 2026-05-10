@@ -84,7 +84,7 @@ const ComplaintSuccessModal = ({ isOpen, onClose }) => {
         <h2 id="complaint-success-title">Complaint Submitted!</h2>
         <p id="complaint-success-message">
           Your complaint has been successfully submitted to the Bureau of Fire Protection.
-          The concerned BFP office will review your report and respond as soon as possible
+          The concerned Bureau of Fire Protection (BFP) office will review your report and respond as soon as possible
           through the email address you provided.
         </p>
         <button

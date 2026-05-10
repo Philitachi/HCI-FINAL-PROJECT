@@ -22,7 +22,7 @@ const Requirements = () => {
       ]
     },
     {
-      title: "FSIC - Occupancy Permit",
+      title: "Fire Safety Inspection Certificate (FSIC) - Occupancy Permit",
       items: [
         "Copy of application form for certificate of occupancy from office of the building official",
         "Assessment of fees from obo",

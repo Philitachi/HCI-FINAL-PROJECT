@@ -68,7 +68,7 @@ const applicationTypes = [
     text: 'For construction, renovation, or modification work that needs fire safety evaluation before proceeding.'
   },
   {
-    title: 'FSIC for Occupancy Permit',
+    title: 'Fire Safety Inspection Certificate (FSIC) for Occupancy Permit',
     text: 'For establishments preparing occupancy-related documents after construction or completion requirements.'
   },
   {
@@ -145,10 +145,10 @@ const UserGuide = () => {
               <BookOpenText size={18} strokeWidth={2} />
               User Guide
             </span>
-            <h1 data-route-focus="true">How to use FSIS from sign up to certificate</h1>
+            <h1 data-route-focus="true">How to use the Fire Safety Inspection System (FSIS) from sign up to certificate</h1>
             <p>
               A complete public walkthrough for preparing requirements, submitting a fire safety application,
-              tracking its status, sending complaints or concerns, and installing the Android APK.
+              tracking its status, sending complaints or concerns, and installing the Android application package (APK).
             </p>
 
             <div className="user-guide-actions">
@@ -158,13 +158,13 @@ const UserGuide = () => {
               </button>
               <a className="user-guide-secondary-btn apk-download-button" href={apkDownloadPath} download="fsis-mobile-app.apk">
                 <AndroidIcon />
-                <span className="apk-download-label">Download Android APK</span>
+                <span className="apk-download-label">Download Android App</span>
                 <Download className="apk-download-icon" size={20} strokeWidth={2.2} aria-hidden="true" />
               </a>
             </div>
           </div>
 
-          <div className="user-guide-preview" aria-label="FSIS application flow preview">
+          <div className="user-guide-preview" aria-label="Fire Safety Inspection System (FSIS) application flow preview">
             <div className="user-guide-preview-header">
               <MonitorSmartphone size={24} strokeWidth={2} />
               <span>Application Flow</span>
@@ -237,7 +237,7 @@ const UserGuide = () => {
             <span className="user-guide-kicker">Walkthrough</span>
             <h2>The complete application flow</h2>
             <p>
-              Follow these steps in order when using the web app or the Android APK.
+              Follow these steps in order when using the web app or the Android application package (APK).
             </p>
           </div>
 
@@ -319,7 +319,7 @@ const UserGuide = () => {
             <div className="user-guide-complaint-panel">
               <div className="user-guide-complaint-ribbon">
                 <HelpCircle size={22} strokeWidth={2} />
-                <span>Concerns can be sent through FSIS</span>
+                <span>Concerns can be sent through the Fire Safety Inspection System (FSIS)</span>
               </div>
               <div className="user-guide-complaint-notice">
                 <h3>Use this when you need to report a service concern</h3>
@@ -402,7 +402,7 @@ const UserGuide = () => {
         <div className="user-guide-container user-guide-android-panel">
           <div>
             <span className="user-guide-kicker">Android APK</span>
-            <h2>Install FSIS on Android</h2>
+            <h2>Install Fire Safety Inspection System (FSIS) on Android</h2>
             <p>
               The downloadable app is currently for Android. Use the APK button from the landing page or this guide,
               then open the installed app and sign in with your FSIS account.
@@ -410,7 +410,7 @@ const UserGuide = () => {
           </div>
           <a className="user-guide-primary-link apk-download-button" href={apkDownloadPath} download="fsis-mobile-app.apk">
             <AndroidIcon />
-            <span className="apk-download-label">Download Android APK</span>
+            <span className="apk-download-label">Download Android App</span>
             <Download className="apk-download-icon" size={20} strokeWidth={2.2} aria-hidden="true" />
           </a>
         </div>

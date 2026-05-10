@@ -69,9 +69,9 @@ const AboutFSIS = ({ standalone = true }) => {
           
           {/* Left Column: Text */}
           <div className="about-fsis-text-col">
-            <h1 className="about-fsis-title">About FSIS</h1>
+            <h1 className="about-fsis-title">About Fire Safety Inspection System (FSIS)</h1>
             <p className="about-fsis-body">
-              The <strong>Fire Safety Inspection System (FSIS)</strong> is a digital platform designed to streamline fire safety compliance and reporting for businesses and individuals. FSIS enables users to easily access government services, submit applications, and track the status of their requests—all from their mobile devices. By leveraging modern technology, FSIS aims to improve transparency, efficiency, and accessibility in fire safety management across the country.
+              This <strong>digital platform</strong> is designed to streamline fire safety compliance and reporting for businesses and individuals. FSIS enables users to easily access government services, submit applications, and track the status of their requests—all from their mobile devices. By leveraging modern technology, FSIS aims to improve transparency, efficiency, and accessibility in fire safety management across the country.
             </p>
           </div>
 

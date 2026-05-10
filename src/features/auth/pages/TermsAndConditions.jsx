@@ -1,12 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../styles/TermsAndConditions.css';
 import logo from '../../../assets/Logo.svg';
 import ExitButton from '../../../components/ui/ExitButton';
 
 const TermsAndConditions = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="terms-container">
       {/* Background with Dark Gradient */}
@@ -28,7 +25,7 @@ const TermsAndConditions = () => {
 
           <div className="terms-scroll-area">
             
-            <p className="terms-intro-text">Welcome to Fire Safety Inspection System (FSIS)! These terms and conditions ("Terms") govern your use of the Fire Safety Inspection System (FSIS) website, which is owned and operated by the BFP. By accessing or using the Website, you agree to be bound by these Terms. Please read them carefully before using the Website.</p>
+            <p className="terms-intro-text">Welcome to the Fire Safety Inspection System (FSIS)! These terms and conditions ("Terms") govern your use of the FSIS website, which is owned and operated by the Bureau of Fire Protection (BFP). By accessing or using the Website, you agree to be bound by these Terms. Please read them carefully before using the Website.</p>
             
             <h3>1. Use of the Website</h3>
             <ul>

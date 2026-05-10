@@ -92,7 +92,7 @@ const HomePage = () => {
                 aria-label={`Download ${APK_DOWNLOAD_FILENAME} for Android`}
               >
                 <AndroidIcon />
-                <span className="apk-download-label">Download Android APK</span>
+                <span className="apk-download-label">Download Android App</span>
                 <Download className="apk-download-icon" size={20} strokeWidth={2.2} aria-hidden="true" />
               </a>
             )}

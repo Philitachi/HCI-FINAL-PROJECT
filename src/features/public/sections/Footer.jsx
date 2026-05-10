@@ -9,10 +9,10 @@ const Footer = () => {
         <div className="footer-section brand-section">
           <div className="footer-logo">
             <img src={logo} alt="Logo" />
-            <h2>FSIS</h2>
+            <h2>Fire Safety Inspection System (FSIS)</h2>
           </div>
           <p className="brand-description">
-            Fire Safety Inspection System - Making compliance faster, transparent, and accessible
+            Making compliance faster, transparent, and accessible
           </p>
         </div>
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../../components/layout/Sidebar';
 import TopNavigationBar2 from '../../../components/layout/TopNavigationBar2';
 import ComplaintSuccessModal from '../components/ComplaintSuccessModal';
@@ -306,7 +305,7 @@ const Complaint = () => {
                 <div className="info-banner">
                   <div className="info-banner-icon">i</div>
                   <div className="info-banner-text">
-                    Kindly provide us with details about the incident you wish to complain. Our legal team will investigate your complaint and take the necessary action. Be part of the solution. BFP will handle your case with care and assist you the best way we can.
+                    Kindly provide us with details about the incident you wish to complain. Our legal team will investigate your complaint and take the necessary action. Be part of the solution. The Bureau of Fire Protection (BFP) will handle your case with care and assist you the best way we can.
                   </div>
                 </div>
               )}

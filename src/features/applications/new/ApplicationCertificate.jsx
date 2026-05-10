@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Sidebar from '../../../components/layout/Sidebar';
 import TopNavigationBar2 from '../../../components/layout/TopNavigationBar2';
@@ -7,23 +7,27 @@ import { FileText } from 'lucide-react';
 import '../styles/NewApplication.css';
 import '../../dashboard/styles/dashboard.css';
 
+const getDisplayApplicationTitle = (title = '') => (
+  title.replace(/^FSIC\b/i, 'Fire Safety Inspection Certificate (FSIC)')
+);
+
 const ApplicationCertificate = () => {
   const location = useLocation();
   const draftState = location.state || {};
-  const [selectedSubOption, setSelectedSubOption] = useState(null);
 
   const subOptions = [
-    { id: 'fsic_bus_renewal', title: 'FSIC - BUSINESS PERMIT (RENEWAL)', desc: 'Fire Safety Inspection Certificate (FSIC - Business Permit)' },
-    { id: 'fsic_bus_new', title: 'FSIC - BUSINESS PERMIT (NEW)', desc: 'Fire Safety Inspection Certificate (FSIC - Business Permit)' },
-    { id: 'fsic_bus_new_with_occ', title: 'FSIC - BUSINESS PERMIT (NEW) - WITH THE LAST ISSUANCE OF OCCUPANCY PERMIT', desc: 'Fire Safety Inspection Certificate (FSIC - Business Permit)' }
+    { id: 'fsic_bus_renewal', title: 'FSIC - BUSINESS PERMIT (RENEWAL)', desc: 'Fire Safety Inspection Certificate (FSIC) - Business Permit' },
+    { id: 'fsic_bus_new', title: 'FSIC - BUSINESS PERMIT (NEW)', desc: 'Fire Safety Inspection Certificate (FSIC) - Business Permit' },
+    { id: 'fsic_bus_new_with_occ', title: 'FSIC - BUSINESS PERMIT (NEW) - WITH THE LAST ISSUANCE OF OCCUPANCY PERMIT', desc: 'Fire Safety Inspection Certificate (FSIC) - Business Permit' }
   ];
 
-  useEffect(() => {
+  const [selectedSubOption, setSelectedSubOption] = useState(() => {
     if (draftState.draftId && draftState.applicationType) {
       const match = subOptions.find(s => s.title === draftState.applicationType);
-      setSelectedSubOption(match || subOptions[0]);
+      return match || subOptions[0];
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    return null;
+  });
 
   return (
     <div className="dashboard-container">
@@ -34,7 +38,7 @@ const ApplicationCertificate = () => {
           <div className="new-app-header">
             <h1 className="new-app-title">New Application - Certificate</h1>
             <p className="new-app-subtitle">
-              {!selectedSubOption ? 'Select one of the application categories' : `APPLICATION FORM - ${selectedSubOption.title}`}
+              {!selectedSubOption ? 'Select one of the application categories' : `APPLICATION FORM - ${getDisplayApplicationTitle(selectedSubOption.title)}`}
             </p>
           </div>
 
@@ -56,7 +60,7 @@ const ApplicationCertificate = () => {
                             <FileText size={24} strokeWidth={2} />
                           </div>
                           <div className="category-text">
-                            <h3>{sub.title}</h3>
+                            <h3>{getDisplayApplicationTitle(sub.title)}</h3>
                             <p>{sub.desc}</p>
                           </div>
                         </button>
